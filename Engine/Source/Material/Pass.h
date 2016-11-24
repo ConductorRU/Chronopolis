@@ -42,6 +42,9 @@ namespace DEN
 	protected:
 		VertexShader *_vs;
 		PixelShader *_ps;
+		GeometryShader *_gs;
+		HullShader *_hs;
+		DomainShader *_ds;
 		bool _lightning;
 		bool _zwrite;
 		bool _zenable;
@@ -62,6 +65,12 @@ namespace DEN
 		VertexShader *GetVS();
 		void SetPS(PixelShader *shader);
 		PixelShader *GetPS();
+		void SetGS(GeometryShader *shader);
+		GeometryShader *GetGS();
+		void SetHS(HullShader *shader);
+		HullShader *GetHS();
+		void SetDS(DomainShader *shader);
+		DomainShader *GetDS();
 		void SetLightEnable(bool enable);
 		void SetBlend(D3DBLEND srcblend, D3DBLEND destblend);
 		void SetAlphaBlend(D3DBLEND srcblend, D3DBLEND destblend);

@@ -7,4 +7,5 @@
 #include "Mesh/Paramesh.h"
 #include "Scene/Class.h"
 #include "Render/Render.h"
+#include "Manager/Class.h"
 #include "Core/Engine.h"

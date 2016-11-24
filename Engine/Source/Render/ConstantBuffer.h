@@ -1,32 +1,41 @@
 #pragma once
+#include "../Material/Shader.h"
 namespace DEN
 {
+	class Pass;
 	class ConstantBuffer
 	{
 	private:
-		struct ShaderConst
+		Pass *_pass;
+		Shader *_shaders[5];
+		bool _upd[5];
+		bool _updPass;
+		struct Buffer
 		{
-			UINT registerIndex;//register index
-			UINT Bytes;
-			UINT offset;
-			UINT bufferID;
+			ID3D11Buffer *buf;
+			UCHAR *data;
+			UINT size;
+			bool isChange;
+			uint index;
 		};
-		ID3D11Buffer *_buffer;
-		UCHAR *_const;
-		UINT _size;
-		map<string, ShaderConst> _table;
+		vector<Buffer> _buffers[5];
+		void ReleaseConst(SHADER_TYPE type);
+		bool UpdateConst(Shader *sh);
 	public:
-		ConstantBuffer()
-		{
-			_buffer = NULL;
-			_const = NULL;
-			_size = 0;
-		}
-		bool Init(UINT size);
+		ConstantBuffer();
+		~ConstantBuffer();
+		void Init(Pass *pass);
+		void Init(VertexShader *sh);
+		void Init(PixelShader *sh);
+		void Init(GeometryShader *sh);
+		void Init(HullShader *sh);
+		void Init(DomainShader *sh);
+		bool UpdateConst();
 		void Map();
 		void Unmap();
-		void *Get();
-		void Copy(void *data, UINT size, UINT offset = 0);
+		//void *Get();
+		void Copy(Shader *sh, const string &buffer, const string &field, void *data);
+		void Copy(SHADER_TYPE sType, uint bufferId, void *data, UINT size, UINT offset = 0);
 		void Clear();
 	};
 }

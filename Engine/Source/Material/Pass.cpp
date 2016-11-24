@@ -7,11 +7,14 @@ namespace DEN
 	{
 		_vs = nullptr;
 		_ps = nullptr;
+		_gs = nullptr;
+		_hs = nullptr;
+		_ds = nullptr;
 		_lightning = true;
 		_alphaBlend = false;
 		_alphaTest = false;
 		_enable = true;
-		_cull = D3DCULL_NONE;
+		_cull = D3DCULL_CCW;
 		_srcblend = D3DBLEND_ONE;
 		_destblend = D3DBLEND_ZERO;
 		_srcAblend = D3DBLEND_ONE;
@@ -31,22 +34,42 @@ namespace DEN
 	{
 		_vs = shader;
 	}
-
 	VertexShader *Pass::GetVS()
 	{
 		return _vs;
 	}
-
 	void Pass::SetPS(PixelShader *shader)
 	{
 		_ps = shader;
 	}
-
 	PixelShader *Pass::GetPS()
 	{
 		return _ps;
 	}
-
+	void Pass::SetGS(GeometryShader *shader)
+	{
+		_gs = shader;
+	}
+	GeometryShader *Pass::GetGS()
+	{
+		return _gs;
+	}
+	void Pass::SetHS(HullShader *shader)
+	{
+		_hs = shader;
+	}
+	HullShader *Pass::GetHS()
+	{
+		return _hs;
+	}
+	void Pass::SetDS(DomainShader *shader)
+	{
+		_ds = shader;
+	}
+	DomainShader *Pass::GetDS()
+	{
+		return _ds;
+	}
 	void Pass::SetDepthFunc(D3DCMPFUNC func)
 	{
 		_depthFunc = func;

@@ -140,9 +140,15 @@ namespace DEN
 		z_size += GetElementSize(format);
 		z_decl.push_back(d);
 	}
+	void InputLayout::Add(LPCSTR name, DXGI_FORMAT format)
+	{
+		D3D11_INPUT_ELEMENT_DESC d = {name, 0, format, 0, z_size, D3D11_INPUT_PER_VERTEX_DATA, 0};
+		z_size += GetElementSize(format);
+		z_decl.push_back(d);
+	}
 	void InputLayout::Bake(Shader *vs)
 	{
 		if(!_il)
-			Render::Get()->_device->CreateInputLayout(&z_decl[0], z_decl.size(), vs->GetCode(), vs->GetCodeSize(), &_il);
+			Render::Get()->_device->CreateInputLayout(&z_decl[0], (UINT)z_decl.size(), vs->GetCode(), vs->GetCodeSize(), &_il);
 	}
 }

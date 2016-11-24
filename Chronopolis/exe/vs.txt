@@ -1,0 +1,48 @@
+cbuffer MatrixBuffer
+{
+	matrix world;
+	matrix view;
+	matrix proj;
+};
+cbuffer lightBuffer
+{
+	float3 lightPos;
+};
+cbuffer matBuffer
+{
+	float4 matCol;
+}
+struct VertexInputType
+{
+	float4 position : POSITION;
+	float4 color : COLOR;
+	float3 normal : NORMAL;
+};
+struct PixelInputType
+{
+	float4 position : SV_POSITION;
+	float4 color : COLOR;
+	float3 normal : TEXCOORD0;
+	float3 light : TEXCOORD1;
+};
+PixelInputType mainVS(VertexInputType input)
+{
+	PixelInputType output;
+	input.position.w = 1.0f;
+	output.position = mul(world, input.position);
+	output.light = lightPos - output.position.xyz;
+	output.position = mul(view, output.position);
+	output.position = mul(proj, output.position);
+	output.normal = mul(world, input.normal);
+
+	output.color = input.color;
+	return output;
+}
+
+float4 mainPS(PixelInputType input): SV_TARGET
+{
+	float3 L = normalize(input.light); 
+	float3 N = normalize(input.normal);
+	float NdotL = saturate(dot(N, L)); 
+	return float4(input.color.xyz*NdotL*matCol.xyz, input.color.a);
+}

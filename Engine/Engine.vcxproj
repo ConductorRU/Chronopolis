@@ -22,32 +22,32 @@
     <ProjectGuid>{3008EA85-8660-492E-8E69-84D4B64B1C68}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Engine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -149,11 +149,19 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Compiler\Coder.cpp" />
+    <ClCompile Include="Source\Compiler\Compiler.cpp" />
+    <ClCompile Include="Source\Compiler\Error.cpp" />
+    <ClCompile Include="Source\Compiler\Lexer.cpp" />
+    <ClCompile Include="Source\Compiler\Script.cpp" />
+    <ClCompile Include="Source\Compiler\Semantic.cpp" />
+    <ClCompile Include="Source\Compiler\Syntaxer.cpp" />
     <ClCompile Include="Source\Core\Engine.cpp" />
     <ClCompile Include="Source\Core\File.cpp" />
     <ClCompile Include="Source\Core\Log.cpp" />
     <ClCompile Include="Source\Core\Variable.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
+    <ClCompile Include="Source\Manager\Manager.cpp" />
     <ClCompile Include="Source\Material\Material.cpp" />
     <ClCompile Include="Source\Material\Pass.cpp" />
     <ClCompile Include="Source\Material\Shader.cpp" />
@@ -179,12 +187,24 @@
     <ClCompile Include="Source\Scene\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Compiler\Class.h" />
+    <ClInclude Include="Source\Compiler\Coder.h" />
+    <ClInclude Include="Source\Compiler\Compiler.h" />
+    <ClInclude Include="Source\Compiler\Delegate.h" />
+    <ClInclude Include="Source\Compiler\Error.h" />
+    <ClInclude Include="Source\Compiler\Lexer.h" />
+    <ClInclude Include="Source\Compiler\Script.h" />
+    <ClInclude Include="Source\Compiler\Semantic.h" />
+    <ClInclude Include="Source\Compiler\Struct.h" />
+    <ClInclude Include="Source\Compiler\Syntaxer.h" />
     <ClInclude Include="Source\Core\Engine.h" />
     <ClInclude Include="Source\Core\File.h" />
     <ClInclude Include="Source\Core\Log.h" />
     <ClInclude Include="Source\Core\Variable.h" />
     <ClInclude Include="Source\DC.h" />
     <ClInclude Include="Source\Input\Input.h" />
+    <ClInclude Include="Source\Manager\Class.h" />
+    <ClInclude Include="Source\Manager\Manager.h" />
     <ClInclude Include="Source\Material\Class.h" />
     <ClInclude Include="Source\Material\Material.h" />
     <ClInclude Include="Source\Material\Pass.h" />

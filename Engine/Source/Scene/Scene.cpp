@@ -16,6 +16,8 @@ namespace DEN
 	}
 	Scene::~Scene()
 	{
+		for(Light *li : _lights)
+			delete li;
 		delete _camera;
 	}
 	void Scene::AddDraw(Draw *draw)
@@ -34,11 +36,9 @@ namespace DEN
 	{
 		return _background;
 	}
-	Mesh *Scene::CreateMesh(class InputLayout *ia)
+	void Scene::AddMesh(Mesh *mesh)
 	{
-		Mesh *mesh = new Mesh(ia);
 		_meshes.insert(mesh);
-		return mesh;
 	}
 	Light *Scene::CreateLight()
 	{
@@ -49,6 +49,7 @@ namespace DEN
 	void Scene::PrepareBuffer(RenderMesh *buf, Node *world, Light *light, Pass *pass)
 	{
 		buf->GetInputLayout()->Bake(pass->GetVS());
+		buf->UpdateConst();
 		Render::Get()->RenderPass(pass);
 		Matrix4 view = _camera->GetViewMatrix().ToMatrix();
 		Matrix4 proj = _camera->GetProjMatrix();
@@ -59,17 +60,14 @@ namespace DEN
 		//view = view.Transpose();
 		//proj = proj.Transpose();
 		//wrld = wrld.Transpose();
-		wvp = wvp.Transpose();
-		VertexShader *vs = pass->GetVS();
-		uint start, offset;
-		if(vs->GetConstant("world", start, offset))
-			buf->Copy(&wrld, offset, start);
-		if(vs->GetConstant("view", start, offset))
-			buf->Copy(&view, offset, start);
-		if(vs->GetConstant("proj", start, offset))
-			buf->Copy(&proj, offset, start);
-		if(vs->GetConstant("lightPos", start, offset))
-			buf->Copy(&pos, offset, start);
+		//wvp = wvp.Transpose();
+		Color col = Color(0.5f, 1.0f, 1.0f);
+		buf->Copy(pass->GetVS(), "MatrixBuffer", "world", &wrld);
+		buf->Copy(pass->GetVS(), "MatrixBuffer", "view", &view);
+		buf->Copy(pass->GetVS(), "MatrixBuffer", "proj", &proj);
+		buf->Copy(pass->GetVS(), "lightBuffer", "lightPos", &pos);
+		buf->Copy(pass->GetPS(), "matBuffer", "matCol", &col);
+
 		buf->Unmap();
 		/*Vector liPos;
 		if(light)

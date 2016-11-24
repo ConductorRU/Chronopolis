@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "../Render/Render.h"
+#include "../Material/Shader.h"
+#include "../Material/Pass.h"
 #include "Mesh.h"
 namespace DEN
 {
@@ -12,6 +14,11 @@ namespace DEN
 	{
 		delete z_buffer;
 	}
+	void Mesh::SetMaterial(Pass *pass)
+	{
+		_pass = pass;
+		GetVertexBuffer()->Init(pass);
+	};
 	void Mesh::SetColor(const Color &col)
 	{
 		z_color = col;

@@ -27,7 +27,7 @@ namespace DEN
 		void RemoveDraw(Draw *draw);
 		void SetBackground(const Color &color);
 		Color GetBackground();
-		Mesh *CreateMesh(InputLayout *ia);
+		void AddMesh(Mesh *mesh);
 		Light *CreateLight();
 		void PrepareBuffer(RenderMesh *buf, Node *world, Light *light, Pass *pass);
 		void Render();

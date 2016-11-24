@@ -14,6 +14,10 @@ namespace DEN
 	}
 	RenderMesh::~RenderMesh()
 	{
+		if(_vertexBuffer)
+			_vertexBuffer->Release();
+		if(_indexBuffer)
+			_indexBuffer->Release();
 	}
 	void RenderMesh::Bake(void *vertices, UINT count, UINT elementSize)
 	{

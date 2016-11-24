@@ -22,10 +22,10 @@ namespace DEN
 		UINT GetVertexCount() { return (UINT)z_vertex.size(); };
 		RenderMesh *GetVertexBuffer() { return z_buffer; };
 		Pass *GetPass() { return _pass; };
-		void SetMaterial(Pass *pass) { _pass = pass; };
 		Color GetColor() { return z_color; };
 		Mesh(InputLayout *layout);
 		~Mesh();
+		void SetMaterial(Pass *pass);
 		void SetColor(const Color &col);
 		void Generate(TYPE_MESH type, int pOffset = 0, int nOffset = -1, int uvOffset = -1, int colOffset = -1);
 		char *CreateVertex();

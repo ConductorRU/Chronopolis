@@ -4,6 +4,7 @@ namespace DEN
 	class Rect;
 	class Scene;
 	class Input;
+	class Manager;
 	enum CURSOR_TYPE
 	{
 		CURSOR_NONE = 0,
@@ -56,11 +57,13 @@ namespace DEN
 		Input *_input;
 		Time _time;
 		Scene *_scene;
+		Manager *_manager;
 	public:
 		Input *GetInput() { return _input; };
 		static Engine *Get() { return _this; };
 		Render *GetRender() { return _render; };
 		Scene *GetScene() { return _scene; };
+		Manager *GetManager() { return _manager; };
 		const Time &GetTime() { return _time; };
 		Engine();
 		~Engine();

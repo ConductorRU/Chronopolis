@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <clocale>
 #include <ctime>
 #include <stdio.h>
@@ -9,8 +10,20 @@
 #include <set>
 #include <typeinfo.h>
 
+#include <memory>
+#include <typeinfo>
+#include <typeindex>
+#include <type_traits>
 #include <functional>
-#define WIN32_LEAN_AND_MEAN
+#include <assert.h>
+#include <crtdbg.h>
+
+#ifdef _DEBUG
+#include <crtdbg.h>
+#define _CRTDBG_MAP_ALLOC
+#define new new( _NORMAL_BLOCK, __FILE__, __LINE__)
+#endif
+
 #include <windows.h>
 
 #include <d3d11.h>

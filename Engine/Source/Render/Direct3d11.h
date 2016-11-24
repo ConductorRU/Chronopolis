@@ -9,6 +9,9 @@ namespace DEN
 	class Shader;
 	class VertexShader;
 	class PixelShader;
+	class GeometryShader;
+	class HullShader;
+	class DomainShader;
 	class Viewport//: public D3DVIEWPORT9
 	{
 	private:
@@ -107,6 +110,9 @@ namespace DEN
 		friend Shader;
 		friend VertexShader;
 		friend PixelShader;
+		friend GeometryShader;
+		friend HullShader;
+		friend DomainShader;
 		friend InputLayout;
 	private:
 		static Render *_this;

@@ -23,6 +23,7 @@ namespace DEN
 		int GetOffset(LPCSTR name);
 		static UINT GetElementSize(DXGI_FORMAT format);
 		void Add(LPCSTR name, UINT index, DXGI_FORMAT format, UINT slot, UINT offset, INPUT_CLASS iClass, UINT stepRate);
+		void Add(LPCSTR name, DXGI_FORMAT format);
 		void Bake(Shader *vs);
 	};
 }

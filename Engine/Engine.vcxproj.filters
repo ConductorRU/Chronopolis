@@ -29,6 +29,12 @@
     <Filter Include="Source\Input">
       <UniqueIdentifier>{f64c513b-a3c2-4680-8f6f-f839ade55e54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Compiler">
+      <UniqueIdentifier>{99f121d7-6fff-4bd7-b799-76b5a38ef70a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Manager">
+      <UniqueIdentifier>{caca4186-7808-41e7-bf5c-249590e20ce4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -117,6 +123,30 @@
     </ClCompile>
     <ClCompile Include="Source\Core\Variable.cpp">
       <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Compiler\Compiler.cpp">
+      <Filter>Source\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Compiler\Error.cpp">
+      <Filter>Source\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Compiler\Lexer.cpp">
+      <Filter>Source\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Compiler\Script.cpp">
+      <Filter>Source\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Compiler\Semantic.cpp">
+      <Filter>Source\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Compiler\Syntaxer.cpp">
+      <Filter>Source\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Compiler\Coder.cpp">
+      <Filter>Source\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Manager\Manager.cpp">
+      <Filter>Source\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,6 +266,42 @@
     </ClInclude>
     <ClInclude Include="Source\Core\Variable.h">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler\Compiler.h">
+      <Filter>Source\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler\Delegate.h">
+      <Filter>Source\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler\Error.h">
+      <Filter>Source\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler\Lexer.h">
+      <Filter>Source\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler\Script.h">
+      <Filter>Source\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler\Semantic.h">
+      <Filter>Source\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler\Struct.h">
+      <Filter>Source\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler\Syntaxer.h">
+      <Filter>Source\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler\Class.h">
+      <Filter>Source\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler\Coder.h">
+      <Filter>Source\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Manager\Manager.h">
+      <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Manager\Class.h">
+      <Filter>Source\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

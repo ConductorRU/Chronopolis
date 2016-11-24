@@ -4,6 +4,7 @@
 #include "../Render/Render.h"
 #include "../Input/Input.h"
 #include "../Scene/Scene.h"
+#include "../Manager/Manager.h"
 #include "Engine.h"
 namespace DEN
 {
@@ -59,6 +60,12 @@ namespace DEN
 	Engine::~Engine()
 	{
 		delete _render;
+		if(_manager)
+			delete _manager;
+		if(_scene)
+			delete _scene;
+		if(_input)
+			delete _input;
 	}
 	Scene *Engine::CreateScene()
 	{
@@ -241,6 +248,7 @@ namespace DEN
 			//SetWindowPos(_hWindow, NULL, posX, posY, info.rcWindow.right + info.rcClient.left + (info.rcWindow.right - info.rcClient.right), info.rcWindow.bottom + info.rcClient.top + (info.rcWindow.bottom - info.rcClient.bottom), SWP_NOZORDER | SWP_SHOWWINDOW | SWP_FRAMECHANGED);
 		}
 		_input = new Input();
+		_manager = new Manager;
 		_input->Init();
 		_hInst = GetModuleHandle(NULL);
 		ShowWindow(_hWindow, SW_SHOWNORMAL);

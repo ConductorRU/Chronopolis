@@ -482,12 +482,27 @@ namespace DEN
 		if(sh == NULL)
 			_deviceContext->VSSetShader(NULL, NULL, 0);
 		else
-			_deviceContext->VSSetShader((ID3D11VertexShader *)sh->GetBuffer(), NULL, 0);
+			_deviceContext->VSSetShader((ID3D11VertexShader*)sh->GetBuffer(), NULL, 0);
 		PixelShader *ps = pass->GetPS();
 		if(ps == NULL)
-			_deviceContext->VSSetShader(NULL, NULL, 0);
+			_deviceContext->PSSetShader(NULL, NULL, 0);
 		else
-			_deviceContext->PSSetShader((ID3D11PixelShader *)ps->GetBuffer(), NULL, 0);
+			_deviceContext->PSSetShader((ID3D11PixelShader*)ps->GetBuffer(), NULL, 0);
+		GeometryShader *gs = pass->GetGS();
+		if(gs == NULL)
+			_deviceContext->GSSetShader(NULL, NULL, 0);
+		else
+			_deviceContext->GSSetShader((ID3D11GeometryShader*)gs->GetBuffer(), NULL, 0);
+		HullShader *hs = pass->GetHS();
+		if(hs == NULL)
+			_deviceContext->HSSetShader(NULL, NULL, 0);
+		else
+			_deviceContext->HSSetShader((ID3D11HullShader*)hs->GetBuffer(), NULL, 0);
+		DomainShader *ds = pass->GetDS();
+		if(ds == NULL)
+			_deviceContext->DSSetShader(NULL, NULL, 0);
+		else
+			_deviceContext->DSSetShader((ID3D11DomainShader*)ds->GetBuffer(), NULL, 0);
 
 	}
 	void Render::ExecuteMesh(RenderMesh *mesh)
@@ -561,7 +576,7 @@ namespace DEN
 
 		HRESULT result = CompileShader(filename, entryPoint, shaderModel, defines, &pBytecodeBlob);
 		if(FAILED(result))
-			return result;
+			return false;
 		ID3D11VertexShader *mpShader = nullptr;
 		result = _device->CreateVertexShader(pBytecodeBlob->GetBufferPointer(), pBytecodeBlob->GetBufferSize(), NULL, &mpShader);
 		pBytecodeBlob->Release();
@@ -576,7 +591,7 @@ namespace DEN
 
 		HRESULT result = CompileShader(filename, entryPoint, shaderModel, defines, &pBytecodeBlob);
 		if(FAILED(result))
-			return result;
+			return false;
 		ID3D11PixelShader *mpShader = nullptr;
 		result = _device->CreatePixelShader(pBytecodeBlob->GetBufferPointer(), pBytecodeBlob->GetBufferSize(), NULL, &mpShader);
 		pBytecodeBlob->Release();

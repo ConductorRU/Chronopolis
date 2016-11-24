@@ -4,6 +4,7 @@
 #include "../Scene/Scene.h"
 #include "../Render/InputLayout.h"
 #include "../Render/RenderMesh.h"
+#include "../Manager/Manager.h"
 namespace DEN
 {
 	Parament::Parament()
@@ -16,11 +17,11 @@ namespace DEN
 	}
 	Mesh *Paramesh::Generate(Scene *scene, InputLayout *ia, int type)
 	{
-		Mesh *m = scene->CreateMesh(ia);
+		Mesh *m = Manager::Get()->CreateMesh(ia);
+		scene->AddMesh(m);
 		int oPos = ia->GetOffset("POSITION");
 		int oColor = ia->GetOffset("COLOR");
 		int oNor = ia->GetOffset("NORMAL");
-		m->GetVertexBuffer()->Init(1024);
 		switch(type)
 		{
 			case 0://box
@@ -28,11 +29,11 @@ namespace DEN
 				float sizeX = 0.2f, sizeY = 0.2f, sizeZ = 0.2f;
 				if(oPos >= 0)
 				{
-					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, sizeY, sizeZ);
-					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, -sizeY, sizeZ);
-					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(-sizeX, -sizeY, sizeZ);
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(-sizeX, sizeY, sizeZ);
-
+					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(-sizeX, -sizeY, sizeZ);
+					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, -sizeY, sizeZ);
+					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, sizeY, sizeZ);
+					
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, sizeY, -sizeZ);
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, -sizeY, -sizeZ);
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(-sizeX, -sizeY, -sizeZ);
@@ -44,15 +45,15 @@ namespace DEN
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(-sizeX, sizeY, sizeZ);
 
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, -sizeY, sizeZ);
-					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, -sizeY, -sizeZ);
-					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(-sizeX, -sizeY, -sizeZ);
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(-sizeX, -sizeY, sizeZ);
-
-					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, sizeY, sizeZ);
-					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, sizeY, -sizeZ);
+					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(-sizeX, -sizeY, -sizeZ);
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, -sizeY, -sizeZ);
+					
+					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, sizeY, sizeZ);
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, -sizeY, sizeZ);
-
+					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, -sizeY, -sizeZ);
+					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(sizeX, sizeY, -sizeZ);
+					
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(-sizeX, sizeY, sizeZ);
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(-sizeX, sizeY, -sizeZ);
 					*((Vector*)(&m->CreateVertex()[oPos])) = Vector(-sizeX, -sizeY, -sizeZ);

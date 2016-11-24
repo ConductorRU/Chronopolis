@@ -327,7 +327,7 @@ namespace DEN
 		float y = 1.0f / tan(fov*0.5f);
 		float x = y / aspect;
 		float zF = zFar / (zFar - zNear);
-		float zN = (zNear*zFar) / (zNear - zFar);
+		float zN = -(zNear*zFar) / (zFar - zNear);
 		mat.m[0][0] = x;
 		mat.m[0][1] = 0.0f;
 		mat.m[0][2] = 0.0f;
@@ -342,7 +342,7 @@ namespace DEN
 		mat.m[2][3] = 1.0f;
 		mat.m[3][0] = 0.0f;
 		mat.m[3][1] = 0.0f;
-		mat.m[3][2] = -zF*zNear;
+		mat.m[3][2] = zN;// -zF*zNear;
 		mat.m[3][3] = 0.0f;
 #endif
 		return mat;
