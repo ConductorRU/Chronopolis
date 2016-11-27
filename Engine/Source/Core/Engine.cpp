@@ -206,6 +206,7 @@ namespace DEN
 	}
 	void Engine::Create(int sizeX, int sizeY, bool fullscreen, const wstring &name)
 	{
+		srand((uint)time(NULL));
 		int sx = GetSystemMetrics(SM_CXSCREEN);
 		int sy = GetSystemMetrics(SM_CYSCREEN);
 		if(sizeX > sx - 20)

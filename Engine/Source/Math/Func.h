@@ -40,3 +40,17 @@ inline float AngleToRad(float angle)
 {
 	return (3.141592654f / 180.0f)*angle;
 }
+
+inline int Rand(int min, int max)
+{
+	if(min == max)
+		return min;
+	if(min > max)
+		return int(rand() % (min - max + 1) + max);
+	return int(rand() % (max - min + 1) + min);
+}
+
+inline float Rand(float min, float max)
+{
+	return (max - min)*((float)rand() / (float)(0x7fff)) + min;
+}
