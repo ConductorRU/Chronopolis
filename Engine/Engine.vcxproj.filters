@@ -35,6 +35,9 @@
     <Filter Include="Source\Manager">
       <UniqueIdentifier>{caca4186-7808-41e7-bf5c-249590e20ce4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Actor">
+      <UniqueIdentifier>{86f0a975-b24d-43ba-8e72-5c5004079296}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -147,6 +150,9 @@
     </ClCompile>
     <ClCompile Include="Source\Manager\Manager.cpp">
       <Filter>Source\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Actor.cpp">
+      <Filter>Source\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="Source\Manager\Class.h">
       <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Actor.h">
+      <Filter>Source\Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

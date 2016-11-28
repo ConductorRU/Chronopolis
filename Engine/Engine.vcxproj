@@ -149,6 +149,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Actor\Actor.cpp" />
     <ClCompile Include="Source\Compiler\Coder.cpp" />
     <ClCompile Include="Source\Compiler\Compiler.cpp" />
     <ClCompile Include="Source\Compiler\Error.cpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Source\Scene\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Actor\Actor.h" />
     <ClInclude Include="Source\Compiler\Class.h" />
     <ClInclude Include="Source\Compiler\Coder.h" />
     <ClInclude Include="Source\Compiler\Compiler.h" />

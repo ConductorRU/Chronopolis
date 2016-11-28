@@ -2,13 +2,20 @@
 #include "Variable.h"
 namespace DEN
 {
-	Variable::Variable(void *v, size_t h)
+	Variable::Variable(void *v)
 	{
 		val = v;
-		hash = h;
 	}
 	Variable::~Variable()
 	{
 
+	}
+	VariableList::~VariableList()
+	{
+
+	}
+	void VariableList::Add(void *v)
+	{
+		vals.push_back(v);
 	}
 }

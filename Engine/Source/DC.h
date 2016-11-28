@@ -9,4 +9,5 @@
 #include "Render/Render.h"
 #include "Manager/Class.h"
 #include "Core/Engine.h"
+#include "Actor/Actor.h"
 using namespace DEN;
