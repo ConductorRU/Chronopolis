@@ -175,6 +175,7 @@
     <ClCompile Include="Source\Math\Node.cpp" />
     <ClCompile Include="Source\Math\Node2D.cpp" />
     <ClCompile Include="Source\Math\Quaternion.cpp" />
+    <ClCompile Include="Source\Math\Random.cpp" />
     <ClCompile Include="Source\Math\Vector.cpp" />
     <ClCompile Include="Source\Math\Vector2.cpp" />
     <ClCompile Include="Source\Mesh\Mesh.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Source\Math\Point.h" />
     <ClInclude Include="Source\Math\Point2.h" />
     <ClInclude Include="Source\Math\Quaternion.h" />
+    <ClInclude Include="Source\Math\Random.h" />
     <ClInclude Include="Source\Math\Rect.h" />
     <ClInclude Include="Source\Math\Vector.h" />
     <ClInclude Include="Source\Math\Vector2.h" />

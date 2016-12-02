@@ -19,8 +19,8 @@ namespace DEN
 		z_pos = Vector(0.0f, 0.0f, 0.0f);
 		z_fov = 45.0f;
 		z_aspect = Engine::Get()->GetRender()->GetAspect();
-		z_near = 1.0f;
-		z_far = 100.0f;
+		z_near = 0.1f;
+		z_far = 10000.0f;
 		z_matrixProjection = Matrix::Perspective(AngleToRad(z_fov), z_aspect, z_near, z_far);
 		///Engine::Get()->GetDevice()->SetTransform(D3DTS_VIEW, GetViewMatrix().ToMatrix());
 		z_target = false;

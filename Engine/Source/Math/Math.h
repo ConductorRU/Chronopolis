@@ -1,5 +1,6 @@
 #pragma once
 #include "Func.h"
+#include "Random.h"
 #include "Point2.h"
 #include "Point.h"
 #include "Vector2.h"

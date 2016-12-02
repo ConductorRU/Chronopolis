@@ -5,9 +5,10 @@ namespace DEN
 	{
 	protected:
 		void *val;
-		Variable(void *v);
-		~Variable();
+		//Variable(void *v) {val = v;};
 	public:
+		virtual ~Variable();
+		void *Get() {return val;};
 	};
 	class VariableList
 	{
@@ -29,13 +30,13 @@ namespace DEN
 		{
 			delete (T*)val;
 		}
-		void *Get(uint num)
+		void *Get()
 		{
-			return vals[num];
+			return vals;
 		}
 	};
 	template<typename T>
-	class VarList: public Variable
+	class VarList: public VariableList
 	{
 	public:
 		~VarList()
@@ -46,6 +47,10 @@ namespace DEN
 		void Add(T *v)
 		{
 			vals.push_back(v);
+		}
+		void *Get(uint num)
+		{
+			return vals[num];
 		}
 		void Clear()
 		{

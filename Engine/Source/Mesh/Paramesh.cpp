@@ -15,6 +15,75 @@ namespace DEN
 	{
 
 	}
+	Paramesh::Paramesh()
+	{
+		_mesh = nullptr;
+	}
+	void Paramesh::Begin(InputLayout *ia)
+	{
+		_mesh = Manager::Get()->CreateMesh(ia);
+		_oPos = ia->GetOffset("POSITION");
+		_oCol = ia->GetOffset("COLOR");
+		_oNor = ia->GetOffset("NORMAL");
+	}
+	void Paramesh::End()
+	{
+		_mesh->Bake();
+	}
+	uint Paramesh::AddVertex(const Vector &pos)
+	{
+		*((Vector*)(&_mesh->CreateVertex()[_oPos])) = pos;
+		return _mesh->GetVertexCount();
+	}
+	uint Paramesh::AddTriangle(const Vector &v0, const Vector &v1, const Vector &v2)
+	{
+		uint s = _mesh->GetVertexCount();
+		*((Vector*)(&_mesh->CreateVertex()[_oPos])) = v0;
+		*((Vector*)(&_mesh->CreateVertex()[_oPos])) = v1;
+		*((Vector*)(&_mesh->CreateVertex()[_oPos])) = v2;
+		_mesh->AddTriangle(s, s + 1, s + 2);
+		return _mesh->GetVertexCount();
+	}
+	uint Paramesh::AddQuad(const Vector &v0, const Vector &v1, const Vector &v2, const Vector &v3)
+	{
+		uint s = _mesh->GetVertexCount();
+		*((Vector*)(&_mesh->CreateVertex()[_oPos])) = v0;
+		*((Vector*)(&_mesh->CreateVertex()[_oPos])) = v1;
+		*((Vector*)(&_mesh->CreateVertex()[_oPos])) = v2;
+		*((Vector*)(&_mesh->CreateVertex()[_oPos])) = v3;
+		if(_oNor)
+		{
+			Vector a, b, n;
+			a = v0 - v1;
+			b = v0 - v2;
+			n = a.Cross(b);
+			SetNormal(s, n);
+			SetNormal(s + 1, n);
+			SetNormal(s + 2, n);
+			SetNormal(s + 3, n);
+		}
+		_mesh->AddTriangle(s, s + 1, s + 2);
+		_mesh->AddTriangle(s + 2, s + 3, s);
+		return _mesh->GetVertexCount();
+	}
+	void Paramesh::SetPosition(uint num, const Vector &pos)
+	{
+		*((Vector*)(&_mesh->GetVertex(num)[_oPos])) = pos;
+	}
+	void Paramesh::SetColor(uint num, const Color &col)
+	{
+		*((Color*)(&_mesh->GetVertex(num)[_oCol])) = col;
+	}
+	void Paramesh::SetColor(const Color &col)
+	{
+		uint s = _mesh->GetVertexCount();
+		for(uint i = 0; i < s; ++i)
+			SetColor(i, col);
+	}
+	void Paramesh::SetNormal(uint num, const Vector &nor)
+	{
+		*((Vector*)(&_mesh->GetVertex(num)[_oNor])) = nor;
+	}
 	Mesh *Paramesh::Generate(Scene *scene, InputLayout *ia, int type)
 	{
 		Mesh *m = Manager::Get()->CreateMesh(ia);
@@ -120,6 +189,7 @@ namespace DEN
 				break;
 			}
 		}
+		_mesh = m;
 		return m;
 	}
 }

@@ -61,7 +61,7 @@ namespace DEN
 		//proj = proj.Transpose();
 		//wrld = wrld.Transpose();
 		//wvp = wvp.Transpose();
-		Color col = Color(0.5f, 1.0f, 1.0f);
+		Color col = Color(1.0f, 1.0f, 1.0f);
 		buf->Copy(pass->GetVS(), "MatrixBuffer", "world", &wrld);
 		buf->Copy(pass->GetVS(), "MatrixBuffer", "view", &view);
 		buf->Copy(pass->GetVS(), "MatrixBuffer", "proj", &proj);

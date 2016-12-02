@@ -2,10 +2,10 @@
 #include "Variable.h"
 namespace DEN
 {
-	Variable::Variable(void *v)
+	/*Variable::Variable(void *v)
 	{
 		val = v;
-	}
+	}*/
 	Variable::~Variable()
 	{
 

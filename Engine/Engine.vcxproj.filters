@@ -154,6 +154,9 @@
     <ClCompile Include="Source\Actor\Actor.cpp">
       <Filter>Source\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Math\Random.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h">
@@ -311,6 +314,9 @@
     </ClInclude>
     <ClInclude Include="Source\Actor\Actor.h">
       <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Random.h">
+      <Filter>Source\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

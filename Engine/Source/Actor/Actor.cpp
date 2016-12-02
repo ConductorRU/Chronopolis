@@ -3,9 +3,15 @@
 #include "Actor.h"
 namespace DEN
 {
-	template <typename T> void Actor::AddVariable(T *var)
+	Actor::Actor()
 	{
-		Var<T> *v = new Var<T>;
-		_vars.push_back(v);
+
+	}
+	Actor::~Actor()
+	{
+		for(auto &v: _vars)
+			delete v.second;
+		for(auto &v : _coms)
+			delete v.second;
 	}
 };
