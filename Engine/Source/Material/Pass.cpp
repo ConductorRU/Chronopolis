@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "Pass.h"
 namespace DEN
 {
@@ -29,7 +30,17 @@ namespace DEN
 	{
 		
 	}
-
+	void Pass::SetTexture(UCHAR slot, Texture *tex)
+	{
+		_textures[slot] = tex;
+	}
+	Texture *Pass::GetTexture(UCHAR slot)
+	{
+		auto f = _textures.find(slot);
+		if(f == _textures.end())
+			return nullptr;
+		return f->second;
+	}
 	void Pass::SetVS(VertexShader *shader)
 	{
 		_vs = shader;
@@ -190,5 +201,10 @@ namespace DEN
 	bool Pass::GetDepthEnable()
 	{
 		return _zenable;
+	}
+	void Pass::RenderTextures()
+	{
+		for(auto &p: _textures)
+			p.second->Render(p.first);
 	}
 }

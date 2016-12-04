@@ -38,6 +38,9 @@
     <Filter Include="Source\Actor">
       <UniqueIdentifier>{86f0a975-b24d-43ba-8e72-5c5004079296}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\GUI">
+      <UniqueIdentifier>{5b0dd9ce-566c-4227-817b-539c471208ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -156,6 +159,18 @@
     </ClCompile>
     <ClCompile Include="Source\Math\Random.cpp">
       <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\Font.cpp">
+      <Filter>Source\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Square.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Render\RenderTexture.cpp">
+      <Filter>Source\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Material\Texture.cpp">
+      <Filter>Source\Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,6 +332,21 @@
     </ClInclude>
     <ClInclude Include="Source\Math\Random.h">
       <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\Font.h">
+      <Filter>Source\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Square.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Render\RenderTexture.h">
+      <Filter>Source\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Material\Texture.h">
+      <Filter>Source\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\Class.h">
+      <Filter>Source\GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

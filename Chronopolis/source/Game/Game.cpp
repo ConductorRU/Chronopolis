@@ -87,11 +87,13 @@ void Game::Init()
 {
 	_engine->Create(1024, 768, false);
 	Manager *man = _engine->GetManager();
+	Font *font = man->LoadFont("Verdana", 22);
 	Scene *sc = _engine->CreateScene();
 	ia = man->CreateInputLayout();
 	ia->Add("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
 	ia->Add("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	ia->Add("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
+	ia->Add("UV", DXGI_FORMAT_R32G32_FLOAT);
 	Light *li = sc->CreateLight();
 	li->GetNode()->SetPosition(Vector(0.0f, 10.0f, -2.0f));
 	//sc->GetCamera()->SetPosition(Vector(0.0f, 1.0f, -2.0f));
@@ -102,6 +104,7 @@ void Game::Init()
 	sc->GetCamera()->Update();
 	sc->GetCamera()->CreateListener();
 	Pass *pass = man->CreatePass();
+	pass->SetTexture(0, font->GetTexture());
 	VertexShader *vs = man->CreateVS();
 	vs->CompileFile(L"vs.txt", "mainVS");
 	pass->SetVS(vs);

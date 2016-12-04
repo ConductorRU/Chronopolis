@@ -5,6 +5,14 @@
 namespace DEN
 {
 	class ColorRGB;
+	const Color Color::C_WHITE = Color(1.0f, 1.0f, 1.0f);
+	const Color Color::C_YELLOW = Color(1.0f, 1.0f, 0.0f);
+	const Color Color::C_RED = Color(1.0f, 0.0f, 0.0f);
+	const Color Color::C_GREEN = Color(0.0f, 1.0f, 0.0f);
+	const Color Color::C_BLUE = Color(0.0f, 0.0f, 1.0f);
+	const Color Color::C_BLACK = Color(0.0f, 0.0f, 0.0f);
+	const Color Color::C_GRAY = Color(0.5f, 0.5f, 0.5f);
+	const Color Color::C_LILAC = Color(0.84f, 0.5f, 1.0f);
 	ColorRGB Color::ToRGBA()
 	{
 		ColorRGB col;

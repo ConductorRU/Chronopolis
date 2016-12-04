@@ -5,6 +5,14 @@
 #include "ColorRGB.h"
 namespace DEN
 {
+	const ColorRGB ColorRGB::C_WHITE = ColorRGB(255, 255, 255, 255);
+	const ColorRGB ColorRGB::C_YELLOW = ColorRGB(255, 255, 0, 255);
+	const ColorRGB ColorRGB::C_RED = ColorRGB(255, 0, 0, 255);
+	const ColorRGB ColorRGB::C_GREEN = ColorRGB(0, 255, 0, 255);
+	const ColorRGB ColorRGB::C_BLUE = ColorRGB(0, 0, 255, 255);
+	const ColorRGB ColorRGB::C_BLACK = ColorRGB(0, 0, 0, 255);
+	const ColorRGB ColorRGB::C_GRAY = ColorRGB(127, 127, 127, 255);
+	const ColorRGB ColorRGB::C_LILAC = ColorRGB(200, 127, 255, 255);
 	ColorRGB::ColorRGB(const ColorHSV &col)
 	{
 		//float c = (1.0f - abs(2.0f*col.l - 1.0f))*col.s;//0..1

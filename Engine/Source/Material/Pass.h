@@ -1,6 +1,7 @@
 #pragma once
 namespace DEN
 {
+	class Texture;
 	typedef enum _D3DBLEND {
 		D3DBLEND_ZERO = 1,
 		D3DBLEND_ONE = 2,
@@ -45,6 +46,7 @@ namespace DEN
 		GeometryShader *_gs;
 		HullShader *_hs;
 		DomainShader *_ds;
+		map<UCHAR, Texture*> _textures;
 		bool _lightning;
 		bool _zwrite;
 		bool _zenable;
@@ -61,6 +63,8 @@ namespace DEN
 	public:
 		Pass();
 		~Pass();
+		void SetTexture(UCHAR slot, Texture *tex);
+		Texture *GetTexture(UCHAR slot);
 		void SetVS(VertexShader *shader);
 		VertexShader *GetVS();
 		void SetPS(PixelShader *shader);
@@ -95,5 +99,6 @@ namespace DEN
 		D3DCULL GetCull();
 		bool GetDepthWrite();
 		bool GetDepthEnable();
+		void RenderTextures();
 	};
 }

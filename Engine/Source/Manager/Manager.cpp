@@ -3,6 +3,7 @@
 #include "../Mesh/Paramesh.h"
 #include "../Material/Shader.h"
 #include "../Material/Pass.h"
+#include "../GUI/Font.h"
 #include "../Render/InputLayout.h"
 #include "Manager.h"
 namespace DEN
@@ -32,6 +33,8 @@ namespace DEN
 			delete hs;
 		for(DomainShader *ds : _ds)
 			delete ds;
+		for(Font *f : _fonts)
+			delete f;
 		_this = nullptr;
 	}
 	Mesh *Manager::CreateMesh(InputLayout *ia)
@@ -87,5 +90,12 @@ namespace DEN
 		DomainShader *sh = new DomainShader();
 		_ds.insert(sh);
 		return sh;
+	}
+	Font *Manager::LoadFont(const string &family, int height, bool isBold, bool isItalic)
+	{
+		Font *f = new Font();
+		f->LoadFont(family, height, isBold, isItalic);
+		_fonts.insert(f);
+		return f;
 	}
 }

@@ -25,6 +25,7 @@ namespace DEN
 		_oPos = ia->GetOffset("POSITION");
 		_oCol = ia->GetOffset("COLOR");
 		_oNor = ia->GetOffset("NORMAL");
+		_oUV = ia->GetOffset("UV");
 	}
 	void Paramesh::End()
 	{
@@ -62,6 +63,13 @@ namespace DEN
 			SetNormal(s + 2, n);
 			SetNormal(s + 3, n);
 		}
+		if(_oUV)
+		{
+			SetUV(s, Vector2(0.0f, 0.0f));
+			SetUV(s + 1, Vector2(1.0f, 0.0f));
+			SetUV(s + 2, Vector2(0.0f, 1.0f));
+			SetUV(s + 3, Vector2(1.0f, 1.0f));
+		}
 		_mesh->AddTriangle(s, s + 1, s + 2);
 		_mesh->AddTriangle(s + 2, s + 3, s);
 		return _mesh->GetVertexCount();
@@ -83,6 +91,10 @@ namespace DEN
 	void Paramesh::SetNormal(uint num, const Vector &nor)
 	{
 		*((Vector*)(&_mesh->GetVertex(num)[_oNor])) = nor;
+	}
+	void Paramesh::SetUV(uint num, const Vector2 &uv)
+	{
+		*((Vector2*)(&_mesh->GetVertex(num)[_oUV])) = uv;
 	}
 	Mesh *Paramesh::Generate(Scene *scene, InputLayout *ia, int type)
 	{

@@ -5,6 +5,7 @@
 #include "Material/Class.h"
 #include "Mesh/Mesh.h"
 #include "Mesh/Paramesh.h"
+#include "GUI/Class.h"
 #include "Scene/Class.h"
 #include "Render/Render.h"
 #include "Manager/Class.h"

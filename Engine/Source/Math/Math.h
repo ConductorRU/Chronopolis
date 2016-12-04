@@ -9,6 +9,7 @@
 #include "Matrix2D.h"
 #include "Matrix.h"
 #include "Rect.h"
+#include "Square.h"
 #include "Color.h"
 #include "ColorRGB.h"
 #include "ColorHSV.h"

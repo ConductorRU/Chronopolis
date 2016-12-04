@@ -503,7 +503,7 @@ namespace DEN
 			_deviceContext->DSSetShader(NULL, NULL, 0);
 		else
 			_deviceContext->DSSetShader((ID3D11DomainShader*)ds->GetBuffer(), NULL, 0);
-
+		pass->RenderTextures();
 	}
 	void Render::ExecuteMesh(RenderMesh *mesh)
 	{

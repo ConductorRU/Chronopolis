@@ -4,6 +4,8 @@ namespace DEN
 	class Color;
 	class ColorRGB;
 	class RenderMesh;
+	class RenderTexture;
+	class Texture;
 	class ConstantBuffer;
 	class Pass;
 	class Shader;
@@ -12,6 +14,7 @@ namespace DEN
 	class GeometryShader;
 	class HullShader;
 	class DomainShader;
+	class InputLayout;
 	class Viewport//: public D3DVIEWPORT9
 	{
 	private:
@@ -113,7 +116,9 @@ namespace DEN
 		friend GeometryShader;
 		friend HullShader;
 		friend DomainShader;
+		friend RenderTexture;
 		friend InputLayout;
+		friend Texture;
 	private:
 		static Render *_this;
 		DXGI_SWAP_CHAIN_DESC _swapDesc;

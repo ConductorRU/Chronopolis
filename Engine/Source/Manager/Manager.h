@@ -11,7 +11,7 @@ namespace DEN
 	class Pass;
 	class Paramesh;
 	class InputLayout;
-
+	class Font;
 	class Manager
 	{
 	private:
@@ -23,6 +23,7 @@ namespace DEN
 		set<DomainShader*> _ds;
 		set<Pass*> _passes;
 		set<Paramesh*> _paras;
+		set<Font*> _fonts;
 		set<InputLayout*> _inputs;
 		static Manager *_this;
 	public:
@@ -38,5 +39,6 @@ namespace DEN
 		GeometryShader *CreateGS();
 		HullShader *CreateHS();
 		DomainShader *CreateDS();
+		Font *LoadFont(const string &family, int height, bool isBold = false, bool isItalic = false);
 	};
 }

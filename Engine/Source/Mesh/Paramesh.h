@@ -17,6 +17,7 @@ namespace DEN
 		uint _oPos;
 		uint _oCol;
 		uint _oNor;
+		uint _oUV;
 	public:
 		Paramesh();
 		Mesh *GetMesh() {return _mesh;};
@@ -29,6 +30,7 @@ namespace DEN
 		void SetColor(uint num, const Color &col);
 		void SetColor(const Color &col);
 		void SetNormal(uint num, const Vector &pos);
+		void SetUV(uint num, const Vector2 &uv);
 		Mesh *Generate(Scene *scene, InputLayout *ia, int type = 0);
 	};
 }

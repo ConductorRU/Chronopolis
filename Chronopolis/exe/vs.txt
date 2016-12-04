@@ -1,3 +1,5 @@
+Texture2D shaderTexture;
+SamplerState SampleType;
 cbuffer MatrixBuffer
 {
 	matrix world;
@@ -17,6 +19,7 @@ struct VertexInputType
 	float4 position : POSITION;
 	float4 color : COLOR;
 	float3 normal : NORMAL;
+	float2 tex : UV;
 };
 struct PixelInputType
 {
@@ -24,6 +27,7 @@ struct PixelInputType
 	float4 color : COLOR;
 	float3 normal : TEXCOORD0;
 	float3 light : TEXCOORD1;
+	float2 tex : TEXCOORD2;
 };
 PixelInputType mainVS(VertexInputType input)
 {
@@ -34,13 +38,15 @@ PixelInputType mainVS(VertexInputType input)
 	output.position = mul(view, output.position);
 	output.position = mul(proj, output.position);
 	output.normal = mul(world, input.normal);
-
+	output.tex = input.tex;
 	output.color = input.color;
 	return output;
 }
 
 float4 mainPS(PixelInputType input): SV_TARGET
 {
+	float4 txCol = shaderTexture.Sample(SampleType, input.tex);
+	return txCol;
 	float3 L = normalize(input.light); 
 	float3 N = normalize(input.normal);
 	float NdotL = saturate(dot(N, L)); 

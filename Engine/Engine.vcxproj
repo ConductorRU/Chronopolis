@@ -161,11 +161,13 @@
     <ClCompile Include="Source\Core\File.cpp" />
     <ClCompile Include="Source\Core\Log.cpp" />
     <ClCompile Include="Source\Core\Variable.cpp" />
+    <ClCompile Include="Source\GUI\Font.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Manager\Manager.cpp" />
     <ClCompile Include="Source\Material\Material.cpp" />
     <ClCompile Include="Source\Material\Pass.cpp" />
     <ClCompile Include="Source\Material\Shader.cpp" />
+    <ClCompile Include="Source\Material\Texture.cpp" />
     <ClCompile Include="Source\Math\BBox.cpp" />
     <ClCompile Include="Source\Math\Color.cpp" />
     <ClCompile Include="Source\Math\ColorHSV.cpp" />
@@ -176,6 +178,7 @@
     <ClCompile Include="Source\Math\Node2D.cpp" />
     <ClCompile Include="Source\Math\Quaternion.cpp" />
     <ClCompile Include="Source\Math\Random.cpp" />
+    <ClCompile Include="Source\Math\Square.cpp" />
     <ClCompile Include="Source\Math\Vector.cpp" />
     <ClCompile Include="Source\Math\Vector2.cpp" />
     <ClCompile Include="Source\Mesh\Mesh.cpp" />
@@ -184,6 +187,7 @@
     <ClCompile Include="Source\Render\Direct3d11.cpp" />
     <ClCompile Include="Source\Render\InputLayout.cpp" />
     <ClCompile Include="Source\Render\RenderMesh.cpp" />
+    <ClCompile Include="Source\Render\RenderTexture.cpp" />
     <ClCompile Include="Source\Scene\Camera.cpp" />
     <ClCompile Include="Source\Scene\Light.cpp" />
     <ClCompile Include="Source\Scene\Scene.cpp" />
@@ -205,6 +209,8 @@
     <ClInclude Include="Source\Core\Log.h" />
     <ClInclude Include="Source\Core\Variable.h" />
     <ClInclude Include="Source\DC.h" />
+    <ClInclude Include="Source\GUI\Class.h" />
+    <ClInclude Include="Source\GUI\Font.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Manager\Class.h" />
     <ClInclude Include="Source\Manager\Manager.h" />
@@ -212,6 +218,7 @@
     <ClInclude Include="Source\Material\Material.h" />
     <ClInclude Include="Source\Material\Pass.h" />
     <ClInclude Include="Source\Material\Shader.h" />
+    <ClInclude Include="Source\Material\Texture.h" />
     <ClInclude Include="Source\Math\BBox.h" />
     <ClInclude Include="Source\Math\Color.h" />
     <ClInclude Include="Source\Math\ColorHSV.h" />
@@ -227,6 +234,7 @@
     <ClInclude Include="Source\Math\Quaternion.h" />
     <ClInclude Include="Source\Math\Random.h" />
     <ClInclude Include="Source\Math\Rect.h" />
+    <ClInclude Include="Source\Math\Square.h" />
     <ClInclude Include="Source\Math\Vector.h" />
     <ClInclude Include="Source\Math\Vector2.h" />
     <ClInclude Include="Source\Mesh\Mesh.h" />
@@ -237,6 +245,7 @@
     <ClInclude Include="Source\Render\InputLayout.h" />
     <ClInclude Include="Source\Render\Render.h" />
     <ClInclude Include="Source\Render\RenderMesh.h" />
+    <ClInclude Include="Source\Render\RenderTexture.h" />
     <ClInclude Include="Source\Scene\Camera.h" />
     <ClInclude Include="Source\Scene\Class.h" />
     <ClInclude Include="Source\Scene\Light.h" />
