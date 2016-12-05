@@ -22,6 +22,7 @@ namespace DEN
 		float GetMaxSize() const;
 		float GetRadius() const;
 		float GetLength() const;
+		Vector GetNormalizeLength() const;
 		Vector GetCenter() const;//середина BBox (-4 и 6 == 1)
 		Vector GetMid() const;//средний размер BBox (-4 и 6 == 5)
 		Vector GetSize() const;//размер BBox

@@ -17,10 +17,40 @@ public:
 class ActorBuild: public Actor
 {
 protected:
-
+	void Detalize(uint num, Pass *pass);
 public:
 	ActorBuild();
 	~ActorBuild();
+	void Generate(Pass *pass);
+};
+
+class ActorTerrain: public Actor
+{
+protected:
+	uint _rowCount;
+	vector<Vector> _pos;
+	void DiamondSquare();
+public:
+	ActorTerrain();
+	~ActorTerrain();
+	void Generate(Pass *pass);
+};
+
+class ActorGlass: public Actor
+{
+protected:
+public:
+	ActorGlass();
+	~ActorGlass();
+	void Generate(Pass *pass);
+};
+
+class ActorWindow: public Actor
+{
+protected:
+public:
+	ActorWindow();
+	~ActorWindow();
 	void Generate(Pass *pass);
 };
 

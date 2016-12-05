@@ -5,7 +5,7 @@ namespace DEN
 {
 	Actor::Actor()
 	{
-
+		_age = 0.0f;
 	}
 	Actor::~Actor()
 	{

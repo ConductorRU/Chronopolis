@@ -12,6 +12,7 @@ namespace DEN
 	class Mesh: public NodeMatrix
 	{
 	protected:
+		BBox _box;
 		RenderMesh *z_buffer;
 		Pass *_pass;
 		vector<void*> z_vertex;
@@ -19,12 +20,18 @@ namespace DEN
 		Color z_color;
 		char *GenerateVertex(Vector **pos, Vector **nor, Vector **uv, Color **col, int pOffset, int nOffset, int uvOffset, int colOffset);
 	public:
-		UINT GetVertexCount() { return (UINT)z_vertex.size(); };
+		size_t GetVertexCount() { return z_vertex.size(); };
+		size_t GetIndexCount() { return z_index.size(); };
+		UINT GetIndex(size_t num) { return z_index[num]; };
 		RenderMesh *GetVertexBuffer() { return z_buffer; };
 		Pass *GetPass() { return _pass; };
 		Color GetColor() { return z_color; };
 		Mesh(InputLayout *layout);
 		~Mesh();
+		BBox CalculateBBox(uint pOffset);
+		void GenerateNormals(uint pOffset, uint nOffset);
+		void GenerateUVSphere(uint pOffset, uint uvOffset);
+		void GenerateUVBox(uint pOffset, uint nOffset, uint uvOffset);
 		void SetMaterial(Pass *pass);
 		void SetColor(const Color &col);
 		void Generate(TYPE_MESH type, int pOffset = 0, int nOffset = -1, int uvOffset = -1, int colOffset = -1);

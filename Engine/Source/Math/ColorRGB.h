@@ -20,17 +20,10 @@ namespace DEN
 			uint color;
 			struct
 			{
-#ifdef DIRECTX11
 				UCHAR r;
 				UCHAR g;
 				UCHAR b;
 				UCHAR a;
-#else
-				UCHAR b;
-				UCHAR g;
-				UCHAR r;
-				UCHAR a;
-#endif
 			};
 		};
 		ColorRGB()

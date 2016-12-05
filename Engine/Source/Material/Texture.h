@@ -64,6 +64,7 @@ namespace DEN
 		void SetAddressU(TEXTURE_ADDRESS val) { _desc.AddressU = (D3D11_TEXTURE_ADDRESS_MODE)val; _update = true; };
 		void SetAddressV(TEXTURE_ADDRESS val) { _desc.AddressV = (D3D11_TEXTURE_ADDRESS_MODE)val; _update = true; };
 		void SetAddressW(TEXTURE_ADDRESS val) { _desc.AddressW = (D3D11_TEXTURE_ADDRESS_MODE)val; _update = true; };
+		void SetAddress(TEXTURE_ADDRESS val) { _desc.AddressU = _desc.AddressV = _desc.AddressW = (D3D11_TEXTURE_ADDRESS_MODE)val; _update = true; };
 		void SetBorderColor(Color val) { memcpy(_desc.BorderColor, &val, sizeof(float)*4); _update = true; };
 		void SetComparsion(COMPARISON_FUNC val) { _desc.ComparisonFunc = (D3D11_COMPARISON_FUNC)val; _update = true; };
 		void SetFilter(TEXTURE_FILTER val) { _desc.Filter = (D3D11_FILTER)val; _update = true; };

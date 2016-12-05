@@ -9,7 +9,7 @@
 #include <vector>
 #include <set>
 #include <typeinfo.h>
-
+#include <cmath>
 #include <memory>
 #include <typeinfo>
 #include <typeindex>

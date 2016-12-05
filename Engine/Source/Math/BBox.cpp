@@ -60,6 +60,14 @@ namespace DEN
 		return z_oMax.GetDistance(z_oMin);
 	}
 
+	Vector BBox::GetNormalizeLength() const
+	{
+		Vector v = z_oMax - z_oMin;
+		Vector n = v;
+		n.Normalize();
+		return n;
+	}
+
 	Vector BBox::GetCenter() const
 	{
 		return (z_oMax + z_oMin)*0.5f;

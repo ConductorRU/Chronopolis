@@ -7,6 +7,26 @@
 #include "../Manager/Manager.h"
 namespace DEN
 {
+	ParaLayout::ParaLayout()
+	{
+		z_size = 0;
+	}
+	ParaLayout::~ParaLayout()
+	{
+	}
+	int ParaLayout::GetOffset(const string &name)
+	{
+		for(auto &it : z_decl)
+			if(it.name == name)
+				return it.offset;
+		return -1;
+	}
+	void ParaLayout::Add(const string &name, uint size)
+	{
+		ParaField d = {name, z_size};
+		z_size += size;
+		z_decl.push_back(d);
+	}
 	Parament::Parament()
 	{
 
@@ -15,9 +35,40 @@ namespace DEN
 	{
 
 	}
+	void Paramesh::AddConnector(uint index, const string &name)
+	{
+		_connectors[name] = index;
+	}
+	void Paramesh::AddConnect(const string &c1, const string &c2)
+	{
+		_connects[c1] = c2;
+		_connects[c2] = c1;
+	}
 	Paramesh::Paramesh()
 	{
 		_mesh = nullptr;
+	}
+	void Paramesh::Connect(Paramesh *temp, const Matrix &m)
+	{
+		Mesh *tm = temp->_mesh;
+		size_t vCount = temp->_mesh->GetVertexCount();
+		size_t vmCount = _mesh->GetVertexCount();
+		size_t iCount = temp->_mesh->GetIndexCount();
+		uint iaSize = _mesh->GetVertexBuffer()->GetInputLayout()->GetSize();
+		for(size_t v = 0; v < vCount; ++v)
+		{
+			char *vert = _mesh->CreateVertex();
+			memcpy(vert, tm->GetVertex(v), iaSize);
+			*((Vector*)vert) = m.TransformCoord(*((Vector*)vert));
+		}
+		for(size_t v = 0; v < iCount; ++v)
+		{
+			_mesh->AddIndex(tm->GetIndex(v) + vmCount);
+		}
+	}
+	void Paramesh::AddTemplate(Paramesh *mesh)
+	{
+		_templates.push_back(mesh);
 	}
 	void Paramesh::Begin(InputLayout *ia)
 	{
@@ -29,7 +80,16 @@ namespace DEN
 	}
 	void Paramesh::End()
 	{
+		GenerateUV();
 		_mesh->Bake();
+	}
+	void Paramesh::GenerateNormals()
+	{
+		_mesh->GenerateNormals(_oPos, _oNor);
+	}
+	void Paramesh::GenerateUV()
+	{
+		_mesh->GenerateUVBox(_oPos, _oNor, _oUV);
 	}
 	uint Paramesh::AddVertex(const Vector &pos)
 	{
@@ -67,8 +127,8 @@ namespace DEN
 		{
 			SetUV(s, Vector2(0.0f, 0.0f));
 			SetUV(s + 1, Vector2(1.0f, 0.0f));
-			SetUV(s + 2, Vector2(0.0f, 1.0f));
-			SetUV(s + 3, Vector2(1.0f, 1.0f));
+			SetUV(s + 2, Vector2(1.0f, 1.0f));
+			SetUV(s + 3, Vector2(0.0f, 1.0f));
 		}
 		_mesh->AddTriangle(s, s + 1, s + 2);
 		_mesh->AddTriangle(s + 2, s + 3, s);

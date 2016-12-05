@@ -200,7 +200,7 @@ namespace DEN
 	{
 		if(!_texture)
 			return;
-		Lock();
+		Lock(TEXTURE_LOCK_WRITE_DISCARD);
 		if(z_data == NULL)
 		{
 			Unlock();

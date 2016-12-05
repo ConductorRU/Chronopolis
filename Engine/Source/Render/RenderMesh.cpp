@@ -8,6 +8,8 @@ namespace DEN
 	{
 		_vCount = 0;
 		_iCount = 0;
+		_vertexBuffer = nullptr;
+		_indexBuffer = nullptr;
 		_layout = lo;
 		_vertexDesc = {0};
 		_indexDesc = {0};

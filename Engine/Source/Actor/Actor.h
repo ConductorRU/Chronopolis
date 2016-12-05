@@ -7,6 +7,7 @@ namespace DEN
 	{
 	protected:
 		uint _seed;
+		double _age;//возраст, лет
 		map<string, Variable*> _vars;
 		map<string, Variable*> _coms;
 	public:
@@ -27,18 +28,25 @@ namespace DEN
 			auto v = _vars.find(name);
 			if(v != _vars.end())
 			{
-				if(v->second == var)
+				if(v->second->Get() == var)
 					return;
 				delete v->second;
 				_vars.erase(name);
 			}
-			Var<T> *v = new Var<T>(var);
-			_vars[name] = v;
+			Var<T> *vx = new Var<T>(var);
+			_vars[name] = vx;
 		}
 		void *GetVariable(const string &name)
 		{
 			auto v = _vars.find(name);
 			if(v != _vars.end())
+				return v->second->Get();
+			return nullptr;
+		}
+		void *GetComponent(const string &name)
+		{
+			auto v = _coms.find(name);
+			if(v != _coms.end())
 				return v->second->Get();
 			return nullptr;
 		}
