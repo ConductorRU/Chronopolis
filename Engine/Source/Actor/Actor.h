@@ -51,4 +51,12 @@ namespace DEN
 			return nullptr;
 		}
 	};
+	class ActorScript
+	{
+	public:
+		map<string, function<void*()>> func;
+		Actor *Create();
+
+	};
+
 }

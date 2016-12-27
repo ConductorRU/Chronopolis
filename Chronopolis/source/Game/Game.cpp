@@ -359,9 +359,9 @@ void Game::Init()
 	li->GetNode()->SetPosition(Vector(50.0f, 60.0f, -20.0f));
 	//sc->GetCamera()->SetPosition(Vector(0.0f, 1.0f, -2.0f));
 	sc->GetCamera()->SetPosition(Vector(0.0f, 5.0f, 0.0f));
-	sc->GetCamera()->SetRotation(Quaternion(AngleToRad(90.0f), Vector(1.0f, 0.0f, 0.0f)));
+	sc->GetCamera()->SetRotation(Quaternion(90.0_deg, Vector(1.0f, 0.0f, 0.0f)));
 	sc->GetCamera()->SetTargetEnable(true);
-	sc->GetCamera()->GetTarget()->Rotate(Quaternion(AngleToRad(-45.0f), Vector(0.0f, 1.0f, 0.0f))*Quaternion(AngleToRad(-45.0f), Vector(1.0f, 0.0f, 0.0f)));
+	sc->GetCamera()->GetTarget()->Rotate(Quaternion(-45.0_deg, Vector(0.0f, 1.0f, 0.0f))*Quaternion(-45.0_deg, Vector(1.0f, 0.0f, 0.0f)));
 	sc->GetCamera()->Update();
 	sc->GetCamera()->CreateListener();
 	Pass *pass = man->CreatePass();
@@ -397,9 +397,9 @@ void Game::Init()
 	((Node*)build->GetComponent("node"))->Update();
 	ActorRoad *road = new ActorRoad;;
 	road->Generate(pass);
-	Paramesh *pm = man->CreateParamesh();
-	gm = pm->Generate(sc, ia, 0);
-	gm->SetMaterial(pass);
+	//Paramesh *pm = man->CreateParamesh();
+	//gm = pm->Generate(sc, ia, 0);
+	//gm->SetMaterial(pass);
 
 	//ActorTerrain *ter = new ActorTerrain;
 	//ter->Generate(pass);
@@ -420,6 +420,49 @@ void Game::Init()
 		pos = Vector(v1, 0.0f, v3);
 		m1->GetNode()->SetPosition(pos);
 	}
+
+	ActorScript *aScr = new ActorScript;
+	aScr->func["onCreate"] = [pass]()
+	{
+		Actor *act = new Actor();
+		act->AddVariable("width", new float(250.0_mm));
+		act->AddVariable("height", new float(65.0_mm));
+		act->AddVariable("length", new float(120.0_mm));
+
+		float width = *(float*)act->GetVariable("width");
+		float length = *(float*)act->GetVariable("length");
+		float height = *(float*)act->GetVariable("height");
+		Paramesh *pm = new Paramesh();
+		pm->Begin(Game::Get()->GetInputLayout());
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
+		pm->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
+
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
+		pm->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
+
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
+		pm->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
+
+		pm->SetColor(ColorRGB(209, 119, 69).ToColor());
+		pm->End();
+		pm->GetMesh()->SetMaterial(pass);
+		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
+		//Mesh *gm = pm->Generate(Game::Get()->GetEngine()->GetScene(), Game::Get()->GetInputLayout(), 0);
+		act->AddComponent("mesh", pm);
+		act->AddComponent("node", pm->GetMesh()->GetNode());
+
+		return act;
+	};
+	for(int x = 0; x < 4; ++x)
+		for(int y = 0; y < 4; ++y)
+		{
+			Actor *act = aScr->Create();
+			Paramesh *pm = (Paramesh*)act->GetComponent("mesh");
+			Vector pos;
+			pos.x = (float)x;
+			pos.z = (float)y;
+			pm->GetMesh()->GetNode()->SetPosition(pos);
+		}
 }
 
 void Game::Update()
@@ -427,7 +470,7 @@ void Game::Update()
 	while(_engine->Update())
 	{
 		float s = _engine->GetTime().spf;
-		gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
+		//gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
 		_engine->Draw();
 	}
 }

@@ -14,4 +14,12 @@ namespace DEN
 		for(auto &v : _coms)
 			delete v.second;
 	}
+	Actor *ActorScript::Create()
+	{
+		auto it = func.find("onCreate");
+		if(it == func.end())
+			return nullptr;
+		void *v = it->second();
+		return (Actor*)v;
+	}
 };

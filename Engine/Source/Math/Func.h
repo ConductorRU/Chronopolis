@@ -41,6 +41,31 @@ inline float AngleToRad(float angle)
 	return (3.141592654f / 180.0f)*angle;
 }
 
+inline float operator "" _deg(long double angle)
+{
+	return (float)((3.141592654f / 180.0f)*angle);
+}
+
+inline float operator "" _km(long double km)
+{
+	return (float)(km*1000.0);
+}
+
+inline float operator "" _m(long double m)
+{
+	return (float)m;
+}
+
+inline float operator "" _sm(long double sm)
+{
+	return (float)(sm*0.01);
+}
+
+inline float operator "" _mm(long double mm)
+{
+	return (float)(mm*0.001);
+}
+
 inline int Rand(int min, int max)
 {
 	if(min == max)
