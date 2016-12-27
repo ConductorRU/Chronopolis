@@ -6,6 +6,7 @@ namespace DEN
 	Actor::Actor()
 	{
 		_age = 0.0f;
+		_script = nullptr;
 	}
 	Actor::~Actor()
 	{
@@ -19,7 +20,7 @@ namespace DEN
 		auto it = func.find("onCreate");
 		if(it == func.end())
 			return nullptr;
-		void *v = it->second();
+		void *v = it->second(nullptr);
 		return (Actor*)v;
 	}
 };

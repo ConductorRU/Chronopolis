@@ -79,3 +79,18 @@ inline float Rand(float min, float max)
 {
 	return (max - min)*((float)rand() / (float)(0x7fff)) + min;
 }
+
+inline float operator "" _r(long double v)
+{
+	return Rand(0.0f, (float)v);
+}
+
+inline int operator "" _r(unsigned long long v)
+{
+	return Rand(0, (int)v);
+}
+
+inline float operator "" _rn(long double v)
+{
+	return Rand((float)-v, (float)v);
+}

@@ -421,8 +421,15 @@ void Game::Init()
 		m1->GetNode()->SetPosition(pos);
 	}
 
-	ActorScript *aScr = new ActorScript;
-	aScr->func["onCreate"] = [pass]()
+	pass = man->CreatePass();
+	vs = man->CreateVS();
+	vs->CompileFile(L"vs.txt", "mainVS");
+	pass->SetVS(vs);
+	ps = man->CreatePS();
+	ps->CompileFile(L"vs.txt", "difPS");
+	pass->SetPS(ps);
+	ActorScript *aScrX = new ActorScript;
+	aScrX->func["onCreate"] = [pass](char **)
 	{
 		Actor *act = new Actor();
 		act->AddVariable("width", new float(250.0_mm));
@@ -444,6 +451,7 @@ void Game::Init()
 		pm->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
 
 		pm->SetColor(ColorRGB(209, 119, 69).ToColor());
+		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
 		pm->End();
 		pm->GetMesh()->SetMaterial(pass);
 		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
@@ -453,22 +461,62 @@ void Game::Init()
 
 		return act;
 	};
-	for(int x = 0; x < 4; ++x)
-		for(int y = 0; y < 4; ++y)
+	Actor *bricks = new Actor();
+	//bricks->SetScript(aScr);
+	bricks->AddVariable("width", new int(8));
+	bricks->AddVariable("length", new int(16));
+	bricks->AddVariable("count", new int(0));
+	ActorScript *aScr = new ActorScript;
+	aScr->func["onAdd"] = [pass](char **val)
+	{
+		Actor *bricks = (Actor*)val[0];
+		int width = *((int*)bricks->GetVariable("width"));
+		int length = *((int*)bricks->GetVariable("length"));
+		int *count = ((int*)bricks->GetVariable("count"));
+		Paramesh *pm = (Paramesh*)val[1];
+		float del = 1.0_mm;
+		float dist = 10.0_mm;
+		float angle = 2.0_deg;
+		Vector pos;
+		Quaternion rot;
+		float rt = 0.0f;
+		int x = *count%width;
+		int y = (*count/width)%length;
+		int h = (*count/width)/length;
+		if(h%2 == 1)
 		{
-			Actor *act = aScr->Create();
-			Paramesh *pm = (Paramesh*)act->GetComponent("mesh");
-			Vector pos;
-			pos.x = (float)x;
-			pos.z = (float)y;
-			pm->GetMesh()->GetNode()->SetPosition(pos);
+			rot = Quaternion(angle*0.5_rn + 90.0_deg, Vector::ONE_Y);
+			pos.z = (250.0_mm + del*1.0_rn + dist)*(float)(x + 1);
+			pos.y = 65.0_mm*(float)h;
+			pos.x = (120.0_mm + del*1.0_rn + dist)*(float)y;
 		}
+		else
+		{
+			rot = Quaternion(angle*0.5_rn, Vector::ONE_Y);
+			pos.x = (250.0_mm + del*1.0_rn + dist)*(float)x;
+			pos.y = 65.0_mm*(float)h;
+			pos.z = (120.0_mm + del*1.0_rn + dist)*(float)y;
+		}
+				
+		pm->GetMesh()->GetNode()->SetPosition(pos);
+		pm->GetMesh()->GetNode()->SetRotation(rot);
+		++*count;
+		bricks->SetVariable("count", count);
+		return nullptr;
+	};
+	_actors.push_back(bricks);
+	_scripts.push_back(aScrX);
+	_scripts.push_back(aScr);
 }
 
 void Game::Update()
 {
 	while(_engine->Update())
 	{
+		Actor *act = _scripts[0]->Create();
+		Paramesh *pm = (Paramesh*)act->GetComponent("mesh");
+		char *c[2] = {(char *)_actors[0], (char *)pm};
+		_scripts[1]->func["onAdd"](c);
 		float s = _engine->GetTime().spf;
 		//gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
 		_engine->Draw();

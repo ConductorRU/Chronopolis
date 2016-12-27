@@ -3,9 +3,11 @@
 namespace DEN
 {
 	class Variable;
+	class ActorScript;
 	class Actor
 	{
 	protected:
+		ActorScript *_script;
 		uint _seed;
 		double _age;//возраст, лет
 		map<string, Variable*> _vars;
@@ -50,11 +52,13 @@ namespace DEN
 				return v->second->Get();
 			return nullptr;
 		}
+		ActorScript *GetScript() {return _script;};
+		void SetScript(ActorScript *script) {_script = script;};
 	};
 	class ActorScript
 	{
 	public:
-		map<string, function<void*()>> func;
+		map<string, function<void*(char **)>> func;
 		Actor *Create();
 
 	};

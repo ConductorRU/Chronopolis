@@ -61,6 +61,8 @@ private:
 	Mesh *gm;
 	InputLayout *ia;
 	static Game *_this;
+	vector<Actor*> _actors;
+	vector<ActorScript*> _scripts;
 public:
 	InputLayout *GetInputLayout() { return ia; }
 	Engine *GetEngine() {return _engine;}
