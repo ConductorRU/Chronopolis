@@ -387,40 +387,6 @@ void Game::Init()
 	ps->CompileFile(L"vs.txt", "mainPS");
 	pass->SetPS(ps);
 
-
-	ActorBuild *build = new ActorBuild;
-	build->Generate(pass);
-
-	ActorWindow *wd = new ActorWindow;
-	wd->Generate(pass);
-	((Node*)build->GetComponent("node"))->SetPosition(Vector(0.0f, 0.0f, 0.0f));
-	((Node*)build->GetComponent("node"))->Update();
-	ActorRoad *road = new ActorRoad;;
-	road->Generate(pass);
-	//Paramesh *pm = man->CreateParamesh();
-	//gm = pm->Generate(sc, ia, 0);
-	//gm->SetMaterial(pass);
-
-	//ActorTerrain *ter = new ActorTerrain;
-	//ter->Generate(pass);
-
-	Random r1(2);
-	r1.Generate(100);
-	uint r2 = 0;
-	Vector pos;
-	for(uint i: r1.nums)
-	{
-		srand(i);
-		Paramesh *mp = man->CreateParamesh();
-		Mesh *m1 = mp->Generate(sc, ia, 0);
-		m1->SetMaterial(pass);
-		float v1 = Rand(-10.0f, 10.0f);
-		float v2 = Rand(-10.0f, 10.0f);
-		float v3 = Rand(-10.0f, 10.0f);
-		pos = Vector(v1, 0.0f, v3);
-		m1->GetNode()->SetPosition(pos);
-	}
-
 	pass = man->CreatePass();
 	vs = man->CreateVS();
 	vs->CompileFile(L"vs.txt", "mainVS");
@@ -474,9 +440,10 @@ void Game::Init()
 		int length = *((int*)bricks->GetVariable("length"));
 		int *count = ((int*)bricks->GetVariable("count"));
 		Paramesh *pm = (Paramesh*)val[1];
-		float del = 1.0_mm;
+		float acc = 0.1f;
+		float del = 1.0_mm*acc;
 		float dist = 10.0_mm;
-		float angle = 2.0_deg;
+		float angle = 2.0_deg*acc;
 		Vector pos;
 		Quaternion rot;
 		float rt = 0.0f;
@@ -486,7 +453,7 @@ void Game::Init()
 		if(h%2 == 1)
 		{
 			rot = Quaternion(angle*0.5_rn + 90.0_deg, Vector::ONE_Y);
-			pos.z = (250.0_mm + del*1.0_rn + dist)*(float)(x + 1);
+			pos.z = (250.0_mm + del*1.0_rn)*(float)(x + 1) + dist*(float)x;
 			pos.y = 65.0_mm*(float)h;
 			pos.x = (120.0_mm + del*1.0_rn + dist)*(float)y;
 		}
