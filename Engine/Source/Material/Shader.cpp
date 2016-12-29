@@ -55,7 +55,8 @@ namespace DEN
 			return false;
 		}
 		Reflect();
-		info->Release();
+		if(info)
+			info->Release();
 		return true;
 	}
 	bool Shader::CompileFromFile(const wstring &filename, const string &target, const string &entry, const D3D_SHADER_MACRO* pDefines, ID3DInclude* pInclude)
@@ -70,11 +71,13 @@ namespace DEN
 		HRESULT hr = D3DCompileFromFile(filename.c_str(), pDefines, pInclude, entry.c_str(), target.c_str(), compileFlags, 0, &_shader, &info);
 		if(hr != S_OK)
 		{
+			OutputDebugStringA((char*)info->GetBufferPointer());
 			info->Release();
 			return false;
 		}
 		Reflect();
-		info->Release();
+		if(info)
+			info->Release();
 		return true;
 	}
 	bool Shader::Reflect()

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "../Math/Color.h"
 #include "../Math/Rect.h"
+#include "../Material/Atlas.h"
 #include "../Render/Render.h"
 #include "../Input/Input.h"
 #include "../Scene/Scene.h"
@@ -54,11 +55,13 @@ namespace DEN
 		ZeroMemory(&_message, sizeof(_message));
 		_active = true;
 		_render = new Render;
+		_atlas = new Atlas();
 		_input = nullptr;
 		_scene = nullptr;
 	}
 	Engine::~Engine()
 	{
+		delete _atlas;
 		delete _render;
 		if(_manager)
 			delete _manager;

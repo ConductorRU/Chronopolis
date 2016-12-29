@@ -188,14 +188,14 @@ namespace DEN
 			KeyIndex = static_cast<KEY_TYPE>(wParam);
 			z_pressed[KeyIndex] = true;
 			GetKeyboardState(lpKeyState);
-			ToUnicode(wParam, HIWORD(lParam) & 0xFF, lpKeyState, buffer, 1, 0);
+			ToUnicode((uint)wParam, HIWORD(lParam) & 0xFF, lpKeyState, buffer, 1, 0);
 			Z_OnKey(KeyIndex, buffer[0], true);
 			break;
 		case WM_KEYUP:
 			KeyIndex = static_cast<KEY_TYPE>(wParam);
 			z_pressed[KeyIndex] = false;
 			GetKeyboardState(lpKeyState);
-			ToUnicode(wParam, HIWORD(lParam) & 0xFF, lpKeyState, buffer, 1, 0);
+			ToUnicode((uint)wParam, HIWORD(lParam) & 0xFF, lpKeyState, buffer, 1, 0);
 			Z_OnKey(KeyIndex, buffer[0], false);
 			break;
 		case WM_LBUTTONDOWN:

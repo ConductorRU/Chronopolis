@@ -20,8 +20,8 @@ namespace DEN
 		Color z_color;
 		char *GenerateVertex(Vector **pos, Vector **nor, Vector **uv, Color **col, int pOffset, int nOffset, int uvOffset, int colOffset);
 	public:
-		size_t GetVertexCount() { return z_vertex.size(); };
-		size_t GetIndexCount() { return z_index.size(); };
+		uint GetVertexCount() { return (uint)z_vertex.size(); };
+		uint GetIndexCount() { return (uint)z_index.size(); };
 		UINT GetIndex(size_t num) { return z_index[num]; };
 		RenderMesh *GetVertexBuffer() { return z_buffer; };
 		Pass *GetPass() { return _pass; };

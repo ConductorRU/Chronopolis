@@ -7,6 +7,76 @@ inline float lerp(float fMin, float fMax, float value)
 	return fMin + value*(fMax - fMin);
 }
 
+inline string TwinRemove(const string &line, char c = ' ')
+{
+	string res;
+	const size_t size = line.size();
+	if(size < (size_t)2)
+		return line;
+	res.push_back(line[0]);
+	for(size_t i = 1; i < size; ++i)
+		if(line[i] != c || line[i - 1] != c)
+			res.push_back(line[i]);
+	return res;
+}
+
+inline string trim(const string &line, const string &keys = " ")
+{
+	string res;
+	const size_t size = line.size();
+	const size_t cn = keys.size();
+	if(size == 0 || cn == 0)
+		return res;
+	size_t start = 0;
+	size_t end = 0;
+	for(size_t i = 0; i < size; ++i)
+	{
+		bool is = false;
+		for(size_t k = 0; k != cn; ++k)
+			if(line[i] == keys[cn])
+				is = true;
+		if(!is)
+		{
+			start = i;
+			break;
+		}
+	}
+	for(size_t i = size - 1; i >= 0; --i)
+	{
+		bool is = false;
+		for(size_t k = 0; k != cn; ++k)
+			if(line[i] == keys[cn])
+				is = true;
+		if(!is)
+		{
+			end = i;
+			break;
+		}
+	}
+	for(size_t i = start; i <= end; ++i)
+		res.push_back(line[i]);
+	return res;
+}
+
+inline string param(const string &line, int num = 1, char key = '`')
+{
+	string res;
+	int start = 1;
+	const size_t size = line.size();
+	for(size_t i = 0; i != size; ++i)
+	{
+		if(line[i] == key)
+		{
+			start++;
+			if(start > num)
+				return res;
+		}
+		else if(start == num)
+			res += line[i];
+	}
+	return res;
+}
+
 inline float clerp(float p_1, float p, float p1, float p2, float f)
 {
 	if(f <= 0.0f)

@@ -358,6 +358,8 @@ void Game::Init()
 	li->SetRange(1000.0f);
 	li->GetNode()->SetPosition(Vector(50.0f, 60.0f, -20.0f));
 	//sc->GetCamera()->SetPosition(Vector(0.0f, 1.0f, -2.0f));
+	Widget *el = sc->GetGUI()->CreateElement("el1");
+	el->SetStyle("x:0;y:0;width:100px;height:100px;background-color:#ff0000;");
 	sc->GetCamera()->SetPosition(Vector(0.0f, 5.0f, 0.0f));
 	sc->GetCamera()->SetRotation(Quaternion(90.0_deg, Vector(1.0f, 0.0f, 0.0f)));
 	sc->GetCamera()->SetTargetEnable(true);

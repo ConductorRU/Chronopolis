@@ -5,7 +5,7 @@ namespace DEN
 	{
 	public:
 		float r, g, b, a;
-		Color() {};
+		Color() {r = g = b = a = 1.0f;};
 		Color::Color(float red, float green, float blue, float alpha = 1.0f)
 		{
 			r = red;
@@ -28,6 +28,18 @@ namespace DEN
 		static const Color C_BLACK;
 		static const Color C_GRAY;
 		static const Color C_LILAC;
+		const bool operator== (const Color &col)
+		{
+			if(r == col.r && g == col.g && b == col.b && a == col.a)
+				return true;
+			return false;
+		}
+		const bool operator!= (const Color &col)
+		{
+			if(r != col.r || g != col.g || b != col.b || a != col.a)
+				return true;
+			return false;
+		}
 		static inline uint ToD3DColor(int red, int green, int blue, int alpha = 255)
 		{
 			return (uint)((((alpha) & 0xff) << 24) | (((blue) & 0xff) << 16) | (((green) & 0xff) << 8) | ((red) & 0xff));
@@ -74,5 +86,6 @@ namespace DEN
 			b += color.b*color.a;
 		}
 		void Lerp(const Color &op1, const Color &op2, float f);
+		bool FromHex(const string &hex);
 	};
 }
