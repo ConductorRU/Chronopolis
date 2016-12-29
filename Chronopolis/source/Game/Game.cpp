@@ -359,7 +359,65 @@ void Game::Init()
 	li->GetNode()->SetPosition(Vector(50.0f, 60.0f, -20.0f));
 	//sc->GetCamera()->SetPosition(Vector(0.0f, 1.0f, -2.0f));
 	Widget *el = sc->GetGUI()->CreateElement("el1");
-	el->SetStyle("x:0;y:0;width:100px;height:100px;background-color:#ff0000;");
+	el->SetStyle("x:0;y:20px;width:200px;height:200px;background-color:#aaa;");
+	Widget *el1 = el->CreateChild("el1");
+	el1->SetStyle("x:0;y:0;width:100px;height:200px;background-color:#faa;");
+	Widget *el2 = el->CreateChild("el2");
+	el2->SetStyle("x:100px;y:0;width:100px;height:200px;background-color:#aaf;");
+	Widget *el3 = el->CreateChild("el3", true);
+	el3->SetStyle("x:97px;y:0;width:6px;height:200px;background-color:#0003;");
+	el3->GetListener()->onOver = [](MouseEvent &eve)
+	{
+		Engine::Get()->SetCursor(CURSOR_HORIZONTAL);
+		return true;
+	};
+	el3->GetListener()->onOut = [](MouseEvent &eve)
+	{
+		Engine::Get()->SetCursor(CURSOR_ARROW);
+		return true;
+	};
+	el3->GetListener()->onMousePressed = [el3](MouseEvent &eve)
+	{
+		if(el3->Pick(Point2(eve.x, eve.y)))
+		{
+			el3->SetData("press", "1");
+			el3->SetData("x", to_string(eve.x));
+		}
+		return true;
+	};
+	el3->GetListener()->onMouseReleased = [el3](MouseEvent &eve)
+	{
+		el3->SetData("press", "");
+		return true;
+	};
+	el3->GetListener()->onMouseMove = [el3](MouseEvent &eve)
+	{
+		el3->GetListener()->OnMouseMove(eve);
+		//if(el3->Pick(Point2(eve.x, eve.y)))
+		{
+			if(el3->IsData("press"))
+			{
+				int x = atoi(el3->GetData("x").c_str());
+				int v = eve.x;
+				int w = el3->GetProperty().GetSquare().maxX;
+				int hw = w/2;
+				if(v < hw)
+					v = hw;
+				else if(v > el3->GetParent()->GetProperty().GetSquare().maxX - hw)
+					v = el3->GetParent()->GetProperty().GetSquare().maxX - hw;
+				el3->GetParent()->GetByName("el1")->SetStyle("width:" + to_string(v) + "px");
+				int width = el3->GetParent()->GetProperty().GetSquare().maxX - v;
+				el3->GetParent()->GetByName("el2")->SetStyle("x:" + to_string(v) + "px;width:" + to_string(width) + "px");
+				el3->SetStyle("x:" + to_string(v - hw) + "px");
+			}
+			return true;
+		}
+		return false;
+	};
+	Widget *text = sc->GetGUI()->CreateElement("el1");
+	text->SetStyle("x:200px;y:0;width:100px;height:50px;color:#000;display:text;");
+
+	text->GetProperty().SetInnerText("Text");
 	sc->GetCamera()->SetPosition(Vector(0.0f, 5.0f, 0.0f));
 	sc->GetCamera()->SetRotation(Quaternion(90.0_deg, Vector(1.0f, 0.0f, 0.0f)));
 	sc->GetCamera()->SetTargetEnable(true);

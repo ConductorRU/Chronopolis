@@ -29,16 +29,17 @@ namespace DEN
 		z_pass->SetDepthEnable(false);
 		z_pass->SetDepthFunc(D3DCMPFUNC::D3DCMP_NEVER);
 		z_pass->SetDepthWrite(false);
-		z_pass->SetAlphaBlend(true);
-		z_pass->SetAlphaBlend(D3DBLEND_SRCALPHA, D3DBLEND_INVSRCALPHA);
 		z_pass->SetAlphaFunc(D3DCMP_GREATEREQUAL);
 		z_pass->SetCull(D3DCULL_NONE);
+		z_pass->SetAlphaBlend(true);
+		z_pass->SetBlend(D3DBLEND_SRCALPHA, D3DBLEND_INVSRCALPHA);
+		z_pass->SetAlphaBlend(D3DBLEND_ONE, D3DBLEND_ZERO);
 		z_font = new Font();
 		z_font->LoadFont();
 		UINT x, y;
 		LPVOID v = z_font->GetRaw(x, y);
 		z_fontT = new Texture;
-		z_fontT->Create(x, y);
+		z_fontT->Create(x, y, RESOURCE_GPU);
 		z_fontT->SetRaw((char*)v, x, y);
 		z_pass->SetTexture(0, z_fontT);
 
@@ -55,6 +56,9 @@ namespace DEN
 		z_passB->SetAlphaBlend(D3DBLEND_ONE, D3DBLEND_ZERO);
 		z_blank = new Texture;
 		z_blank->Create(1, 1);
+		z_blank->Lock(TEXTURE_LOCK_WRITE_DISCARD);
+		z_blank->SetPixel(0u, 0u, ColorRGB::C_WHITE);
+		z_blank->Unlock();
 		z_passB->SetTexture(0, z_blank);
 		z_root = new Widget(this);
 		z_root->SetStyle("width: 100%; height:100%; background-color: #0000;");

@@ -32,5 +32,6 @@ PType mainVS(VType input)
 
 float4 mainPS(PType input): SV_TARGET
 {
-	return input.color;
+	float4 txCol = shaderTexture.Sample(SampleType, input.tex);
+	return input.color*txCol;
 }

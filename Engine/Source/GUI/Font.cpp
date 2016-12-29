@@ -91,7 +91,7 @@ namespace DEN
 				DeleteObject(hFont);
 				hFont = NULL;
 			}
-			hFont = CreateFontA(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, RUSSIAN_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, "Tahoma");
+			hFont = CreateFontA(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, RUSSIAN_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, "Arial");
 			//hFont = CreateFontIndirectA(&lf);
 			HDC hdc = GetDC(hwnd);// get HDC:
 			SelectObject(hdc, hFont);// select font:

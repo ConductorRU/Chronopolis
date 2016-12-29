@@ -34,12 +34,13 @@ namespace DEN
 	Widget::~Widget()
 	{
 		z_gui->FreeElement(this);
-		for(vector<Widget*>::const_iterator s = z_parent->z_childs.begin(); s != z_parent->z_childs.end(); ++s)
-			if(*s == this)
-			{
-				z_parent->z_childs.erase(s);
-				break;
-			}
+		if(z_parent)
+			for(vector<Widget*>::const_iterator s = z_parent->z_childs.begin(); s != z_parent->z_childs.end(); ++s)
+				if(*s == this)
+				{
+					z_parent->z_childs.erase(s);
+					break;
+				}
 		DeleteChilds();
 		if(z_listener)
 		{
@@ -48,6 +49,18 @@ namespace DEN
 		}
 		if(z_root)
 			delete z_root;
+	}
+	Widget *Widget::GetByName(const string &name)
+	{
+		for(Widget *el : z_childs)
+		{
+			if(el->GetName() == name)
+				return el;
+			Widget *w = el->GetByName(name);
+			if(w)
+				return w;
+		}
+		return nullptr;
 	}
 	void Widget::DeleteChilds()
 	{
@@ -109,6 +122,30 @@ namespace DEN
 				z_class.erase(s);
 				break;
 			}
+	}
+	void Widget::SetData(const string &name, const string &value)
+	{
+		if(value == "")
+		{
+			auto it = _data.find(name);
+			if(it != _data.end())
+				_data.erase(it);
+		}
+		else
+			_data[name] = value;
+	}
+	string Widget::GetData(const string &name)
+	{
+		auto it = _data.find(name);
+		if(it != _data.end())
+			return it->second;
+		return "";
+	}
+	bool Widget::IsData(const string &name)
+	{
+		if(_data.find(name) != _data.end())
+			return true;
+		return false;
 	}
 	void Widget::SetPass(Pass *pass)
 	{

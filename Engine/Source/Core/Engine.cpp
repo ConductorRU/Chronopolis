@@ -184,6 +184,7 @@ namespace DEN
 		case CURSOR_HORIZONTAL: _cursor = LoadCursor(NULL, IDC_SIZEWE); break;
 		case CURSOR_VERTICAL: _cursor = LoadCursor(NULL, IDC_SIZENS); break;
 		case CURSOR_SIZE: _cursor = LoadCursor(NULL, IDC_SIZEALL); break;
+		case CURSOR_POINTER: _cursor = LoadCursor(NULL, IDC_HAND); break;
 		}
 		::SetCursor(_cursor);
 	}

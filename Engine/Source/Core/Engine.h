@@ -20,6 +20,7 @@ namespace DEN
 		CURSOR_HORIZONTAL = 8,
 		CURSOR_VERTICAL = 9,
 		CURSOR_SIZE = 10,
+		CURSOR_POINTER = 11,
 	};
 	struct Time
 	{
