@@ -77,6 +77,8 @@ namespace DEN
 		bool z_enable;
 		map<string, map<string, string>> z_settings;
 		vector<string> z_settingOrder;
+		float PercentWidth(const string &val, Widget *parent = nullptr);
+		float PercentHeight(const string &val, Widget *parent = nullptr);
 		float GetPixel(const string &name, const string &val, Widget *parent = nullptr);
 		Color GetColor(const string &name, const string &val);
 		void OffUpdate() { z_update = false; }

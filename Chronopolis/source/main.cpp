@@ -1,4 +1,5 @@
 #include "DC.h"
+#include "Toolset/Class.h"
 #include "Game/Game.h"
 #pragma comment( lib, "Engine.lib" )
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPreviousInst, LPSTR lpCommandLine, int nCommandShow)

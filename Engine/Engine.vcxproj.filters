@@ -41,6 +41,9 @@
     <Filter Include="Source\GUI">
       <UniqueIdentifier>{5b0dd9ce-566c-4227-817b-539c471208ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\GUI\Widgets">
+      <UniqueIdentifier>{9a12ac50-f7a1-4fe3-bc8f-8de7e78ffc86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -186,6 +189,9 @@
     </ClCompile>
     <ClCompile Include="Source\Material\Atlas.cpp">
       <Filter>Source\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\Widgets\WidgetDivider.cpp">
+      <Filter>Source\GUI\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -377,6 +383,9 @@
     </ClInclude>
     <ClInclude Include="Source\Material\Atlas.h">
       <Filter>Source\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\Widgets\WidgetDivider.h">
+      <Filter>Source\GUI\Widgets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

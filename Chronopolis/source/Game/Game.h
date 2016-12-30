@@ -58,6 +58,7 @@ class Game
 {
 private:
 	Engine *_engine;
+	Toolset *_toolset;
 	Mesh *gm;
 	InputLayout *ia;
 	static Game *_this;
@@ -66,6 +67,7 @@ private:
 public:
 	InputLayout *GetInputLayout() { return ia; }
 	Engine *GetEngine() {return _engine;}
+	Toolset *GetToolset() {return _toolset;}
 	static Game *Get() { return _this; }
 	Game();
 	~Game();

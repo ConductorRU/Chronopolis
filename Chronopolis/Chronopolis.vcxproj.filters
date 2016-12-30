@@ -22,6 +22,9 @@
     <Filter Include="Source\Game">
       <UniqueIdentifier>{5cc16849-a5d6-4ecc-a9b5-6a6ee332df7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Toolset">
+      <UniqueIdentifier>{8d2f2936-e8ed-471f-bd7b-93ed83bc522c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -30,10 +33,25 @@
     <ClCompile Include="source\Game\Game.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
+    <ClCompile Include="source\Toolset\Toolset.cpp">
+      <Filter>Source\Toolset</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Toolset\MainWindow.cpp">
+      <Filter>Source\Toolset</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Game\Game.h">
       <Filter>Source\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Toolset\Toolset.h">
+      <Filter>Source\Toolset</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Toolset\Class.h">
+      <Filter>Source\Toolset</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Toolset\MainWindow.h">
+      <Filter>Source\Toolset</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

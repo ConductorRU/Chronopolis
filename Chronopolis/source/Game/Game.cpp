@@ -1,4 +1,5 @@
 #include "DC.h"
+#include "../Toolset/Class.h"
 #include "Game.h"
 Game *Game::_this = nullptr;
 
@@ -337,9 +338,12 @@ Game::Game()
 {
 	_engine = new Engine();
 	_this = this;
+	_toolset = nullptr;
 }
 Game::~Game()
 {
+	if(_toolset)
+		delete _toolset;
 	delete _engine;
 }
 
@@ -357,9 +361,14 @@ void Game::Init()
 	Light *li = sc->CreateLight();
 	li->SetRange(1000.0f);
 	li->GetNode()->SetPosition(Vector(50.0f, 60.0f, -20.0f));
+
+	_toolset = new Toolset(sc);
+	_toolset->InitWorkspace();
+
 	//sc->GetCamera()->SetPosition(Vector(0.0f, 1.0f, -2.0f));
 	Widget *el = sc->GetGUI()->CreateElement("el1");
 	el->SetStyle("x:0;y:20px;width:200px;height:200px;background-color:#aaa;");
+
 	Widget *el1 = el->CreateChild("el1");
 	el1->SetStyle("x:0;y:0;width:100px;height:200px;background-color:#faa;");
 	Widget *el2 = el->CreateChild("el2");
@@ -369,12 +378,13 @@ void Game::Init()
 	el3->GetListener()->onOver = [](MouseEvent &eve)
 	{
 		Engine::Get()->SetCursor(CURSOR_HORIZONTAL);
-		return true;
+		return false;
 	};
-	el3->GetListener()->onOut = [](MouseEvent &eve)
+	el3->GetListener()->onOut = [el3](MouseEvent &eve)
 	{
-		Engine::Get()->SetCursor(CURSOR_ARROW);
-		return true;
+		if(!el3->IsData("press"))
+			Engine::Get()->SetCursor(CURSOR_ARROW);
+		return false;
 	};
 	el3->GetListener()->onMousePressed = [el3](MouseEvent &eve)
 	{
@@ -382,34 +392,34 @@ void Game::Init()
 		{
 			el3->SetData("press", "1");
 			el3->SetData("x", to_string(eve.x));
+			return true;
 		}
-		return true;
+		return false;
 	};
 	el3->GetListener()->onMouseReleased = [el3](MouseEvent &eve)
 	{
+		if(el3->IsData("press"))
+			Engine::Get()->SetCursor(CURSOR_ARROW);
 		el3->SetData("press", "");
-		return true;
+		return false;
 	};
 	el3->GetListener()->onMouseMove = [el3](MouseEvent &eve)
 	{
 		el3->GetListener()->OnMouseMove(eve);
-		//if(el3->Pick(Point2(eve.x, eve.y)))
+		if(el3->IsData("press"))
 		{
-			if(el3->IsData("press"))
-			{
-				int x = atoi(el3->GetData("x").c_str());
-				int v = eve.x;
-				int w = el3->GetProperty().GetSquare().maxX;
-				int hw = w/2;
-				if(v < hw)
-					v = hw;
-				else if(v > el3->GetParent()->GetProperty().GetSquare().maxX - hw)
-					v = el3->GetParent()->GetProperty().GetSquare().maxX - hw;
-				el3->GetParent()->GetByName("el1")->SetStyle("width:" + to_string(v) + "px");
-				int width = el3->GetParent()->GetProperty().GetSquare().maxX - v;
-				el3->GetParent()->GetByName("el2")->SetStyle("x:" + to_string(v) + "px;width:" + to_string(width) + "px");
-				el3->SetStyle("x:" + to_string(v - hw) + "px");
-			}
+			int x = atoi(el3->GetData("x").c_str());
+			int v = eve.x;
+			int w = el3->GetProperty().GetSquare().maxX;
+			int hw = w/2;
+			if(v < hw)
+				v = hw;
+			else if(v > el3->GetParent()->GetProperty().GetSquare().maxX - hw)
+				v = el3->GetParent()->GetProperty().GetSquare().maxX - hw;
+			el3->GetParent()->GetByName("el1")->SetStyle("width:" + to_string(v) + "px");
+			int width = el3->GetParent()->GetProperty().GetSquare().maxX - v;
+			el3->GetParent()->GetByName("el2")->SetStyle("x:" + to_string(v) + "px;width:" + to_string(width) + "px");
+			el3->SetStyle("x:" + to_string(v - hw) + "px");
 			return true;
 		}
 		return false;

@@ -16,11 +16,36 @@ namespace DEN
 		z_isCaret = false;
 		uv = Square(0.0f, 0.0f, 1.0f, 1.0f);
 	}
+	float Style::PercentWidth(const string &val, Widget *parent)
+	{
+		float p = ((float)atof(val.c_str()))*0.01f;
+		if(parent)
+		{
+			Square b = parent->GetProperty().GetBorder();
+			Square pd = parent->GetProperty().GetPadding();
+			return (parent->GetProperty().GetSquare().maxX - b.maxX - b.minX - pd.maxX - pd.minX)*p;
+		}
+		return float(Render::Get()->GetWidth())*p;
+	}
+	float Style::PercentHeight(const string &val, Widget *parent)
+	{
+		float p = ((float)atof(val.c_str()))*0.01f;
+		if(parent)
+		{
+			Square b = parent->GetProperty().GetBorder();
+			Square pd = parent->GetProperty().GetPadding();
+			return (parent->GetProperty().GetSquare().maxY - b.maxY - b.minY - pd.maxY - pd.minY)*p;
+		}
+		return float(Render::Get()->GetHeight())*p;
+	}
 	float Style::GetPixel(const string &name, const string &val, Widget *parent)
 	{
 		size_t size = val.size();
 		string n;
 		string t;
+		char op = 0;
+		string n1;
+		string t1;
 		int step = 0;
 		for(size_t i = 0; i != size; ++i)
 		{
@@ -31,41 +56,60 @@ namespace DEN
 				n += val[i];
 				step = 1;
 			}
-			else if((val[i] >= 'A' && val[i] <= 'Z') || (val[i] >= 'a' && val[i] <= 'z') || val[i] == '%')
+			else if(step < 3 && ((val[i] >= 'A' && val[i] <= 'Z') || (val[i] >= 'a' && val[i] <= 'z') || val[i] == '%'))
 			{
 				step = 2;
 				t += val[i];
 			}
-			else
-				return 0.0f;
+			else if(step == 2 && (val[i] == '+' || val[i] == '-' || val[i] == '/' || val[i] == '*'))
+			{
+				step = 3;
+				op = val[i];
+			}
+			else if(step >= 3 && step < 5 && val[i] >= '0' && val[i] <= '9')
+			{
+				n1 += val[i];
+				step = 4;
+			}
+			else if((val[i] >= 'A' && val[i] <= 'Z') || (val[i] >= 'a' && val[i] <= 'z') || val[i] == '%')
+			{
+				step = 5;
+				t1 += val[i];
+			}
+			//else
+			//	return 0.0f;
 		}
+		float v1 = 0.0f;
+		float v2 = 0.0f;
 		if(t == "px")
-			return (float)atof(n.c_str());
+			v1 = (float)atof(n.c_str());
 		else if(t == "%")
 		{
-			float p = ((float)atof(n.c_str()))*0.01f;
-			if(name == "width")
-			{
-				if(parent)
-				{
-					Square b = parent->GetProperty().GetBorder();
-					Square pd = parent->GetProperty().GetPadding();
-					return (parent->GetProperty().GetSquare().maxX - b.maxX - b.minX - pd.maxX - pd.minX)*p;
-				}
-				return float(Render::Get()->GetWidth())*p;
-			}
-			else if(name == "height")
-			{
-				if(parent)
-				{
-					Square b = parent->GetProperty().GetBorder();
-					Square pd = parent->GetProperty().GetPadding();
-					return (parent->GetProperty().GetSquare().maxY - b.maxY - b.minY - pd.maxY - pd.minY)*p;
-				}
-				return float(Render::Get()->GetHeight())*p;
-			}
+			if(name == "width" || name == "x")
+				v1 = PercentWidth(n, parent);
+			else if(name == "height" || name == "y")
+				v1 = PercentHeight(n, parent);
 		}
-		return 0.0f;
+		if(t1 == "px")
+		{
+			v2 = (float)atof(n1.c_str());
+		}
+		else if(t1 == "%")
+		{
+			if(name == "width" || name == "x")
+				v2 = PercentWidth(n, parent);
+			else if(name == "height" || name == "y")
+				v2 = PercentHeight(n, parent);
+		}
+		if(op == '+')
+			return v1 + v2;
+		if(op == '-')
+			return v1 - v2;
+		if(op == '/')
+			return v1 / v2;
+		if(op == '*')
+			return v1 * v2;
+		return v1;
 	}
 	Color Style::GetColor(const string &name, const string &val)
 	{

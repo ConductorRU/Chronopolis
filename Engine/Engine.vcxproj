@@ -166,6 +166,7 @@
     <ClCompile Include="Source\GUI\GUIListener.cpp" />
     <ClCompile Include="Source\GUI\Style.cpp" />
     <ClCompile Include="Source\GUI\Widget.cpp" />
+    <ClCompile Include="Source\GUI\Widgets\WidgetDivider.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Manager\Manager.cpp" />
     <ClCompile Include="Source\Material\Atlas.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="Source\GUI\GUIListener.h" />
     <ClInclude Include="Source\GUI\Style.h" />
     <ClInclude Include="Source\GUI\Widget.h" />
+    <ClInclude Include="Source\GUI\Widgets\WidgetDivider.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Manager\Class.h" />
     <ClInclude Include="Source\Manager\Manager.h" />
