@@ -13,6 +13,56 @@ namespace DEN
 	const Color Color::C_BLACK = Color(0.0f, 0.0f, 0.0f);
 	const Color Color::C_GRAY = Color(0.5f, 0.5f, 0.5f);
 	const Color Color::C_LILAC = Color(0.84f, 0.5f, 1.0f);
+	bool Color::FromHex(const string &hex)
+	{
+		size_t s = hex.size();
+		if((s != 4 && s != 5 && s != 7 && s != 8) || hex[0] != '#')
+			return false;
+		string st = "0x";
+		for(size_t i = 1; i < s; ++i)
+			if((hex[i] >= '0' && hex[i] <= '9') || (hex[i] >= 'A' && hex[i] <= 'F') || (hex[i] >= 'a' && hex[i] <= 'f'))
+			{
+				if(hex[i] >= 'A' && hex[i] <= 'F')
+					st += hex[i] + ('a' - 'A');
+				else
+					st += hex[i];
+			}
+			else
+				return false;
+		if(s == 9)
+		{
+			UINT x = stoul(st, nullptr, 16);
+			a = float(x % 256) / 255.0f; x /= 256;
+			b = float(x % 256) / 255.0f; x /= 256;
+			g = float(x % 256) / 255.0f; x /= 256;
+			r = float(x % 256) / 255.0f; x /= 256;
+		}
+		else if(s == 7)
+		{
+			UINT x = stoul(st, nullptr, 16);
+			a = 1.0f;
+			b = float(x % 256)/255.0f; x /= 256;
+			g = float(x % 256)/255.0f; x /= 256;
+			r = float(x % 256)/255.0f; x /= 256;
+		}
+		else if(s == 5)
+		{
+			UINT x = stoul(st, nullptr, 16);
+			a = float(x % 16) / 15.0f; x /= 16;
+			b = float(x % 16) / 15.0f; x /= 16;
+			g = float(x % 16) / 15.0f; x /= 16;
+			r = float(x % 16) / 15.0f; x /= 16;
+		}
+		else
+		{
+			UINT x = stoul(st, nullptr, 16);
+			a = 1.0f;
+			b = float(x % 16)/15.0f; x /= 16;
+			g = float(x % 16)/15.0f; x /= 16;
+			r = float(x % 16)/15.0f; x /= 16;
+		}
+		return true;
+	}
 	ColorRGB Color::ToRGBA()
 	{
 		ColorRGB col;

@@ -6,6 +6,7 @@ namespace DEN
 	Actor::Actor()
 	{
 		_age = 0.0f;
+		_script = nullptr;
 	}
 	Actor::~Actor()
 	{
@@ -13,5 +14,13 @@ namespace DEN
 			delete v.second;
 		for(auto &v : _coms)
 			delete v.second;
+	}
+	Actor *ActorScript::Create()
+	{
+		auto it = func.find("onCreate");
+		if(it == func.end())
+			return nullptr;
+		void *v = it->second(nullptr);
+		return (Actor*)v;
 	}
 };

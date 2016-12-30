@@ -84,7 +84,7 @@ namespace DEN
 		}
 		iCount = z_vertex.size();
 		for(size_t i = 0; i < iCount; ++i)
-			((Vector*)(&(GetVertex(i)[nOffset])))->Normalize();
+			((Vector*)(&(GetVertex((uint)i)[nOffset])))->Normalize();
 	}
 	void Mesh::GenerateUVBox(uint pOffset, uint nOffset, uint uvOffset)
 	{

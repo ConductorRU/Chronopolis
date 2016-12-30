@@ -2,6 +2,11 @@
 namespace DEN
 {
 	class Texture;
+	class VertexShader;
+	class PixelShader;
+	class GeometryShader;
+	class HullShader;
+	class DomainShader;
 	typedef enum _D3DBLEND {
 		D3DBLEND_ZERO = 1,
 		D3DBLEND_ONE = 2,

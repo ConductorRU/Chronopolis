@@ -1,4 +1,5 @@
 #include "DC.h"
+#include "../Toolset/Class.h"
 #include "Game.h"
 Game *Game::_this = nullptr;
 
@@ -337,9 +338,12 @@ Game::Game()
 {
 	_engine = new Engine();
 	_this = this;
+	_toolset = nullptr;
 }
 Game::~Game()
 {
+	if(_toolset)
+		delete _toolset;
 	delete _engine;
 }
 
@@ -357,11 +361,77 @@ void Game::Init()
 	Light *li = sc->CreateLight();
 	li->SetRange(1000.0f);
 	li->GetNode()->SetPosition(Vector(50.0f, 60.0f, -20.0f));
+
+	_toolset = new Toolset(sc);
+	_toolset->InitWorkspace();
+
 	//sc->GetCamera()->SetPosition(Vector(0.0f, 1.0f, -2.0f));
+	Widget *el = sc->GetGUI()->CreateElement("el1");
+	el->SetStyle("x:0;y:20px;width:200px;height:200px;background-color:#aaa;");
+
+	Widget *el1 = el->CreateChild("el1");
+	el1->SetStyle("x:0;y:0;width:100px;height:200px;background-color:#faa;");
+	Widget *el2 = el->CreateChild("el2");
+	el2->SetStyle("x:100px;y:0;width:100px;height:200px;background-color:#aaf;");
+	Widget *el3 = el->CreateChild("el3", true);
+	el3->SetStyle("x:97px;y:0;width:6px;height:200px;background-color:#0003;");
+	el3->GetListener()->onOver = [](MouseEvent &eve)
+	{
+		Engine::Get()->SetCursor(CURSOR_HORIZONTAL);
+		return false;
+	};
+	el3->GetListener()->onOut = [el3](MouseEvent &eve)
+	{
+		if(!el3->IsData("press"))
+			Engine::Get()->SetCursor(CURSOR_ARROW);
+		return false;
+	};
+	el3->GetListener()->onMousePressed = [el3](MouseEvent &eve)
+	{
+		if(el3->Pick(Point2(eve.x, eve.y)))
+		{
+			el3->SetData("press", "1");
+			el3->SetData("x", to_string(eve.x));
+			return true;
+		}
+		return false;
+	};
+	el3->GetListener()->onMouseReleased = [el3](MouseEvent &eve)
+	{
+		if(el3->IsData("press"))
+			Engine::Get()->SetCursor(CURSOR_ARROW);
+		el3->SetData("press", "");
+		return false;
+	};
+	el3->GetListener()->onMouseMove = [el3](MouseEvent &eve)
+	{
+		el3->GetListener()->OnMouseMove(eve);
+		if(el3->IsData("press"))
+		{
+			int x = atoi(el3->GetData("x").c_str());
+			int v = eve.x;
+			int w = el3->GetProperty().GetSquare().maxX;
+			int hw = w/2;
+			if(v < hw)
+				v = hw;
+			else if(v > el3->GetParent()->GetProperty().GetSquare().maxX - hw)
+				v = el3->GetParent()->GetProperty().GetSquare().maxX - hw;
+			el3->GetParent()->GetByName("el1")->SetStyle("width:" + to_string(v) + "px");
+			int width = el3->GetParent()->GetProperty().GetSquare().maxX - v;
+			el3->GetParent()->GetByName("el2")->SetStyle("x:" + to_string(v) + "px;width:" + to_string(width) + "px");
+			el3->SetStyle("x:" + to_string(v - hw) + "px");
+			return true;
+		}
+		return false;
+	};
+	Widget *text = sc->GetGUI()->CreateElement("el1");
+	text->SetStyle("x:200px;y:0;width:100px;height:50px;color:#000;display:text;");
+
+	text->GetProperty().SetInnerText("Text");
 	sc->GetCamera()->SetPosition(Vector(0.0f, 5.0f, 0.0f));
-	sc->GetCamera()->SetRotation(Quaternion(AngleToRad(90.0f), Vector(1.0f, 0.0f, 0.0f)));
+	sc->GetCamera()->SetRotation(Quaternion(90.0_deg, Vector(1.0f, 0.0f, 0.0f)));
 	sc->GetCamera()->SetTargetEnable(true);
-	sc->GetCamera()->GetTarget()->Rotate(Quaternion(AngleToRad(-45.0f), Vector(0.0f, 1.0f, 0.0f))*Quaternion(AngleToRad(-45.0f), Vector(1.0f, 0.0f, 0.0f)));
+	sc->GetCamera()->GetTarget()->Rotate(Quaternion(-45.0_deg, Vector(0.0f, 1.0f, 0.0f))*Quaternion(-45.0_deg, Vector(1.0f, 0.0f, 0.0f)));
 	sc->GetCamera()->Update();
 	sc->GetCamera()->CreateListener();
 	Pass *pass = man->CreatePass();
@@ -387,47 +457,105 @@ void Game::Init()
 	ps->CompileFile(L"vs.txt", "mainPS");
 	pass->SetPS(ps);
 
-
-	ActorBuild *build = new ActorBuild;
-	build->Generate(pass);
-
-	ActorWindow *wd = new ActorWindow;
-	wd->Generate(pass);
-	((Node*)build->GetComponent("node"))->SetPosition(Vector(0.0f, 0.0f, 0.0f));
-	((Node*)build->GetComponent("node"))->Update();
-	ActorRoad *road = new ActorRoad;;
-	road->Generate(pass);
-	Paramesh *pm = man->CreateParamesh();
-	gm = pm->Generate(sc, ia, 0);
-	gm->SetMaterial(pass);
-
-	//ActorTerrain *ter = new ActorTerrain;
-	//ter->Generate(pass);
-
-	Random r1(2);
-	r1.Generate(100);
-	uint r2 = 0;
-	Vector pos;
-	for(uint i: r1.nums)
+	pass = man->CreatePass();
+	vs = man->CreateVS();
+	vs->CompileFile(L"vs.txt", "mainVS");
+	pass->SetVS(vs);
+	ps = man->CreatePS();
+	ps->CompileFile(L"vs.txt", "difPS");
+	pass->SetPS(ps);
+	ActorScript *aScrX = new ActorScript;
+	aScrX->func["onCreate"] = [pass](char **)
 	{
-		srand(i);
-		Paramesh *mp = man->CreateParamesh();
-		Mesh *m1 = mp->Generate(sc, ia, 0);
-		m1->SetMaterial(pass);
-		float v1 = Rand(-10.0f, 10.0f);
-		float v2 = Rand(-10.0f, 10.0f);
-		float v3 = Rand(-10.0f, 10.0f);
-		pos = Vector(v1, 0.0f, v3);
-		m1->GetNode()->SetPosition(pos);
-	}
+		Actor *act = new Actor();
+		act->AddVariable("width", new float(250.0_mm));
+		act->AddVariable("height", new float(65.0_mm));
+		act->AddVariable("length", new float(120.0_mm));
+
+		float width = *(float*)act->GetVariable("width");
+		float length = *(float*)act->GetVariable("length");
+		float height = *(float*)act->GetVariable("height");
+		Paramesh *pm = new Paramesh();
+		pm->Begin(Game::Get()->GetInputLayout());
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
+		pm->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
+
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
+		pm->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
+
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
+		pm->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
+
+		pm->SetColor(ColorRGB(209, 119, 69).ToColor());
+		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
+		pm->End();
+		pm->GetMesh()->SetMaterial(pass);
+		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
+		//Mesh *gm = pm->Generate(Game::Get()->GetEngine()->GetScene(), Game::Get()->GetInputLayout(), 0);
+		act->AddComponent("mesh", pm);
+		act->AddComponent("node", pm->GetMesh()->GetNode());
+
+		return act;
+	};
+	Actor *bricks = new Actor();
+	//bricks->SetScript(aScr);
+	bricks->AddVariable("width", new int(8));
+	bricks->AddVariable("length", new int(16));
+	bricks->AddVariable("count", new int(0));
+	ActorScript *aScr = new ActorScript;
+	aScr->func["onAdd"] = [pass](char **val)
+	{
+		Actor *bricks = (Actor*)val[0];
+		int width = *((int*)bricks->GetVariable("width"));
+		int length = *((int*)bricks->GetVariable("length"));
+		int *count = ((int*)bricks->GetVariable("count"));
+		Paramesh *pm = (Paramesh*)val[1];
+		float acc = 0.1f;
+		float del = 1.0_mm*acc;
+		float dist = 10.0_mm;
+		float angle = 2.0_deg*acc;
+		Vector pos;
+		Quaternion rot;
+		float rt = 0.0f;
+		int x = *count%width;
+		int y = (*count/width)%length;
+		int h = (*count/width)/length;
+		if(h%2 == 1)
+		{
+			rot = Quaternion(angle*0.5_rn + 90.0_deg, Vector::ONE_Y);
+			pos.z = (250.0_mm + del*1.0_rn)*(float)(x + 1) + dist*(float)x;
+			pos.y = 65.0_mm*(float)h;
+			pos.x = (120.0_mm + del*1.0_rn + dist)*(float)y;
+		}
+		else
+		{
+			rot = Quaternion(angle*0.5_rn, Vector::ONE_Y);
+			pos.x = (250.0_mm + del*1.0_rn + dist)*(float)x;
+			pos.y = 65.0_mm*(float)h;
+			pos.z = (120.0_mm + del*1.0_rn + dist)*(float)y;
+		}
+				
+		pm->GetMesh()->GetNode()->SetPosition(pos);
+		pm->GetMesh()->GetNode()->SetRotation(rot);
+		++*count;
+		bricks->SetVariable("count", count);
+		return nullptr;
+	};
+	_actors.push_back(bricks);
+	_scripts.push_back(aScrX);
+	_scripts.push_back(aScr);
 }
 
 void Game::Update()
 {
 	while(_engine->Update())
 	{
+		Actor *act = _scripts[0]->Create();
+		Paramesh *pm = (Paramesh*)act->GetComponent("mesh");
+		char *c[2] = {(char *)_actors[0], (char *)pm};
+		_scripts[1]->func["onAdd"](c);
 		float s = _engine->GetTime().spf;
-		gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
+		//gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
 		_engine->Draw();
 	}
 }

@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "../Math/Rect.h"
-#include "../Math/Square.h"
 #include "../Material/Texture.h"
 #include "Font.h"
 namespace DEN
@@ -93,7 +91,7 @@ namespace DEN
 				DeleteObject(hFont);
 				hFont = NULL;
 			}
-			hFont = CreateFontA(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, RUSSIAN_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, "Tahoma");
+			hFont = CreateFontA(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, RUSSIAN_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, "Arial");
 			//hFont = CreateFontIndirectA(&lf);
 			HDC hdc = GetDC(hwnd);// get HDC:
 			SelectObject(hdc, hFont);// select font:
@@ -224,7 +222,7 @@ namespace DEN
 			OpenFileName.lpstrTitle = "Save as BMP Font";
 			OpenFileName.Flags = OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST;
 			OpenFileName.lpstrDefExt = "bmp";
-			strcpy(OpenFileName.lpstrFile, lf.lfFaceName);
+			strcpy_s(OpenFileName.lpstrFile, 32, lf.lfFaceName);///strcpy
 			if(!GetSaveFileNameA(&OpenFileName))
 				return;
 			UINT width, height;

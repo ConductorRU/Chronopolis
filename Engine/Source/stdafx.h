@@ -17,6 +17,7 @@
 #include <functional>
 #include <assert.h>
 #include <crtdbg.h>
+#include <thread>
 
 #ifdef _DEBUG
 #include <crtdbg.h>

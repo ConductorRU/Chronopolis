@@ -11,6 +11,7 @@ namespace DEN
 	class InputLayout;
 	class Pass;
 	class RenderMesh;
+	class GUI;
 	class Scene
 	{
 	private:
@@ -19,7 +20,9 @@ namespace DEN
 		set<Light*> _lights;
 		Color _background;
 		Camera *_camera;
+		GUI *_gui;
 	public:
+		GUI *GetGUI() { return _gui; }
 		Camera *GetCamera() { return _camera; }
 		Scene();
 		~Scene();
