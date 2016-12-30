@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "../Math/Color.h"
 #include "../Math/Rect.h"
-#include "../Material/Atlas.h"
 #include "../Render/Render.h"
 #include "../Input/Input.h"
 #include "../Scene/Scene.h"
@@ -55,13 +54,11 @@ namespace DEN
 		ZeroMemory(&_message, sizeof(_message));
 		_active = true;
 		_render = new Render;
-		_atlas = new Atlas();
 		_input = nullptr;
 		_scene = nullptr;
 	}
 	Engine::~Engine()
 	{
-		delete _atlas;
 		delete _render;
 		if(_manager)
 			delete _manager;
@@ -184,7 +181,6 @@ namespace DEN
 		case CURSOR_HORIZONTAL: _cursor = LoadCursor(NULL, IDC_SIZEWE); break;
 		case CURSOR_VERTICAL: _cursor = LoadCursor(NULL, IDC_SIZENS); break;
 		case CURSOR_SIZE: _cursor = LoadCursor(NULL, IDC_SIZEALL); break;
-		case CURSOR_POINTER: _cursor = LoadCursor(NULL, IDC_HAND); break;
 		}
 		::SetCursor(_cursor);
 	}

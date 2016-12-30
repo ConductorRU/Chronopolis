@@ -1,12 +1,10 @@
 #pragma once
-#include "../Math/Rect.h"
 namespace DEN
 {
 	class Rect;
 	class Scene;
 	class Input;
 	class Manager;
-	class Atlas;
 	enum CURSOR_TYPE
 	{
 		CURSOR_NONE = 0,
@@ -20,7 +18,6 @@ namespace DEN
 		CURSOR_HORIZONTAL = 8,
 		CURSOR_VERTICAL = 9,
 		CURSOR_SIZE = 10,
-		CURSOR_POINTER = 11,
 	};
 	struct Time
 	{
@@ -58,7 +55,6 @@ namespace DEN
 		void UpdateWindowState();
 		Render *_render;
 		Input *_input;
-		Atlas *_atlas;
 		Time _time;
 		Scene *_scene;
 		Manager *_manager;
@@ -67,7 +63,6 @@ namespace DEN
 		static Engine *Get() { return _this; };
 		Render *GetRender() { return _render; };
 		Scene *GetScene() { return _scene; };
-		Atlas *GetAtlas() { return _atlas; };
 		Manager *GetManager() { return _manager; };
 		const Time &GetTime() { return _time; };
 		Engine();

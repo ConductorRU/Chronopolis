@@ -172,21 +172,6 @@
     <ClCompile Include="Source\Material\Texture.cpp">
       <Filter>Source\Material</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GUI\GUI.cpp">
-      <Filter>Source\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Widget.cpp">
-      <Filter>Source\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\GUIListener.cpp">
-      <Filter>Source\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GUI\Style.cpp">
-      <Filter>Source\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Material\Atlas.cpp">
-      <Filter>Source\Material</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h">
@@ -362,21 +347,6 @@
     </ClInclude>
     <ClInclude Include="Source\GUI\Class.h">
       <Filter>Source\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GUI\GUI.h">
-      <Filter>Source\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GUI\Widget.h">
-      <Filter>Source\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GUI\GUIListener.h">
-      <Filter>Source\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GUI\Style.h">
-      <Filter>Source\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Material\Atlas.h">
-      <Filter>Source\Material</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

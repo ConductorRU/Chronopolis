@@ -58,12 +58,12 @@ namespace DEN
 		for(size_t v = 0; v < vCount; ++v)
 		{
 			char *vert = _mesh->CreateVertex();
-			memcpy(vert, tm->GetVertex((uint)v), iaSize);
+			memcpy(vert, tm->GetVertex(v), iaSize);
 			*((Vector*)vert) = m.TransformCoord(*((Vector*)vert));
 		}
 		for(size_t v = 0; v < iCount; ++v)
 		{
-			_mesh->AddIndex(tm->GetIndex(v) + (uint)vmCount);
+			_mesh->AddIndex(tm->GetIndex(v) + vmCount);
 		}
 	}
 	void Paramesh::AddTemplate(Paramesh *mesh)

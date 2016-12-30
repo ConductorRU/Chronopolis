@@ -54,12 +54,6 @@ namespace DEN
 		{
 			return (x == point.x) && (y == point.y);
 		}
-		inline bool operator!= (const Point2 &s) const
-		{
-			if(x != s.x || y != s.y)
-				return true;
-			return false;
-		}
 		inline bool operator < (const Point2& point) const
 		{
 			if(x < point.x) return true;

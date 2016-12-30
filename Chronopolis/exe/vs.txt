@@ -51,11 +51,3 @@ float4 mainPS(PixelInputType input): SV_TARGET
 	float NdotL = saturate(dot(N, L)); 
 	return float4(input.color.xyz*NdotL*matCol.xyz, input.color.a)*txCol;
 }
-
-float4 difPS(PixelInputType input): SV_TARGET
-{
-	float3 L = normalize(input.light); 
-	float3 N = normalize(input.normal);
-	float NdotL = saturate(dot(N, L)); 
-	return float4(input.color.xyz*NdotL*matCol.xyz, input.color.a);
-}

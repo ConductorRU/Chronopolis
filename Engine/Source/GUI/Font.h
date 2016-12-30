@@ -1,6 +1,4 @@
 #pragma once
-#include "../Math/Rect.h"
-#include "../Math/Square.h"
 namespace DEN
 {
 	class Texture;

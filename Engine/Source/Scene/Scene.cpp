@@ -3,7 +3,6 @@
 #include "../Math/Math.h"
 #include "../Mesh/Mesh.h"
 #include "../Material/Class.h"
-#include "../GUI/GUI.h"
 #include "../Render/Render.h"
 #include "../Render/InputLayout.h"
 #include "../Core/Engine.h"
@@ -14,11 +13,9 @@ namespace DEN
 	Scene::Scene()
 	{
 		_camera = new Camera();
-		_gui = new GUI();
 	}
 	Scene::~Scene()
 	{
-		delete _gui;
 		for(Light *li : _lights)
 			delete li;
 		delete _camera;
@@ -116,7 +113,7 @@ namespace DEN
 			render->ExecuteMesh(m->GetVertexBuffer(), m->GetMaterial(), 0, D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 		}*/
 		int t2 = clock() - i1;
-		_gui->Render();
+		//z_gui->Render(render);
 		int t3 = clock() - i1 - t2;
 		static int fi = 0;
 		fi += t3;
