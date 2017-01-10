@@ -1,5 +1,7 @@
 #include "DC.h"
 #include "../Toolset/Class.h"
+#include "../Player/Player.h"
+#include "../GUI/GUIPlayer.h"
 #include "Game.h"
 Game *Game::_this = nullptr;
 
@@ -362,68 +364,10 @@ void Game::Init()
 	li->SetRange(1000.0f);
 	li->GetNode()->SetPosition(Vector(50.0f, 60.0f, -20.0f));
 
-	_toolset = new Toolset(sc);
-	_toolset->InitWorkspace();
-
-	//sc->GetCamera()->SetPosition(Vector(0.0f, 1.0f, -2.0f));
-	Widget *el = sc->GetGUI()->CreateElement("el1");
-	el->SetStyle("x:0;y:20px;width:200px;height:200px;background-color:#aaa;");
-
-	Widget *el1 = el->CreateChild("el1");
-	el1->SetStyle("x:0;y:0;width:100px;height:200px;background-color:#faa;");
-	Widget *el2 = el->CreateChild("el2");
-	el2->SetStyle("x:100px;y:0;width:100px;height:200px;background-color:#aaf;");
-	Widget *el3 = el->CreateChild("el3", true);
-	el3->SetStyle("x:97px;y:0;width:6px;height:200px;background-color:#0003;");
-	el3->GetListener()->onOver = [](MouseEvent &eve)
-	{
-		Engine::Get()->SetCursor(CURSOR_HORIZONTAL);
-		return false;
-	};
-	el3->GetListener()->onOut = [el3](MouseEvent &eve)
-	{
-		if(!el3->IsData("press"))
-			Engine::Get()->SetCursor(CURSOR_ARROW);
-		return false;
-	};
-	el3->GetListener()->onMousePressed = [el3](MouseEvent &eve)
-	{
-		if(el3->Pick(Point2(eve.x, eve.y)))
-		{
-			el3->SetData("press", "1");
-			el3->SetData("x", to_string(eve.x));
-			return true;
-		}
-		return false;
-	};
-	el3->GetListener()->onMouseReleased = [el3](MouseEvent &eve)
-	{
-		if(el3->IsData("press"))
-			Engine::Get()->SetCursor(CURSOR_ARROW);
-		el3->SetData("press", "");
-		return false;
-	};
-	el3->GetListener()->onMouseMove = [el3](MouseEvent &eve)
-	{
-		el3->GetListener()->OnMouseMove(eve);
-		if(el3->IsData("press"))
-		{
-			int x = atoi(el3->GetData("x").c_str());
-			int v = eve.x;
-			int w = el3->GetProperty().GetSquare().maxX;
-			int hw = w/2;
-			if(v < hw)
-				v = hw;
-			else if(v > el3->GetParent()->GetProperty().GetSquare().maxX - hw)
-				v = el3->GetParent()->GetProperty().GetSquare().maxX - hw;
-			el3->GetParent()->GetByName("el1")->SetStyle("width:" + to_string(v) + "px");
-			int width = el3->GetParent()->GetProperty().GetSquare().maxX - v;
-			el3->GetParent()->GetByName("el2")->SetStyle("x:" + to_string(v) + "px;width:" + to_string(width) + "px");
-			el3->SetStyle("x:" + to_string(v - hw) + "px");
-			return true;
-		}
-		return false;
-	};
+	//_toolset = new Toolset(sc);
+	//_toolset->InitWorkspace();
+	_guiPlayer = new GUIPlayer(sc);
+	_guiPlayer->Initialize();
 	Widget *text = sc->GetGUI()->CreateElement("el1");
 	text->SetStyle("x:200px;y:0;width:100px;height:50px;color:#000;display:text;");
 
@@ -544,6 +488,8 @@ void Game::Init()
 	_actors.push_back(bricks);
 	_scripts.push_back(aScrX);
 	_scripts.push_back(aScr);
+	_player = new Player();
+	_player->Initialize();
 }
 
 void Game::Update()
@@ -552,8 +498,8 @@ void Game::Update()
 	{
 		Actor *act = _scripts[0]->Create();
 		Paramesh *pm = (Paramesh*)act->GetComponent("mesh");
-		char *c[2] = {(char *)_actors[0], (char *)pm};
-		_scripts[1]->func["onAdd"](c);
+		//char *c[2] = {(char *)_actors[0], (char *)pm};
+		//_scripts[1]->func["onAdd"](c);
 		float s = _engine->GetTime().spf;
 		//gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
 		_engine->Draw();

@@ -1,5 +1,7 @@
 #pragma once
-
+class GUIPlayer;
+class Player;
+class Toolset;
 class ActorRoad: public Actor
 {
 protected:
@@ -59,6 +61,8 @@ class Game
 private:
 	Engine *_engine;
 	Toolset *_toolset;
+	GUIPlayer *_guiPlayer;
+	Player *_player;
 	Mesh *gm;
 	InputLayout *ia;
 	static Game *_this;
