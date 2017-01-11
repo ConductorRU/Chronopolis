@@ -355,6 +355,7 @@ void Game::Init()
 	Manager *man = _engine->GetManager();
 	Font *font = man->LoadFont("Verdana", 22);
 	Scene *sc = _engine->CreateScene();
+	sc->SetBackground(Color(95, 148, 192));
 	ia = man->CreateInputLayout();
 	ia->Add("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
 	ia->Add("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
@@ -370,8 +371,12 @@ void Game::Init()
 	_guiPlayer->Initialize();
 	Widget *text = sc->GetGUI()->CreateElement("el1");
 	text->SetStyle("x:200px;y:0;width:100px;height:50px;color:#000;display:text;");
-
 	text->GetProperty().SetInnerText("Text");
+
+	text = sc->GetGUI()->CreateElement("el1");
+	text->SetStyle("x:0;y:0;width:100px;height:50px;color:#000;display:text;");
+	text->GetProperty().SetInnerText("Text");
+
 	sc->GetCamera()->SetPosition(Vector(0.0f, 5.0f, 0.0f));
 	sc->GetCamera()->SetRotation(Quaternion(90.0_deg, Vector(1.0f, 0.0f, 0.0f)));
 	sc->GetCamera()->SetTargetEnable(true);

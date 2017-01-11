@@ -1,5 +1,6 @@
 #pragma once
 #include "../Math/Rect.h"
+#include "../Math/Vector2.h"
 namespace DEN
 {
 	class Rect;
@@ -85,5 +86,6 @@ namespace DEN
 		void Begin();
 		void End();
 		void Draw();
+		Vector2 GetCursorPos();
 	};
 }

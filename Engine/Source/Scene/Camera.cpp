@@ -40,7 +40,17 @@ namespace DEN
 			delete z_listener;
 		}
 	}
-
+	Vector Camera::GetCursorPos()
+	{
+		Vector2 npos = Engine::Get()->GetCursorPos();
+		Vector pos;
+		pos.x = ((-npos.x/Engine::Get()->GetRender()->GetAspect())*tan(z_fov/2.0f))*1.0f;
+		pos.y = (npos.y*tan(z_fov/2.0f))*1.0f;
+		pos.z = 1.0f;
+		pos = pos*z_far;
+		pos = z_matrixView.Inverse().TransformCoord(pos);
+		return pos;
+	}
 	void Camera::SetSight(bool enable)
 	{
 		z_isLook = enable;

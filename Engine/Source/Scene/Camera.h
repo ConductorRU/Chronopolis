@@ -59,6 +59,7 @@ namespace DEN
 		inline Matrix4 *GetViewY() { return &z_invViewY; }
 		Camera();
 		~Camera();
+		Vector GetCursorPos();
 		void SetSight(bool enable);
 		bool IsSight();
 		Node *GetSight();

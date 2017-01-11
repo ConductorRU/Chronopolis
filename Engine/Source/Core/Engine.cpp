@@ -306,9 +306,11 @@ namespace DEN
 		Begin();
 		if(_active)
 		{
-			_render->Begin(Color(0.0f, 0.9f, 0.9f));
-			if(_scene)
+			if (_scene)
+			{
+				_render->Begin(_scene->GetBackground());
 				_scene->Render();
+			}
 			_render->End();
 		}
 		End();
@@ -316,5 +318,10 @@ namespace DEN
 	void Engine::Run()
 	{
 
+	}
+	Vector2 Engine::GetCursorPos()
+	{
+		Point2 pos = _input->GetCursorPos();
+		return Vector2(1.0f - 2.0f*(float)pos.x / (float)_render->GetWidth(), 1.0f - 2.0f*(float)pos.y / (float)_render->GetHeight());
 	}
 }
