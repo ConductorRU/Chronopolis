@@ -51,6 +51,33 @@ namespace DEN
 		pos = z_matrixView.Inverse().TransformCoord(pos);
 		return pos;
 	}
+	bool Camera::IntersectPlane(const Vector &point, const Vector &normal, Vector &intersect, float &dist)
+	{
+		Vector start = GetWorldPosition();
+		Vector end = GetCursorPos();
+		Vector direction, L1;
+		float linelength, dist_from_plane, percentage;
+
+		direction = end - start; // вычислим вектор направления линий (зеленная линия на рисунке d) 
+		linelength = direction.Dot(normal); // Это дает нам длину линии (голубая точка L3 + L4 на рисунке d) 
+		if (fabsf(linelength) < 0.00001f) // проверяем, не равно ли 0 
+			return false; //=0 означает, что линия паралельна плоскости и не может ее пересекать 
+		L1 = point - start; // calculate vector L1 (розовая линия на рис. d) 
+		dist_from_plane = L1.Dot(normal); // дает дистанцию от плоскости (оранжевая линия L3 на рис. d) 
+		percentage = dist_from_plane / linelength; // Как далеко пересечение линии в процентах от 0 до 1 
+		if (percentage< 0.0) // Плоскость позади начала линии 
+		{
+			return false;
+		}
+		else
+			if (percentage > 1.0) // Линия не достигает плоскости 
+			{
+				return false;
+			}
+		dist = percentage; //Записываем дистанцию от начала луча (0.0 -1.0) 
+		intersect = start + direction*percentage; // прибавляем процент линии к линии старта 
+		return true;
+	}
 	void Camera::SetSight(bool enable)
 	{
 		z_isLook = enable;

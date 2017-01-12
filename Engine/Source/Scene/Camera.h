@@ -60,6 +60,7 @@ namespace DEN
 		Camera();
 		~Camera();
 		Vector GetCursorPos();
+		bool IntersectPlane(const Vector &point, const Vector &normal, Vector &intersect, float &dist);
 		void SetSight(bool enable);
 		bool IsSight();
 		Node *GetSight();

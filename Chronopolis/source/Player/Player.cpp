@@ -59,7 +59,12 @@ void Player::Initialize()
 		input->onMouseHit = [act](MouseEventClick m)
 		{
 			Node *node = (Node*)act->GetComponent("node");
-			node->SetPosition(Vector(5.0f, 0.0f, 5.0f));
+			Vector pos;
+			Vector nor = Vector::ONE_Y;
+			Vector inter = Vector();
+			float dist = 0.0f;
+			if(Game::Get()->GetEngine()->GetScene()->GetCamera()->IntersectPlane(pos, nor, inter, dist))
+				node->SetPosition(inter);
 			return false;
 		};
 		return act;
