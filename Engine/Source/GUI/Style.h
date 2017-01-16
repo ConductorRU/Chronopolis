@@ -12,6 +12,7 @@ namespace DEN
 		Square margin;
 		Square padding;
 		Square border;
+		Square borderRadius;
 		Square uv;
 		Vector2 relative;
 		Point2 caret;
@@ -37,6 +38,7 @@ namespace DEN
 		const Square &GetPadding() const { return padding; }
 		const Square &GetSquare() const { return square; }
 		const Square &GetBorder() const { return border; }
+		const Square &GetBorderRadius() const { return borderRadius; }
 		const Point2 &GetCaret() const { return caret; }
 		const Square &GetUV() const { return uv; }
 		const int &GetOrder() const { return order; }
@@ -55,6 +57,7 @@ namespace DEN
 		void SetPadding(const Square &var) { if(padding != var) z_isUpdate = true; padding = var; }
 		void SetSquare(const Square &var) { if(square != var) z_isUpdate = true; square = var; }
 		void SetBorder(const Square &var) { if(border != var) z_isUpdate = true; border = var; }
+		void SetBorderRadius(const Square &var) { if (border != var) z_isUpdate = true; borderRadius = var; }
 		void SetBorderColor(const Color &var) { if(borderColor != var) z_isUpdate = true; borderColor = var; }
 		void SetCaret(const Point2 &var) { if(caret != var) z_isUpdate = true; caret = var; }
 		void SetCaret(bool enable) { if(z_isCaret != enable) z_isUpdate = true; z_isCaret = enable; }

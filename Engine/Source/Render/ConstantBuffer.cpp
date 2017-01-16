@@ -28,22 +28,22 @@ namespace DEN
 	void ConstantBuffer::Init(PixelShader *sh)
 	{
 		_shaders[SHADER_PS] = sh;
-		_upd[SHADER_VS] = true;
+		_upd[SHADER_PS] = true;
 	}
 	void ConstantBuffer::Init(GeometryShader *sh)
 	{
 		_shaders[SHADER_GS] = sh;
-		_upd[SHADER_VS] = true;
+		_upd[SHADER_GS] = true;
 	}
 	void ConstantBuffer::Init(HullShader *sh)
 	{
 		_shaders[SHADER_HS] = sh;
-		_upd[SHADER_VS] = true;
+		_upd[SHADER_HS] = true;
 	}
 	void ConstantBuffer::Init(DomainShader *sh)
 	{
 		_shaders[SHADER_DS] = sh;
-		_upd[SHADER_VS] = true;
+		_upd[SHADER_DS] = true;
 	}
 	void ConstantBuffer::ReleaseConst(SHADER_TYPE type)
 	{

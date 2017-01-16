@@ -51,6 +51,9 @@
     <ClCompile Include="source\GUI\GUIPlayer.cpp">
       <Filter>Source\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="source\GUI\GUIPlan.cpp">
+      <Filter>Source\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Game\Game.h">
@@ -69,6 +72,9 @@
       <Filter>Source\Player</Filter>
     </ClInclude>
     <ClInclude Include="source\GUI\GUIPlayer.h">
+      <Filter>Source\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GUI\GUIPlan.h">
       <Filter>Source\GUI</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,6 +2,7 @@
 #include "../Toolset/Class.h"
 #include "../Player/Player.h"
 #include "../GUI/GUIPlayer.h"
+#include "../GUI/GUIPlan.h"
 #include "Game.h"
 Game *Game::_this = nullptr;
 
@@ -495,6 +496,7 @@ void Game::Init()
 	_scripts.push_back(aScr);
 	_player = new Player();
 	_player->Initialize();
+	GUIPlan *plan = new GUIPlan(sc->GetGUI());
 }
 
 void Game::Update()
@@ -507,6 +509,7 @@ void Game::Update()
 		//_scripts[1]->func["onAdd"](c);
 		float s = _engine->GetTime().spf;
 		//gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
+		_player->Update();
 		_engine->Draw();
 	}
 }

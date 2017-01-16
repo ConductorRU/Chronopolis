@@ -411,7 +411,7 @@ namespace DEN
 	{
 		if(!z_enable)
 			return;
-		Square s, p, m, b;
+		Square s, p, m, b, br;
 		Vector2 rel;
 		if(z_parent)
 		{
@@ -592,6 +592,16 @@ namespace DEN
 				p.minY = GetPixel(name, value, z_parent);
 			else if(name == "padding-bottom")
 				p.maxY = GetPixel(name, value, z_parent);
+			else if (name == "border-radius")
+				br.minX = br.minY = br.maxX = br.maxY = GetPixel(name, value, z_parent);
+			else if (name == "border-radius-left")
+				br.minX = GetPixel(name, value, z_parent);
+			else if (name == "border-radius-right")
+				br.maxX = GetPixel(name, value, z_parent);
+			else if (name == "border-radius-top")
+				br.minY = GetPixel(name, value, z_parent);
+			else if (name == "border-radius-bottom")
+				br.maxY = GetPixel(name, value, z_parent);
 			else if(name == "border")
 				b.minX = b.minY = b.maxX = b.maxY = GetPixel(name, value, z_parent);
 			else if(name == "border-left")
@@ -721,6 +731,7 @@ namespace DEN
 		z_prop.SetPadding(p);
 		z_prop.SetMargin(m);
 		z_prop.SetBorder(b);
+		z_prop.SetBorderRadius(br);
 		if(dis != z_prop.GetDisplay())
 			ChangeDisplay();
 		if(autoW)
@@ -971,7 +982,7 @@ namespace DEN
 	{
 		RenderMesh *buf = GetVertexBuffer();
 		buf->UpdateConst();
-		float f[12];
+		float f[20];
 		f[0] = 1.0f / (float)Render::Get()->GetWidth();
 		f[1] = 1.0f / (float)Render::Get()->GetHeight();
 		Square b = z_prop.GetBorder();
@@ -986,7 +997,10 @@ namespace DEN
 				f[7] = 1.0f - b.maxY / (s.maxY - 0.5f);
 		}
 		memcpy(&f[8], &z_prop.GetBorderColor(), sizeof(float) * 4);
+		memcpy(&f[12], &z_prop.GetBorderRadius(), sizeof(float) * 4);
+		memcpy(&f[16], &z_prop.GetSquare(), sizeof(float) * 4);
 		GetVertexBuffer()->Copy(SHADER_VS, 0, &f, sizeof(f), 0u);
+		GetVertexBuffer()->Copy(SHADER_PS, 0, &f, sizeof(f), 0u);
 	}
 	void Widget::Draw(bool andChilds)
 	{

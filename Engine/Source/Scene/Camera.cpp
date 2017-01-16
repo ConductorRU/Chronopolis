@@ -44,11 +44,12 @@ namespace DEN
 	{
 		Vector2 npos = Engine::Get()->GetCursorPos();
 		Vector pos;
-		pos.x = ((-npos.x/Engine::Get()->GetRender()->GetAspect())*tan(z_fov/2.0f))*1.0f;
-		pos.y = (npos.y*tan(z_fov/2.0f))*1.0f;
+		float aspect = Engine::Get()->GetRender()->GetAspect();
+		pos.y = ((npos.y/aspect)*tan(z_fov/2.0f));
+		pos.x = (-npos.x*tan(z_fov/2.0f));
 		pos.z = 1.0f;
 		pos = pos*z_far;
-		pos = z_matrixView.Inverse().TransformCoord(pos);
+		pos = GetViewMatrix().Inverse().TransformCoord(pos);
 		return pos;
 	}
 	bool Camera::IntersectPlane(const Vector &point, const Vector &normal, Vector &intersect, float &dist)

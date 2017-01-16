@@ -45,6 +45,15 @@ namespace DEN
 				return v->second->Get();
 			return nullptr;
 		}
+		void DeleteVariable(const string &name)
+		{
+			auto v = _vars.find(name);
+			if (v != _vars.end())
+			{
+				delete v->second;
+				_vars.erase(name);
+			}
+		}
 		void *GetComponent(const string &name)
 		{
 			auto v = _coms.find(name);

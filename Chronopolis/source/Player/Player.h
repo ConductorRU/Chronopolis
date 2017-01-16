@@ -15,4 +15,5 @@ public:
 	Player();
 	~Player();
 	void Initialize();
+	void Update();
 };
