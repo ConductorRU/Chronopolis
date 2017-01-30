@@ -11,4 +11,5 @@
 #include "Manager/Class.h"
 #include "Core/Engine.h"
 #include "Actor/Actor.h"
+#include "Procedure/Class.h"
 using namespace DEN;

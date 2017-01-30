@@ -83,7 +83,7 @@ void Player::Initialize()
 			Vector v = (*pos - start);
 			Vector n = v;
 			n.Normalize();
-			Vector d = n*spf*10.0f;
+			Vector d = n*spf*2.0f;
 			if (d.Length() > v.Length())
 			{
 				node->SetPosition(*pos);

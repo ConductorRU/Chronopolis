@@ -189,6 +189,7 @@
     <ClCompile Include="Source\Math\Vector2.cpp" />
     <ClCompile Include="Source\Mesh\Mesh.cpp" />
     <ClCompile Include="Source\Mesh\Paramesh.cpp" />
+    <ClCompile Include="Source\Procedure\Perlin2.cpp" />
     <ClCompile Include="Source\Render\ConstantBuffer.cpp" />
     <ClCompile Include="Source\Render\Direct3d11.cpp" />
     <ClCompile Include="Source\Render\InputLayout.cpp" />
@@ -251,6 +252,8 @@
     <ClInclude Include="Source\Math\Vector2.h" />
     <ClInclude Include="Source\Mesh\Mesh.h" />
     <ClInclude Include="Source\Mesh\Paramesh.h" />
+    <ClInclude Include="Source\Procedure\Class.h" />
+    <ClInclude Include="Source\Procedure\Perlin2.h" />
     <ClInclude Include="Source\Render\ConstantBuffer.h" />
     <ClInclude Include="Source\Render\Direct3d11.h" />
     <ClInclude Include="Source\Render\Draw.h" />

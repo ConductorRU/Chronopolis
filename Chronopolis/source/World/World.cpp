@@ -2,6 +2,70 @@
 #include "World.h"
 #include "../Game/Game.h"
 
+Mineral::Mineral()
+{
+
+}
+
+Mineral::~Mineral()
+{
+
+}
+
+void Mineral::Initialize()
+{
+	_script = new ActorScript;
+	_script->func["onCreate"] = [this](char **)
+	{
+		Manager *man = Engine::Get()->GetManager();
+		Pass *pass = man->CreatePass();
+		VertexShader *vs = man->CreateVS();
+		vs->CompileFile(L"vs.txt", "mainVS");
+		pass->SetVS(vs);
+		PixelShader *ps = man->CreatePS();
+		ps->CompileFile(L"vs.txt", "difPS");
+		pass->SetPS(ps);
+
+		Actor *act = new Actor();
+		act->AddVariable("width", new float(1.0_m));
+		act->AddVariable("height", new float(1.0_m));
+		act->AddVariable("length", new float(1.0_m));
+		act->AddVariable("input", new InputListener);
+
+		float width = *(float*)act->GetVariable("width");
+		float length = *(float*)act->GetVariable("length");
+		float height = *(float*)act->GetVariable("height");
+		Paramesh *pm = new Paramesh();
+		pm->Begin(Game::Get()->GetInputLayout());
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
+		pm->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
+
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
+		pm->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
+
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
+		pm->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
+
+		pm->SetColor(ColorRGB(241, 179, 142).ToColor());
+		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
+		pm->End();
+		pm->GetMesh()->SetMaterial(pass);
+		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
+		//Mesh *gm = pm->Generate(Game::Get()->GetEngine()->GetScene(), Game::Get()->GetInputLayout(), 0);
+		AddComponent("mesh", pm);
+		AddComponent("node", pm->GetMesh()->GetNode());
+		pm->GetMesh()->GetNode()->SetPosition(Vector::ONE_X);
+
+		return act;
+	};
+	Actor *act = (Actor*)_script->func["onCreate"](nullptr);
+}
+
+void Mineral::Update()
+{
+
+}
+
 World::World()
 {
 
@@ -38,7 +102,6 @@ void World::Initialize()
 		tex->Unlock();
 		//tex->Clear(ColorRGB(0, 127, 255));
 		pass->SetTexture(0, tex);
-
 		Actor *act = new Actor();
 		act->AddVariable("width", new float(1.0_m));
 		act->AddVariable("height", new float(1.0_m));
@@ -52,7 +115,7 @@ void World::Initialize()
 		pm->Begin(Game::Get()->GetInputLayout());
 		float h = 0.0f;
 		int num = 50;
-		Perlin2D p;
+		Perlin2 p(12);
 
 		for (int x = 0; x <= num; ++x)
 			for (int y = 0; y <= num; ++y)
@@ -65,10 +128,14 @@ void World::Initialize()
 		for (int x = 0; x < num; ++x)
 			for (int y = 0; y < num; ++y)
 			{
-				//pm->AddTriangle(y*num + x, y * num + x + 1, (y + 1)* num + x);
 				pm->AddTriangle(x*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y);
 				pm->AddTriangle((x + 1)*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y + 1);
 			}
+		Mineral *miner = new Mineral();
+		miner->Initialize();
+		Vector f = Vector(Rand(0.0f, 50.0f), 0.0f, Rand(0.0f, 50.0f));
+		f.y = p.Noise(f.x / 50.0f, f.z / 50.0f, 3)*10.0f;
+		((Node*)miner->GetComponent("node"))->SetPosition(f + Vector(-25.0, 0.0f, -25.0f));
 		pm->SetColor(ColorRGB(0, 179, 142).ToColor());
 		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
 		pm->End();
