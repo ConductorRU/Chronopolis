@@ -53,6 +53,7 @@ namespace DEN
 		void GenerateUV();
 		uint AddVertex(const Vector &pos);
 		uint AddTriangle(const Vector &v0, const Vector &v1, const Vector &v2);
+		uint AddTriangle(uint v0, uint v1, uint v2);
 		uint AddQuad(const Vector &v0, const Vector &v1, const Vector &v2, const Vector &v3);
 		void SetPosition(uint num, const Vector &pos);
 		void SetColor(uint num, const Color &col);

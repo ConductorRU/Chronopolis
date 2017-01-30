@@ -193,6 +193,43 @@ namespace DEN
 			z = floorf(V1.z);
 			return *this;
 		}
+		inline bool Intersect(const Vector &pos, const Vector &dir, const Vector &v0, const Vector &v1, const Vector &v2, float &dist)
+		{
+			Vector edge1 = v1 - v0;
+			Vector edge2 = v2 - v0;
+			Vector pvec;
+			pvec = dir.Cross(edge2);
+			float det = edge1.Dot(pvec);
+			Vector tvec;
+			if (det > 0)
+			{
+				tvec = pos - v0;
+			}
+			else
+			{
+				tvec = v0 - pos;
+				det = -det;
+			}
+			if (det < 0.0001f)
+				return false;
+			float u = tvec.Dot(pvec);
+			if (u < 0.0f || u > det)
+				return false;
+			Vector qvec;
+			qvec = tvec.Cross(edge1);
+
+			float v = dir.Dot(qvec);
+			if (v < 0.0f || u + v > det)
+				return false;
+
+			float t = edge2.Dot(qvec);
+			float fInvDet = 1.0f / det;
+			t *= fInvDet;
+			u *= fInvDet;
+			v *= fInvDet;
+			*this = v0 * (1.0f - u - v) + v1 * u + v2 * v;
+			return true;
+		}
 		void Lerp(const Vector& p1, const Vector& p2, const float f);
 		void QuadLerp(const Vector& p_1, const Vector& p, const Vector& p1, const float f);
 		void CubicLerp(const Vector& p_1, const Vector& p, const Vector& p1, const Vector& p2, const float f);

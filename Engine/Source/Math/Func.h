@@ -7,6 +7,11 @@ inline float lerp(float fMin, float fMax, float value)
 	return fMin + value*(fMax - fMin);
 }
 
+inline float QunticCurve(float t)
+{
+	return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
 inline string TwinRemove(const string &line, char c = ' ')
 {
 	string res;

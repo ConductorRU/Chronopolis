@@ -30,6 +30,7 @@ namespace DEN
 			sec = i;
 			fpsNum += 1 / (t - last);
 			fps = fpsNum / float(fNum);
+			fps = fNum;
 			fpsNum = 0.0f;
 			fNum = 0;
 		}

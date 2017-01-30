@@ -18,6 +18,7 @@ namespace DEN
 		vector<void*> z_vertex;
 		vector<UINT> z_index;
 		Color z_color;
+		bool _isPickable;
 		char *GenerateVertex(Vector **pos, Vector **nor, Vector **uv, Color **col, int pOffset, int nOffset, int uvOffset, int colOffset);
 	public:
 		uint GetVertexCount() { return (uint)z_vertex.size(); };
@@ -26,6 +27,8 @@ namespace DEN
 		RenderMesh *GetVertexBuffer() { return z_buffer; };
 		Pass *GetPass() { return _pass; };
 		Color GetColor() { return z_color; };
+		bool IsPickable() { return _isPickable; };
+		void SetPickable(bool pickable) { _isPickable = pickable; };
 		Mesh(InputLayout *layout);
 		~Mesh();
 		BBox CalculateBBox(uint pOffset);
@@ -41,5 +44,6 @@ namespace DEN
 		void AddTriangle(UINT v0, UINT v1, UINT v2);
 		void AddQuad(UINT v0, UINT v1, UINT v2, UINT v3);
 		void Bake();
+		bool Pick(const Vector &pos, const Vector &dir, Vector &point);
 	};
 };

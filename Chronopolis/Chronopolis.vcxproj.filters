@@ -54,6 +54,9 @@
     <ClCompile Include="source\GUI\GUIPlan.cpp">
       <Filter>Source\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="source\World\World.cpp">
+      <Filter>Source\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Game\Game.h">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="source\GUI\GUIPlan.h">
       <Filter>Source\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\World\World.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

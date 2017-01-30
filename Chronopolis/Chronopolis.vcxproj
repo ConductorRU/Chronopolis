@@ -173,6 +173,7 @@
     <ClCompile Include="source\Player\Player.cpp" />
     <ClCompile Include="source\Toolset\MainWindow.cpp" />
     <ClCompile Include="source\Toolset\Toolset.cpp" />
+    <ClCompile Include="source\World\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Game\Game.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="source\Toolset\Class.h" />
     <ClInclude Include="source\Toolset\MainWindow.h" />
     <ClInclude Include="source\Toolset\Toolset.h" />
+    <ClInclude Include="source\World\World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

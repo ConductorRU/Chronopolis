@@ -53,11 +53,13 @@ void Player::Initialize()
 		//Mesh *gm = pm->Generate(Game::Get()->GetEngine()->GetScene(), Game::Get()->GetInputLayout(), 0);
 		AddComponent("mesh", pm);
 		AddComponent("node", pm->GetMesh()->GetNode());
-
+		pm->GetMesh()->GetNode()->SetPosition(Vector::ONE_X);
 		InputListener *input = (InputListener*)act->GetVariable("input");
 		Engine::Get()->GetInput()->AddListener(input);
 		input->onMouseHit = [act, this](MouseEventClick m)
 		{
+			if (m.btn != 0)
+				return false;
 			Node *node = (Node*)act->GetComponent("node");
 			Vector pos;
 			Vector nor = Vector::ONE_Y;
@@ -72,23 +74,27 @@ void Player::Initialize()
 	_script->func["onMove"] = [this](char **v)
 	{
 		Vector *pos = (Vector*)GetVariable("move");
-		Vector start = ((Node*)GetComponent("node"))->GetPosition(true);
+		Node *node = ((Node*)GetComponent("node"));
+		Vector start = node->GetPosition(true);
 		if(pos)
 		{
+			pos->y = node->GetPosition().y;
 			float spf = Engine::Get()->GetTime().spf;
 			Vector v = (*pos - start);
 			Vector n = v;
 			n.Normalize();
-			Vector d = n*spf;
+			Vector d = n*spf*10.0f;
 			if (d.Length() > v.Length())
 			{
-				((Node*)GetComponent("node"))->SetPosition(*pos);
+				node->SetPosition(*pos);
+				node->Update();
 				DeleteVariable("move");
 			}
 			else
 			{
 				Vector res = start + d;
-				((Node*)GetComponent("node"))->SetPosition(res);
+				node->SetPosition(res);
+				node->Update();
 			}
 		}
 		return nullptr;
@@ -97,6 +103,16 @@ void Player::Initialize()
 	{
 		float spf = Engine::Get()->GetTime().spf;
 		_script->func["onMove"](nullptr);
+		Node *node = ((Node*)GetComponent("node"));
+		Vector off = Vector(0, 1.0f, 0);
+		Vector pos = node->GetPosition(true) + off;
+		Vector p;
+		if (Engine::Get()->GetScene()->Pick(pos, Vector::MINUS_Y, p))
+		{
+			pos.y = p.y;
+			node->SetPosition(pos, true);
+			node->Update();
+		}
 		return nullptr;
 	};
 	Actor *act = (Actor*)_script->func["onCreate"](nullptr);

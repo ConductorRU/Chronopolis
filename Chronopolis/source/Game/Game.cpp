@@ -1,6 +1,7 @@
 #include "DC.h"
 #include "../Toolset/Class.h"
 #include "../Player/Player.h"
+#include "../World/World.h"
 #include "../GUI/GUIPlayer.h"
 #include "../GUI/GUIPlan.h"
 #include "Game.h"
@@ -363,8 +364,8 @@ void Game::Init()
 	ia->Add("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	ia->Add("UV", DXGI_FORMAT_R32G32_FLOAT);
 	Light *li = sc->CreateLight();
-	li->SetRange(1000.0f);
-	li->GetNode()->SetPosition(Vector(50.0f, 60.0f, -20.0f));
+	li->SetRange(100.0f);
+	li->GetNode()->SetPosition(Vector(5.0f, 6.0f, -2.0f));
 
 	//_toolset = new Toolset(sc);
 	//_toolset->InitWorkspace();
@@ -373,6 +374,7 @@ void Game::Init()
 	Widget *text = sc->GetGUI()->CreateElement("el1");
 	text->SetStyle("x:200px;y:0;width:100px;height:50px;color:#000;display:text;");
 	text->GetProperty().SetInnerText("Text");
+	text->SetId("v1");
 
 	text = sc->GetGUI()->CreateElement("el1");
 	text->SetStyle("x:0;y:0;width:100px;height:50px;color:#000;display:text;");
@@ -496,6 +498,8 @@ void Game::Init()
 	_scripts.push_back(aScr);
 	_player = new Player();
 	_player->Initialize();
+	_world = new World();
+	_world->Initialize();
 	GUIPlan *plan = new GUIPlan(sc->GetGUI());
 }
 
@@ -503,13 +507,16 @@ void Game::Update()
 {
 	while(_engine->Update())
 	{
-		Actor *act = _scripts[0]->Create();
-		Paramesh *pm = (Paramesh*)act->GetComponent("mesh");
+		//Actor *act = _scripts[0]->Create();
+		//Paramesh *pm = (Paramesh*)act->GetComponent("mesh");
 		//char *c[2] = {(char *)_actors[0], (char *)pm};
 		//_scripts[1]->func["onAdd"](c);
-		float s = _engine->GetTime().spf;
+		Widget *v1 = _engine->GetScene()->GetGUI()->GetElementById("v1");
 		//gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
 		_player->Update();
+		float s = _engine->GetTime().spf;
+		Scene::Stats stats = _engine->GetScene()->stats;
+		v1->GetProperty().SetInnerText("FPS: " + to_string((int)_engine->GetTime().fps) + " " + to_string(stats.vertexCount));
 		_engine->Draw();
 	}
 }

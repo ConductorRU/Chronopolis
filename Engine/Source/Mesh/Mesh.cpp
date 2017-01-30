@@ -9,6 +9,7 @@ namespace DEN
 	{
 		z_buffer = new RenderMesh(layout);
 		_pass = nullptr;
+		_isPickable = false;
 	}
 	Mesh::~Mesh()
 	{
@@ -314,5 +315,28 @@ namespace DEN
 		z_buffer->Bake(c, vSize, lSize);
 		if(z_index.size())
 			z_buffer->BakeIndex(&z_index[0], (UINT)z_index.size());
+	}
+	bool Mesh::Pick(const Vector &pos, const Vector &dir, Vector &point)
+	{
+		if (!_isPickable)
+			return false;
+		Vector tPos = GetNode()->GetMatrix()->Inverse().TransformCoord(pos);
+		size_t iCount = z_index.size();
+		Vector *p0, *p1, *p2;
+		Vector a;
+		Vector2 uv;
+		float dist;
+		for (size_t i = 0; i < iCount; i += 3)
+		{
+			p0 = (Vector*)(&(GetVertex(z_index[i])[0]));
+			p1 = (Vector*)(&(GetVertex(z_index[i + 1])[0]));
+			p2 = (Vector*)(&(GetVertex(z_index[i + 2])[0]));
+			if(a.Intersect(tPos, dir, *p0, *p1, *p2, dist))
+			{
+				point = a;
+				return true;
+			}
+		}
+		return false;
 	}
 };

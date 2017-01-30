@@ -90,6 +90,7 @@ namespace DEN
 		DEN::Render *render = Render::Get();
 		_camera->SetAspectRatio(render->GetAspect());
 		_camera->Update();
+		memset(&stats, 0, sizeof(Scene::Stats));
 		for(Mesh *m : _meshes)
 		{
 			if(m->GetPass())
@@ -97,6 +98,9 @@ namespace DEN
 				{
 					PrepareBuffer(m->GetVertexBuffer(), m->GetNode(), li, m->GetPass());
 					render->ExecuteMesh(m->GetVertexBuffer());
+					stats.vertexCount += m->GetVertexCount();
+					stats.indexCount += m->GetIndexCount();
+					stats.primitiveCount += stats.indexCount / 3;
 				}
 		}
 		/*for(Draw *d : z_draws)
@@ -125,5 +129,12 @@ namespace DEN
 			//z_gui->GetRoot()->GetChild(0)->GetProperty().SetInnerText(to_string(t2) + "/" + to_string(fi) + "/" + to_string(z_gui->GetBakeCounter()));
 			fi = 0;
 		}
+	}
+	Mesh *Scene::Pick(const Vector &pos, const Vector &dir, Vector &point)
+	{
+		for (Mesh *m : _meshes)
+			if (m->Pick(pos, dir, point))
+				return m;
+		return nullptr;
 	}
 }

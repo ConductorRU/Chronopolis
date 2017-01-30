@@ -12,6 +12,7 @@ namespace DEN
 	class Pass;
 	class RenderMesh;
 	class GUI;
+	class Vector;
 	class Scene
 	{
 	private:
@@ -22,6 +23,12 @@ namespace DEN
 		Camera *_camera;
 		GUI *_gui;
 	public:
+		struct Stats
+		{
+			uint vertexCount;
+			uint indexCount;
+			uint primitiveCount;
+		} stats;
 		GUI *GetGUI() { return _gui; }
 		Camera *GetCamera() { return _camera; }
 		Scene();
@@ -34,5 +41,6 @@ namespace DEN
 		Light *CreateLight();
 		void PrepareBuffer(RenderMesh *buf, Node *world, Light *light, Pass *pass);
 		void Render();
+		Mesh *Pick(const Vector &pos, const Vector &dir, Vector &point);
 	};
 }

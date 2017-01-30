@@ -105,6 +105,11 @@ namespace DEN
 		_mesh->AddTriangle(s, s + 1, s + 2);
 		return _mesh->GetVertexCount();
 	}
+	uint Paramesh::AddTriangle(uint v0, uint v1, uint v2)
+	{
+		_mesh->AddTriangle(v0, v1, v2);
+		return _mesh->GetVertexCount();
+	}
 	uint Paramesh::AddQuad(const Vector &v0, const Vector &v1, const Vector &v2, const Vector &v3)
 	{
 		uint s = _mesh->GetVertexCount();
