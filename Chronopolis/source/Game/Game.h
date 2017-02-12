@@ -3,6 +3,7 @@ class GUIPlayer;
 class Player;
 class World;
 class Toolset;
+class Clock;
 class ActorRoad: public Actor
 {
 protected:
@@ -70,6 +71,7 @@ private:
 	static Game *_this;
 	vector<Actor*> _actors;
 	vector<ActorScript*> _scripts;
+	Clock *_clock;
 public:
 	InputLayout *GetInputLayout() { return ia; }
 	Engine *GetEngine() {return _engine;}

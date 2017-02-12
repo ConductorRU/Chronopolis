@@ -4,6 +4,7 @@
 #include "../World/World.h"
 #include "../GUI/GUIPlayer.h"
 #include "../GUI/GUIPlan.h"
+#include "Date.h"
 #include "Game.h"
 Game *Game::_this = nullptr;
 
@@ -343,9 +344,12 @@ Game::Game()
 	_engine = new Engine();
 	_this = this;
 	_toolset = nullptr;
+	_clock = new Clock();
+	_clock->SetSpeed(60.0f);
 }
 Game::~Game()
 {
+	delete _clock;
 	if(_toolset)
 		delete _toolset;
 	delete _engine;
@@ -515,8 +519,9 @@ void Game::Update()
 		//gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
 		_player->Update();
 		float s = _engine->GetTime().spf;
+		_clock->Update(s);
 		Scene::Stats stats = _engine->GetScene()->stats;
-		v1->GetProperty().SetInnerText("FPS: " + to_string((int)_engine->GetTime().fps) + " " + to_string(stats.vertexCount));
+		v1->GetProperty().SetInnerText("FPS: " + to_string((int)_engine->GetTime().fps) + " " + to_string(stats.vertexCount) + " " + _clock->GetText(false));
 		_engine->Draw();
 	}
 }

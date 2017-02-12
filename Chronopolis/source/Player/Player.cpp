@@ -65,7 +65,8 @@ void Player::Initialize()
 			Vector nor = Vector::ONE_Y;
 			Vector inter = Vector();
 			float dist = 0.0f;
-			if (Game::Get()->GetEngine()->GetScene()->GetCamera()->IntersectPlane(pos, nor, inter, dist))
+			Camera *cam = Game::Get()->GetEngine()->GetScene()->GetCamera();
+			if(Engine::Get()->GetScene()->Pick(cam->GetWorldPosition(), cam->GetCursorPos(), inter))
 				SetVariable("move", new Vector(inter));
 			return false;
 		};

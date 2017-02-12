@@ -334,6 +334,7 @@ namespace DEN
 			if(a.Intersect(tPos, dir, *p0, *p1, *p2, dist))
 			{
 				point = a;
+				point = GetNode()->GetMatrix()->TransformCoord(point);
 				return true;
 			}
 		}
