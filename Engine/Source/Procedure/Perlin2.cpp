@@ -10,6 +10,50 @@ namespace DEN
 		for (int i = 0; i < 1024; ++i)
 			permutationTable[i] = rand() % 256;
 	}
+	Perlin2::Perlin2(const Perlin2 &perl, int pos)
+	{
+		permutationTable = new char[1024];
+		for (int i = 0; i < 1024; ++i)
+			permutationTable[i] = rand() % 256;
+		if(pos == 1)
+		{
+			int x = 31;
+			for (int y = 0; y < 32; ++y)
+			{
+				int v = (int)(((x * 1836311903) ^ (y * 2971215073) + 4807526976) & 1023);
+				permutationTable[v] = perl.permutationTable[v];
+			}
+		}
+		else if (pos == 3)
+		{
+			int x = 0;
+			for (int y = 0; y < 32; ++y)
+			{
+				int v = (int)(((x * 1836311903) ^ (y * 2971215073) + 4807526976) & 1023);
+				permutationTable[v] = perl.permutationTable[v];
+			}
+		}
+		else if (pos == 2)
+		{
+			int y = 31;
+			for (int x = 0; x < 32; ++x)
+			{
+				int v = (int)(((x * 1836311903) ^ (y * 2971215073) + 4807526976) & 1023);
+				permutationTable[v] = perl.permutationTable[v];
+			}
+		}
+		else if (pos == 0)
+		{
+			int y = 0;
+			int y1 = 31;
+			for (int x = 0; x < 31; ++x)
+			{
+				int v = (int)(((x * 1836311903) ^ (y * 2971215073) + 4807526976) & 1023);
+				int v1 = (int)(((x * 1836311903) ^ (y1 * 2971215073) + 4807526976) & 1023);
+				permutationTable[v] = perl.permutationTable[v];
+			}
+		}
+	}
 	Vector2 Perlin2::GetPseudoRandomGradientVector(int x, int y)
 	{
 		int v = (int)(((x * 1836311903) ^ (y * 2971215073) + 4807526976) & 1023);

@@ -368,8 +368,8 @@ void Game::Init()
 	ia->Add("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	ia->Add("UV", DXGI_FORMAT_R32G32_FLOAT);
 	Light *li = sc->CreateLight();
-	li->SetRange(100.0f);
-	li->GetNode()->SetPosition(Vector(5.0f, 6.0f, -2.0f));
+	li->SetRange(1000.0f);
+	li->GetNode()->SetPosition(Vector(5.0f, 500.0f, -2.0f));
 
 	//_toolset = new Toolset(sc);
 	//_toolset->InitWorkspace();

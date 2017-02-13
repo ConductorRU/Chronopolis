@@ -7,6 +7,7 @@ namespace DEN
 	public:
 		char *permutationTable;
 		Perlin2(int seed = 0);
+		Perlin2(const Perlin2 &perl, int pos);
 		Vector2 GetPseudoRandomGradientVector(int x, int y);
 		float QunticCurve(float t);
 		float Lerp(float a, float b, float t);

@@ -111,17 +111,49 @@ void World::Initialize()
 		float width = *(float*)act->GetVariable("width");
 		float length = *(float*)act->GetVariable("length");
 		float height = *(float*)act->GetVariable("height");
-		Paramesh *pm = new Paramesh();
-		pm->Begin(Game::Get()->GetInputLayout());
+
 		float h = 0.0f;
 		int num = 50;
-		Perlin2 p(12);
-
+		Perlin2 p(10);
+		Perlin2 p1(102);
+		Perlin2 p2(7);
+		Paramesh *pm = nullptr;
+		for(int ix = -1; ix <= 1; ++ix)
+			for (int iy = -1; iy <= 1; ++iy)
+			{
+				pm = new Paramesh();
+				pm->Begin(Game::Get()->GetInputLayout());
+				for (int x = 0; x <= num; ++x)
+					for (int y = 0; y <= num; ++y)
+					{
+						h = p.Noise(x / 50.0f + ix, y / 50.0f + iy, 5)*10.0f;
+						h += p1.Noise(x / 50.0f + ix, y / 50.0f + iy, 3)*10.0f;
+						h += p2.Noise((x / 50.0f + ix + 1)/50.0f, (y / 50.0f + iy + 1) / 50.0f, 5)*1000.0f;
+						uint id = pm->AddVertex(Vector(x*width, h, y*length));
+						Vector *nor = (Vector*)((&pm->GetMesh()->GetVertex(id - 1u)[28]));
+						nor->y = 1;
+					}
+				for (int x = 0; x < num; ++x)
+					for (int y = 0; y < num; ++y)
+					{
+						pm->AddTriangle(x*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y);
+						pm->AddTriangle((x + 1)*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y + 1);
+					}
+				pm->SetColor(ColorRGB(0, 179, 142).ToColor());
+				pm->End();
+				pm->GenerateNormals();
+				pm->GetMesh()->SetMaterial(pass);
+				pm->GetMesh()->SetPickable(true);
+				Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
+				pm->GetMesh()->GetNode()->SetPosition(Vector(-25.0 + 50.0f*ix, 0.0f, -25.0f + 50.0f*iy));
+			}
+		pm = new Paramesh();
+		pm->Begin(Game::Get()->GetInputLayout());
 		for (int x = 0; x <= num; ++x)
 			for (int y = 0; y <= num; ++y)
 			{
-				h = p.Noise(x/50.0f, y / 50.0f, 3)*10.0f;
-				uint id = pm->AddVertex(Vector(x*width, h , y*length));
+				h = p2.Noise(x / 50.0f, y / 50.0f, 5)*1000.0f;
+				uint id = pm->AddVertex(Vector(x*width*50.0f, h, y*length*50.0f));
 				Vector *nor = (Vector*)((&pm->GetMesh()->GetVertex(id - 1u)[28]));
 				nor->y = 1;
 			}
@@ -131,22 +163,47 @@ void World::Initialize()
 				pm->AddTriangle(x*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y);
 				pm->AddTriangle((x + 1)*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y + 1);
 			}
-		Mineral *miner = new Mineral();
-		miner->Initialize();
-		Vector f = Vector(Rand(0.0f, 50.0f), 0.0f, Rand(0.0f, 50.0f));
-		f.y = p.Noise(f.x / 50.0f, f.z / 50.0f, 3)*10.0f;
-		((Node*)miner->GetComponent("node"))->SetPosition(f + Vector(-25.0, 0.0f, -25.0f));
 		pm->SetColor(ColorRGB(0, 179, 142).ToColor());
-		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
 		pm->End();
 		pm->GenerateNormals();
 		pm->GetMesh()->SetMaterial(pass);
 		pm->GetMesh()->SetPickable(true);
 		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
+		pm->GetMesh()->GetNode()->SetPosition(Vector(-25.0 - 50.0f, 0.0f, -25.0f - 50.0f));
+		/*Paramesh *pm1 = new Paramesh();
+		pm1->Begin(Game::Get()->GetInputLayout());
+		for (int x = 0; x <= num; ++x)
+			for (int y = 0; y <= num; ++y)
+			{
+				h = p.Noise(x / 50.0f, y / 50.0f + 1, 3)*10.0f;
+				uint id = pm1->AddVertex(Vector(x*width, h, y*length));
+				Vector *nor = (Vector*)((&pm1->GetMesh()->GetVertex(id - 1u)[28]));
+				nor->y = 1;
+			}
+		for (int x = 0; x < num; ++x)
+			for (int y = 0; y < num; ++y)
+			{
+				pm1->AddTriangle(x*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y);
+				pm1->AddTriangle((x + 1)*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y + 1);
+			}
+		pm1->SetColor(ColorRGB(0, 179, 142).ToColor());
+		pm1->End();
+		pm1->GenerateNormals();
+		pm1->GetMesh()->SetMaterial(pass);
+		pm1->GetMesh()->SetPickable(true);
+		pm1->GetMesh()->GetNode()->SetPosition(Vector(-25.0, 0.0f, 25.0f));
+		Game::Get()->GetEngine()->GetScene()->AddMesh(pm1->GetMesh());*/
+
+
+
+		Mineral *miner = new Mineral();
+		miner->Initialize();
+		Vector f = Vector(Rand(0.0f, 50.0f), 0.0f, Rand(0.0f, 50.0f));
+		f.y = p.Noise(f.x / 50.0f, f.z / 50.0f, 3)*10.0f;
+		((Node*)miner->GetComponent("node"))->SetPosition(f + Vector(-25.0, 0.0f, -25.0f));
 		//Mesh *gm = pm->Generate(Game::Get()->GetEngine()->GetScene(), Game::Get()->GetInputLayout(), 0);
 		AddComponent("mesh", pm);
 		AddComponent("node", pm->GetMesh()->GetNode());
-		pm->GetMesh()->GetNode()->SetPosition(Vector(-25.0, 0.0f, -25.0f));
 		InputListener *input = (InputListener*)act->GetVariable("input");
 		Engine::Get()->GetInput()->AddListener(input);
 		input->onMouseHit = [act, this](MouseEventClick m)
