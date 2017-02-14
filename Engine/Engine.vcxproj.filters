@@ -47,6 +47,12 @@
     <Filter Include="Source\Procedure">
       <UniqueIdentifier>{a6cfcdcd-1d8e-4222-9d46-adba2eea102c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Modifier2D">
+      <UniqueIdentifier>{67db7c95-0f22-41d0-88b1-19db23ea45fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Modifier">
+      <UniqueIdentifier>{1de7790f-b7c4-460e-ba0c-7f2bab405560}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -198,6 +204,12 @@
     </ClCompile>
     <ClCompile Include="Source\Procedure\Perlin2.cpp">
       <Filter>Source\Procedure</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modifier2D\Modifier2d.cpp">
+      <Filter>Source\Modifier2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modifier2D\Mod2Noise.cpp">
+      <Filter>Source\Modifier2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -398,6 +410,15 @@
     </ClInclude>
     <ClInclude Include="Source\Procedure\Class.h">
       <Filter>Source\Procedure</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Modifier2D\Class.h">
+      <Filter>Source\Modifier2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Modifier2D\Modifier2d.h">
+      <Filter>Source\Modifier2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Modifier2D\Mod2Noise.h">
+      <Filter>Source\Modifier2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

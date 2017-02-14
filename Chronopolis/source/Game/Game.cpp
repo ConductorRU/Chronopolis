@@ -517,6 +517,7 @@ void Game::Update()
 		//_scripts[1]->func["onAdd"](c);
 		Widget *v1 = _engine->GetScene()->GetGUI()->GetElementById("v1");
 		//gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
+		_world->Update();
 		_player->Update();
 		float s = _engine->GetTime().spf;
 		_clock->Update(s);

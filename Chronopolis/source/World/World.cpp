@@ -90,7 +90,10 @@ void World::Initialize()
 		Texture *tex = new Texture();
 		tex->SetAddress(TEXTURE_ADDRESS_WRAP);
 		tex->Create(512, 512);
-		tex->Lock(TEXTURE_LOCK_WRITE_DISCARD);
+		Mod2Noise noise;
+		noise.SetRange(true, ColorRGB(35, 113, 11), ColorRGB(71, 165, 42));
+		noise.Update(tex);
+		/*tex->Lock(TEXTURE_LOCK_WRITE_DISCARD);
 		for (uint x = 0; x < 512; ++x)
 			for (uint y = 0; y < 512; ++y)
 			{
@@ -99,7 +102,7 @@ void World::Initialize()
 					col = ColorRGB(180, 180, 180);
 				tex->SetPixel(x, y, col);
 			}
-		tex->Unlock();
+		tex->Unlock();*/
 		//tex->Clear(ColorRGB(0, 127, 255));
 		pass->SetTexture(0, tex);
 		Actor *act = new Actor();
@@ -118,7 +121,7 @@ void World::Initialize()
 		Perlin2 p1(102);
 		Perlin2 p2(7);
 		Paramesh *pm = nullptr;
-		for(int ix = -1; ix <= 1; ++ix)
+		/*for(int ix = -1; ix <= 1; ++ix)
 			for (int iy = -1; iy <= 1; ++iy)
 			{
 				pm = new Paramesh();
@@ -139,21 +142,21 @@ void World::Initialize()
 						pm->AddTriangle(x*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y);
 						pm->AddTriangle((x + 1)*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y + 1);
 					}
-				pm->SetColor(ColorRGB(0, 179, 142).ToColor());
+				pm->SetColor(ColorRGB(255, 255, 255).ToColor());
 				pm->End();
 				pm->GenerateNormals();
 				pm->GetMesh()->SetMaterial(pass);
 				pm->GetMesh()->SetPickable(true);
 				Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
 				pm->GetMesh()->GetNode()->SetPosition(Vector(-25.0 + 50.0f*ix, 0.0f, -25.0f + 50.0f*iy));
-			}
+			}*/
 		pm = new Paramesh();
 		pm->Begin(Game::Get()->GetInputLayout());
 		for (int x = 0; x <= num; ++x)
 			for (int y = 0; y <= num; ++y)
 			{
 				h = p2.Noise(x / 50.0f, y / 50.0f, 5)*1000.0f;
-				uint id = pm->AddVertex(Vector(x*width*50.0f, h, y*length*50.0f));
+				uint id = pm->AddVertex(Vector(x*width*100.0f, h, y*length*100.0f));
 				Vector *nor = (Vector*)((&pm->GetMesh()->GetVertex(id - 1u)[28]));
 				nor->y = 1;
 			}
@@ -163,36 +166,13 @@ void World::Initialize()
 				pm->AddTriangle(x*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y);
 				pm->AddTriangle((x + 1)*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y + 1);
 			}
-		pm->SetColor(ColorRGB(0, 179, 142).ToColor());
+		pm->SetColor(ColorRGB(255, 255, 255).ToColor());
 		pm->End();
 		pm->GenerateNormals();
 		pm->GetMesh()->SetMaterial(pass);
 		pm->GetMesh()->SetPickable(true);
 		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
 		pm->GetMesh()->GetNode()->SetPosition(Vector(-25.0 - 50.0f, 0.0f, -25.0f - 50.0f));
-		/*Paramesh *pm1 = new Paramesh();
-		pm1->Begin(Game::Get()->GetInputLayout());
-		for (int x = 0; x <= num; ++x)
-			for (int y = 0; y <= num; ++y)
-			{
-				h = p.Noise(x / 50.0f, y / 50.0f + 1, 3)*10.0f;
-				uint id = pm1->AddVertex(Vector(x*width, h, y*length));
-				Vector *nor = (Vector*)((&pm1->GetMesh()->GetVertex(id - 1u)[28]));
-				nor->y = 1;
-			}
-		for (int x = 0; x < num; ++x)
-			for (int y = 0; y < num; ++y)
-			{
-				pm1->AddTriangle(x*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y);
-				pm1->AddTriangle((x + 1)*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y + 1);
-			}
-		pm1->SetColor(ColorRGB(0, 179, 142).ToColor());
-		pm1->End();
-		pm1->GenerateNormals();
-		pm1->GetMesh()->SetMaterial(pass);
-		pm1->GetMesh()->SetPickable(true);
-		pm1->GetMesh()->GetNode()->SetPosition(Vector(-25.0, 0.0f, 25.0f));
-		Game::Get()->GetEngine()->GetScene()->AddMesh(pm1->GetMesh());*/
 
 
 
@@ -222,7 +202,16 @@ void World::Initialize()
 	_script->func["onTick"] = [this](char **v)
 	{
 		float spf = Engine::Get()->GetTime().spf;
-		
+		Vector nor = Vector::ONE_Y;
+		Vector inter = Vector();
+		float dist = 0.0f;
+		Vector pos = Game::Get()->GetEngine()->GetScene()->GetCamera()->GetTarget()->GetPosition();
+		pos.y += 10000.0f;
+		if (Game::Get()->GetEngine()->GetScene()->Pick(pos, nor, inter))
+		{
+			pos.y = inter.y;
+			Game::Get()->GetEngine()->GetScene()->GetCamera()->GetTarget()->SetPosition(pos);
+		}
 		return nullptr;
 	};
 	Actor *act = (Actor*)_script->func["onCreate"](nullptr);

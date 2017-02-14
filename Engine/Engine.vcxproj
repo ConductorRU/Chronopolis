@@ -189,6 +189,8 @@
     <ClCompile Include="Source\Math\Vector2.cpp" />
     <ClCompile Include="Source\Mesh\Mesh.cpp" />
     <ClCompile Include="Source\Mesh\Paramesh.cpp" />
+    <ClCompile Include="Source\Modifier2D\Mod2Noise.cpp" />
+    <ClCompile Include="Source\Modifier2D\Modifier2d.cpp" />
     <ClCompile Include="Source\Procedure\Perlin2.cpp" />
     <ClCompile Include="Source\Render\ConstantBuffer.cpp" />
     <ClCompile Include="Source\Render\Direct3d11.cpp" />
@@ -252,6 +254,9 @@
     <ClInclude Include="Source\Math\Vector2.h" />
     <ClInclude Include="Source\Mesh\Mesh.h" />
     <ClInclude Include="Source\Mesh\Paramesh.h" />
+    <ClInclude Include="Source\Modifier2D\Class.h" />
+    <ClInclude Include="Source\Modifier2D\Mod2Noise.h" />
+    <ClInclude Include="Source\Modifier2D\Modifier2d.h" />
     <ClInclude Include="Source\Procedure\Class.h" />
     <ClInclude Include="Source\Procedure\Perlin2.h" />
     <ClInclude Include="Source\Render\ConstantBuffer.h" />
