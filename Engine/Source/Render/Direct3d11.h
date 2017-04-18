@@ -73,7 +73,7 @@ namespace DEN
 	public:
 		DepthStencil();
 		~DepthStencil();
-		HRESULT Create(Render *dev);
+		HRESULT Create(Render *dev, uint width = 0, uint height = 0);
 		void Restart(Render *dev);
 		void Release();
 	};
@@ -83,13 +83,13 @@ namespace DEN
 		friend struct Target;
 	private:
 		ID3D11RenderTargetView* renderTarget;
-		ID3D11Texture2D* renderTexture;
+		RenderTexture* renderTexture;
 		D3D11_RENDER_TARGET_VIEW_DESC renderDesc;
-		D3D11_TEXTURE2D_DESC renderTexDesc;
 	public:
 		RenderTarget();
 		~RenderTarget();
 		HRESULT Create(Render *dev);
+		HRESULT Create(Render *dev, RenderTexture *tex);
 		void Restart(Render *dev);
 		void Release();
 	};
@@ -100,6 +100,7 @@ namespace DEN
 		DepthStencil *depth;
 		Target(RenderTarget *r, DepthStencil *d);
 		~Target();
+		void Create(RenderTexture *tex);
 		void Restart(Render *dev);
 		void Release();
 	};
@@ -146,11 +147,12 @@ namespace DEN
 		bool CompileShader(const wstring &filename, const string &entryPoint, const string &shaderModel, const string &defines, ID3DBlob **bytes);
 	public:
 		static Render *Get() { return _this; };
-		UINT GetWidth() { return _window.Width; };
-		UINT GetHeight() { return _window.Height; };
-		float GetAspect() { return (float)_window.Width / (float)_window.Height; };
+		float GetAspect() { return (float)GetWidth() / (float)GetHeight(); };
 		Render();
 		~Render();
+		UINT GetWidth();
+		UINT GetHeight();
+		Target *CreateRenderTarget();
 		void SetVSync(bool enable);
 		bool Initialize(HWND &hWind, UINT sizeX, UINT sizeY, bool fullscreen);
 		void Reset();

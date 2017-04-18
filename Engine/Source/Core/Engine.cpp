@@ -66,14 +66,15 @@ namespace DEN
 		delete _render;
 		if(_manager)
 			delete _manager;
-		if(_scene)
-			delete _scene;
+		for(Scene *scene: _scenes)
+			delete scene;
 		if(_input)
 			delete _input;
 	}
 	Scene *Engine::CreateScene()
 	{
 		_scene = new Scene();
+		_scenes.insert(_scene);
 		return _scene;
 	}
 	void Engine::UpdateWindowState()
@@ -307,10 +308,23 @@ namespace DEN
 		Begin();
 		if(_active)
 		{
-			if (_scene)
+			for(Scene *scene: _scenes)
 			{
-				_render->Begin(_scene->GetBackground());
-				_scene->Render();
+				if (scene->GetRenderTarget())
+				{
+					_render->SetRenderTarget(scene->GetRenderTarget());
+					_render->Begin(scene->GetBackground());
+					scene->Render();
+				}
+			}
+			for(Scene *scene : _scenes)
+			{
+				if(!scene->GetRenderTarget())
+				{
+					_render->SetRenderTarget(nullptr);
+					_render->Begin(scene->GetBackground());
+					scene->Render();
+				}
 			}
 			_render->End();
 		}

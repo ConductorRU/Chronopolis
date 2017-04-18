@@ -15,6 +15,7 @@ namespace DEN
 	{
 		_camera = new Camera();
 		_gui = new GUI();
+		_target = nullptr;
 	}
 	Scene::~Scene()
 	{
@@ -22,6 +23,10 @@ namespace DEN
 		for(Light *li : _lights)
 			delete li;
 		delete _camera;
+	}
+	void Scene::SetRenderTarget(Target *target)
+	{
+		_target = target;
 	}
 	void Scene::AddDraw(Draw *draw)
 	{

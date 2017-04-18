@@ -11,6 +11,7 @@ namespace DEN
 	class InputLayout;
 	class Pass;
 	class RenderMesh;
+	struct Target;
 	class GUI;
 	class Vector;
 	class Scene
@@ -22,6 +23,7 @@ namespace DEN
 		Color _background;
 		Camera *_camera;
 		GUI *_gui;
+		Target *_target;
 	public:
 		struct Stats
 		{
@@ -31,8 +33,10 @@ namespace DEN
 		} stats;
 		GUI *GetGUI() { return _gui; }
 		Camera *GetCamera() { return _camera; }
+		Target *GetRenderTarget() { return _target; }
 		Scene();
 		~Scene();
+		void SetRenderTarget(Target *target);
 		void AddDraw(Draw *draw);
 		void RemoveDraw(Draw *draw);
 		void SetBackground(const Color &color);

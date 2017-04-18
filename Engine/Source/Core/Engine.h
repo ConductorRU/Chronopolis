@@ -53,6 +53,7 @@ namespace DEN
 		UINT m_width;// Viewport dimensions.
 		UINT m_height;
 		Rect _rect;
+		set<Scene*> _scenes;
 		static Engine *_this;
 		LRESULT WindProc(HWND hwnd, UINT nMsg, WPARAM wParam, LPARAM lParam);
 		static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

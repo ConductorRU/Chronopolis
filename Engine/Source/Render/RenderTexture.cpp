@@ -79,11 +79,14 @@ namespace DEN
 			z_desc.BindFlags = 0;
 			z_desc.MiscFlags = 0;
 		}
-		else if(type == RESOURCE_RENDER)///заменить
+		else if(type == RESOURCE_RENDER)
 		{
-			z_desc.Format = DXGI_FORMAT_R32_FLOAT;
+			z_desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 			z_desc.Usage = D3D11_USAGE_DEFAULT;
 			z_desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+			z_desc.MiscFlags = 0;
+			z_desc.CPUAccessFlags = 0;
+			z_desc.MipLevels = 1;
 		}
 		else if(type == RESOURCE_DEPTH)///заменить
 		{
@@ -120,7 +123,9 @@ namespace DEN
 			ZeroMemory(&srvDesc, sizeof(srvDesc));  //zero out shader resouce view description 
 			srvDesc.Format = z_desc.Format;
 			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;  //its an texture array 2d 
-			srvDesc.Texture2D.MipLevels = -1;  //we want all slices, so begin at 0 
+			srvDesc.Texture2D.MipLevels = -1;  //we want all slices, so begin at 0
+			if(type == RESOURCE_RENDER)
+				srvDesc.Texture2D.MipLevels = 1;
 			srvDesc.Texture2D.MostDetailedMip = 0;
 			hr = dev->CreateShaderResourceView(_texture, &srvDesc, &_res);
 			if(hr != S_OK)
@@ -141,6 +146,8 @@ namespace DEN
 			_texture->Release();
 		if(_res)
 			_res->Release();
+		_texture = nullptr;
+		_res = nullptr;
 	}
 
 	void RenderTexture::Reset()

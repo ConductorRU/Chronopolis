@@ -360,8 +360,23 @@ void Game::Init()
 	_engine->Create(1024, 768, false);
 	Manager *man = _engine->GetManager();
 	Font *font = man->LoadFont("Verdana", 22);
+		Scene *mScene = _engine->CreateScene();
 	Scene *sc = _engine->CreateScene();
-	sc->SetBackground(Color(95, 148, 192));
+	Widget *text1 = mScene->GetGUI()->CreateElement("el1");
+	text1->SetStyle("x:200px;y:200px;width:512px;height:512px;background-color:#aaa;display:block;");
+	text1->SetId("v1");
+	Texture *texx = new Texture();
+	texx->SetAddress(TEXTURE_ADDRESS_WRAP);
+	texx->Create(512, 512, RESOURCE_RENDER, DXGI_FORMAT_R32G32B32A32_FLOAT);
+	//RenderTarget *ren = new RenderTarget();
+	//ren->
+	text1->SetTexture(texx);
+	Target *ren = _engine->GetRender()->CreateRenderTarget();
+	sc->SetRenderTarget(ren);
+	ren->Create(texx);
+	mScene->SetBackground(Color(95, 148, 192));
+	 
+	sc->SetBackground(Color(148, 95, 192));
 	ia = man->CreateInputLayout();
 	ia->Add("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
 	ia->Add("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
@@ -521,8 +536,8 @@ void Game::Update()
 		_player->Update();
 		float s = _engine->GetTime().spf;
 		_clock->Update(s);
-		Scene::Stats stats = _engine->GetScene()->stats;
-		v1->GetProperty().SetInnerText("FPS: " + to_string((int)_engine->GetTime().fps) + " " + to_string(stats.vertexCount) + " " + _clock->GetText(false));
+		//Scene::Stats stats = _engine->GetScene()->stats;
+		//v1->GetProperty().SetInnerText("FPS: " + to_string((int)_engine->GetTime().fps) + " " + to_string(stats.vertexCount) + " " + _clock->GetText(false));
 		_engine->Draw();
 	}
 }

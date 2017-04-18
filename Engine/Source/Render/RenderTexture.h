@@ -21,6 +21,7 @@ namespace DEN
 	};
 	class RenderTexture
 	{
+		friend struct RenderTarget;
 	protected:
 		UCHAR* z_data;
 		bool z_dynamic;
