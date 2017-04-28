@@ -41,8 +41,6 @@ namespace DEN
 		z_desc.Width = sizeX;
 		z_desc.Height = sizeY;
 		z_desc.MipLevels = 0U;
-		if(type == RESOURCE_DYNAMIC)
-			z_desc.MipLevels = 1;
 		z_desc.ArraySize = arraySize;
 		z_desc.Format = format;//DXGI_FORMAT_B8G8R8A8_UNORM;
 		z_desc.SampleDesc.Count = 1;
@@ -69,6 +67,7 @@ namespace DEN
 		}
 		else if(type == RESOURCE_DYNAMIC)
 		{
+			z_desc.MipLevels = 1;
 			z_desc.Usage = D3D11_USAGE_DYNAMIC;
 			z_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		}

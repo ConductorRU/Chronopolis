@@ -360,7 +360,7 @@ void Game::Init()
 	_engine->Create(1024, 768, false);
 	Manager *man = _engine->GetManager();
 	Font *font = man->LoadFont("Verdana", 22);
-		Scene *mScene = _engine->CreateScene();
+	Scene *mScene = _engine->CreateScene();
 	Scene *sc = _engine->CreateScene();
 	Widget *text1 = mScene->GetGUI()->CreateElement("el1");
 	text1->SetStyle("x:200px;y:200px;width:512px;height:512px;background-color:#aaa;display:block;");
@@ -376,7 +376,7 @@ void Game::Init()
 	ren->Create(texx);
 	mScene->SetBackground(Color(95, 148, 192));
 	 
-	sc->SetBackground(Color(148, 95, 192));
+	sc->SetBackground(Color(64, 64, 64));
 	ia = man->CreateInputLayout();
 	ia->Add("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
 	ia->Add("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
@@ -520,6 +520,14 @@ void Game::Init()
 	_world = new World();
 	_world->Initialize();
 	GUIPlan *plan = new GUIPlan(sc->GetGUI());
+
+	InputListener *lis = new InputListener();
+	GetEngine()->GetInput()->AddListener(lis);
+	lis->onKeyHit = [this](KeyEvent key)
+	{
+		GetEngine()->Exit();
+		return false;
+	};
 }
 
 void Game::Update()

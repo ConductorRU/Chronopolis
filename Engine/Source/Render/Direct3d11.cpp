@@ -454,7 +454,7 @@ namespace DEN
 	void Render::ClearRenderTarget(RenderTarget *target, const Color &color)
 	{
 		if(target)
-			_deviceContext->ClearRenderTargetView(target->renderTarget, (float*)(&color));
+			_deviceContext->ClearRenderTargetView(target->renderTarget, &color.r);
 	}
 
 	void Render::ClearDepthStencil(DepthStencil *depth, float value)

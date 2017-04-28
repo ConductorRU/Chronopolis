@@ -211,6 +211,9 @@
     <ClCompile Include="Source\Modifier2D\Mod2Noise.cpp">
       <Filter>Source\Modifier2D</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h">
