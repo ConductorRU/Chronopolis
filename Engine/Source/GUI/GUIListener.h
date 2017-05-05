@@ -15,6 +15,7 @@ namespace DEN
 		function<bool(MouseEvent)> onOut = nullptr;
 		function<bool(MouseEventClick)> onClick = nullptr;
 		function<void()> onChange = nullptr;
+		function<void()> onUpdate = nullptr;
 		function<bool()> onRender = nullptr;
 		bool OnMouseHit(const MouseEventClick &arg);
 		bool OnMouseMove(const MouseEvent &arg);

@@ -854,6 +854,8 @@ namespace DEN
 				}
 			}
 		}
+		if (z_listener && z_listener->onUpdate)
+			z_listener->onUpdate();
 	}
 	void Widget::Bake()
 	{

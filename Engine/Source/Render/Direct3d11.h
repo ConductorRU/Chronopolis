@@ -73,9 +73,10 @@ namespace DEN
 	public:
 		DepthStencil();
 		~DepthStencil();
-		HRESULT Create(Render *dev, uint width = 0, uint height = 0);
-		void Restart(Render *dev);
+		HRESULT Create(uint width = 0, uint height = 0);
+		void Restart();
 		void Release();
+		void Resize(uint width, uint height);
 	};
 	struct RenderTarget
 	{
@@ -88,10 +89,11 @@ namespace DEN
 	public:
 		RenderTarget();
 		~RenderTarget();
-		HRESULT Create(Render *dev);
-		HRESULT Create(Render *dev, RenderTexture *tex);
-		void Restart(Render *dev);
+		HRESULT Create();
+		HRESULT Create(RenderTexture *tex);
+		void Restart();
 		void Release();
+		void Resize(uint width, uint height);
 	};
 
 	struct Target
@@ -100,9 +102,11 @@ namespace DEN
 		DepthStencil *depth;
 		Target(RenderTarget *r, DepthStencil *d);
 		~Target();
+		void Create();
 		void Create(RenderTexture *tex);
-		void Restart(Render *dev);
+		void Restart();
 		void Release();
+		void Resize(uint width, uint height);
 	};
 	class Render
 	{
@@ -150,6 +154,7 @@ namespace DEN
 		float GetAspect() { return (float)GetWidth() / (float)GetHeight(); };
 		Render();
 		~Render();
+		void Resize();
 		UINT GetWidth();
 		UINT GetHeight();
 		Target *CreateRenderTarget();

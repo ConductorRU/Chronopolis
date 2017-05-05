@@ -33,7 +33,7 @@ namespace DEN
 		z_pass->SetCull(D3DCULL_NONE);
 		z_pass->SetAlphaBlend(true);
 		z_pass->SetBlend(D3DBLEND_SRCALPHA, D3DBLEND_INVSRCALPHA);
-		z_pass->SetAlphaBlend(D3DBLEND_ONE, D3DBLEND_ZERO);
+		z_pass->SetAlphaBlend(D3DBLEND_ONE, D3DBLEND_ONE);
 		z_font = new Font();
 		z_font->LoadFont();
 		UINT x, y;
@@ -53,7 +53,7 @@ namespace DEN
 		z_passB->SetCull(D3DCULL_NONE);
 		z_passB->SetAlphaBlend(true);
 		z_passB->SetBlend(D3DBLEND_SRCALPHA, D3DBLEND_INVSRCALPHA);
-		z_passB->SetAlphaBlend(D3DBLEND_SRCALPHA, D3DBLEND_INVSRCALPHA);
+		z_passB->SetAlphaBlend(D3DBLEND_ONE, D3DBLEND_ONE);
 		z_blank = new Texture;
 		z_blank->Create(1, 1);
 		z_blank->Lock(TEXTURE_LOCK_WRITE_DISCARD);

@@ -362,8 +362,13 @@ void Game::Init()
 	Font *font = man->LoadFont("Verdana", 22);
 	Scene *mScene = _engine->CreateScene();
 	Scene *sc = _engine->CreateScene();
-	Widget *text1 = mScene->GetGUI()->CreateElement("el1");
-	text1->SetStyle("x:200px;y:200px;width:512px;height:512px;background-color:#aaa;display:block;");
+	
+	WidgetDivider *divider = new WidgetDivider(mScene->GetGUI());
+	divider->SetParent(mScene->GetGUI()->GetRoot());
+	divider->SetStyle("width:100%;height:100%;background-color:#aaa;");
+
+	Widget *text1 = divider->GetPartDivider(true)->CreateChild("el1");
+	text1->SetStyle("x:0;y:0;width:100%;height:100%;background-color:#aaa;display:block;");
 	text1->SetId("v1");
 	Texture *texx = new Texture();
 	texx->SetAddress(TEXTURE_ADDRESS_WRAP);
@@ -375,7 +380,20 @@ void Game::Init()
 	sc->SetRenderTarget(ren);
 	ren->Create(texx);
 	mScene->SetBackground(Color(95, 148, 192));
-	 
+
+	divider->GetPartDivider(true)->CreateListener();
+	divider->GetPartDivider(true)->GetListener()->onUpdate = [this, divider, ren]()
+	{
+		int width = divider->GetPartDivider(true)->GetProperty().GetSquare().maxX;
+		int height = divider->GetPartDivider(true)->GetProperty().GetSquare().maxY;
+		static int i = 0;
+		static int oY = height;
+		if (i < 10)
+		{
+			ren->Resize(width, height);
+			++i;
+		}
+	};
 	sc->SetBackground(Color(64, 64, 64));
 	ia = man->CreateInputLayout();
 	ia->Add("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
@@ -391,7 +409,7 @@ void Game::Init()
 	_guiPlayer = new GUIPlayer(sc);
 	_guiPlayer->Initialize();
 	Widget *text = sc->GetGUI()->CreateElement("el1");
-	text->SetStyle("x:200px;y:0;width:100px;height:50px;color:#000;display:text;");
+	text->SetStyle("x:10px;y:0;width:100px;height:50px;color:#000;display:text;");
 	text->GetProperty().SetInnerText("Text");
 	text->SetId("v1");
 

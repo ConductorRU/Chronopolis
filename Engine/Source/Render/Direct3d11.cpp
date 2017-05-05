@@ -26,29 +26,27 @@ namespace DEN
 			delete renderTexture;
 	}
 
-	HRESULT RenderTarget::Create(Render *dev)
+	HRESULT RenderTarget::Create()
 	{
 		HRESULT hr;
 		renderTexture = new RenderTexture();
-		dev->_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&renderTexture->_texture);
+		Render::Get()->_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&renderTexture->_texture);
 		renderTexture->_texture->GetDesc(&renderTexture->z_desc);
-		hr = dev->_device->CreateRenderTargetView(renderTexture->_texture, 0, &renderTarget);
+		hr = Render::Get()->_device->CreateRenderTargetView(renderTexture->_texture, 0, &renderTarget);
 		renderTarget->GetDesc(&renderDesc);
 		return hr;
 	}
 
-	HRESULT RenderTarget::Create(Render *dev, RenderTexture *tex)
+	HRESULT RenderTarget::Create(RenderTexture *tex)
 	{
 		HRESULT hr;
 		renderTexture = tex;
 		//dev->_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&renderTexture->_texture);
 		renderTexture->_texture->GetDesc(&renderTexture->z_desc);
-		D3D11_RENDER_TARGET_VIEW_DESC rtDesc = {};
-		rtDesc.Format = renderTexture->z_desc.Format;
-		rtDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-		rtDesc.Texture2D.MipSlice = 0;
-		hr = dev->_device->CreateRenderTargetView(renderTexture->_texture, &rtDesc, &renderTarget);
-		renderTarget->GetDesc(&renderDesc);
+		renderDesc.Format = renderTexture->z_desc.Format;
+		renderDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		renderDesc.Texture2D.MipSlice = 0;
+		hr = Render::Get()->_device->CreateRenderTargetView(renderTexture->_texture, &renderDesc, &renderTarget);
 		return hr;
 	}
 
@@ -61,18 +59,27 @@ namespace DEN
 		renderTarget = NULL;
 	}
 
-	void RenderTarget::Restart(Render *dev)
+	void RenderTarget::Restart()
 	{
 		HRESULT hr;
 		Release();
-		if(this == dev->_backTarget->render)
-			dev->_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&renderTexture->_texture);
+		if(this == Render::Get()->_backTarget->render)
+			Render::Get()->_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&renderTexture->_texture);
 		else
-			dev->_device->CreateTexture2D(&renderTexture->z_desc, NULL, &renderTexture->_texture);
+			Render::Get()->_device->CreateTexture2D(&renderTexture->z_desc, NULL, &renderTexture->_texture);
 		renderTexture->_texture->GetDesc(&renderTexture->z_desc);
-		hr = dev->_device->CreateRenderTargetView(renderTexture->_texture, 0, &renderTarget);
+		hr = Render::Get()->_device->CreateRenderTargetView(renderTexture->_texture, 0, &renderTarget);
 		renderTexture->_texture->Release();
 		//renderTexture = NULL;
+	}
+
+	void RenderTarget::Resize(uint width, uint height)
+	{
+		Release();
+		renderTexture->z_desc.Width = width;
+		renderTexture->z_desc.Height = height;
+		Render::Get()->_device->CreateTexture2D(&renderTexture->z_desc, NULL, &renderTexture->_texture);
+		HRESULT hr = Render::Get()->_device->CreateRenderTargetView(renderTexture->_texture, &renderDesc, &renderTarget);
 	}
 
 	DepthStencil::DepthStencil()
@@ -88,7 +95,7 @@ namespace DEN
 		Release();
 	}
 
-	HRESULT DepthStencil::Create(Render *dev, uint width, uint height)
+	HRESULT DepthStencil::Create(uint width, uint height)
 	{
 		HRESULT hr;
 		if (width && height)
@@ -98,8 +105,8 @@ namespace DEN
 		}
 		else
 		{
-			depthTexDesc.Width = dev->_swapDesc.BufferDesc.Width;
-			depthTexDesc.Height = dev->_swapDesc.BufferDesc.Height;
+			depthTexDesc.Width = Render::Get()->_swapDesc.BufferDesc.Width;
+			depthTexDesc.Height = Render::Get()->_swapDesc.BufferDesc.Height;
 		}
 		depthTexDesc.MipLevels = 1;
 		depthTexDesc.ArraySize = 1;
@@ -110,11 +117,11 @@ namespace DEN
 		depthTexDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 		depthTexDesc.CPUAccessFlags = 0;
 		depthTexDesc.MiscFlags = 0;
-		hr = dev->_device->CreateTexture2D(&depthTexDesc, NULL, &depthTexture);
+		hr = Render::Get()->_device->CreateTexture2D(&depthTexDesc, NULL, &depthTexture);
 		depthDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 		depthDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		depthDesc.Texture2D.MipSlice = 0;
-		hr = dev->_device->CreateDepthStencilView(depthTexture, &depthDesc, &depthStencil);
+		hr = Render::Get()->_device->CreateDepthStencilView(depthTexture, &depthDesc, &depthStencil);
 		return hr;
 	}
 
@@ -128,12 +135,22 @@ namespace DEN
 		depthStencil = NULL;
 	}
 
-	void DepthStencil::Restart(Render *dev)
+	void DepthStencil::Restart()
 	{
 		HRESULT hr;
 		Release();
-		hr = dev->_device->CreateTexture2D(&depthTexDesc, NULL, &depthTexture);
-		hr = dev->_device->CreateDepthStencilView(depthTexture, &depthDesc, &depthStencil);
+		hr = Render::Get()->_device->CreateTexture2D(&depthTexDesc, NULL, &depthTexture);
+		hr = Render::Get()->_device->CreateDepthStencilView(depthTexture, &depthDesc, &depthStencil);
+	}
+
+	void DepthStencil::Resize(uint width, uint height)
+	{
+		HRESULT hr;
+		Release();
+		depthTexDesc.Width = width;
+		depthTexDesc.Height = height;
+		hr = Render::Get()->_device->CreateTexture2D(&depthTexDesc, NULL, &depthTexture);
+		hr = Render::Get()->_device->CreateDepthStencilView(depthTexture, &depthDesc, &depthStencil);
 	}
 
 	Target::Target(RenderTarget *r, DepthStencil *d)
@@ -147,23 +164,27 @@ namespace DEN
 		delete render;
 		delete depth;
 	}
-
+	void Target::Create()
+	{
+		render->Create();
+		depth->Create();
+	}
 	void Target::Create(RenderTexture *tex)
 	{
-		render->Create(Render::Get(), tex);
-		depth->Create(Render::Get(), tex->GetTextureDesc().Width, tex->GetTextureDesc().Height);
+		render->Create(tex);
+		depth->Create(tex->GetTextureDesc().Width, tex->GetTextureDesc().Height);
 	}
 
-	void Target::Restart(Render *dev)
+	void Target::Restart()
 	{
 		HRESULT hr;
 		Release();
-		render->Restart(dev);
+		render->Restart();
 
 		depth->depthTexDesc.Width = render->renderTexture->GetTextureDesc().Width;
 		depth->depthTexDesc.Height = render->renderTexture->GetTextureDesc().Height;
-		hr = dev->_device->CreateTexture2D(&depth->depthTexDesc, NULL, &depth->depthTexture);
-		hr = dev->_device->CreateDepthStencilView(depth->depthTexture, &depth->depthDesc, &depth->depthStencil);
+		hr = Render::Get()->_device->CreateTexture2D(&depth->depthTexDesc, NULL, &depth->depthTexture);
+		hr = Render::Get()->_device->CreateDepthStencilView(depth->depthTexture, &depth->depthDesc, &depth->depthStencil);
 	}
 
 	void Target::Release()
@@ -172,6 +193,12 @@ namespace DEN
 			render->Release();
 		if(depth)
 			depth->Release();
+	}
+
+	void Target::Resize(uint width, uint height)
+	{
+		render->Resize(width, height);
+		depth->Resize(width, height);
 	}
 
 	Render *Render::_this = nullptr;
@@ -193,8 +220,8 @@ namespace DEN
 	}
 	Render::~Render()
 	{
-		for each(set<Target*>::value_type elem in _targets)
-			delete elem;
+		for (Target* target : _targets)
+			delete target;
 		if(_output)
 			_output->Release();
 		if(_rasterState)
@@ -211,6 +238,23 @@ namespace DEN
 			_deviceContext->Release();
 		if(_device)
 			_device->Release();
+	}
+	void Render::Resize()
+	{
+		if(_swapChain)
+		{
+			for(Target* target : _targets)
+				target->Release();
+			DXGI_SWAP_CHAIN_DESC desc;
+			_swapChain->GetDesc(&desc);
+			_deviceContext->ClearState();
+			_deviceContext->OMSetDepthStencilState(NULL, 0);
+			_deviceContext->OMSetRenderTargets(0, NULL, NULL);
+			_deviceContext->Flush();
+			_swapChain->ResizeBuffers(desc.BufferCount, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
+			for (Target* target : _targets)
+				target->Restart();
+		}
 	}
 	UINT Render::GetWidth()
 	{
@@ -261,7 +305,6 @@ namespace DEN
 			return false;
 		_swapChain->GetContainingOutput(&_output);
 
-		_defaultTarget->render->Create(this);
 		SetViewport(Viewport(0, 0, _swapDesc.BufferDesc.Width, _swapDesc.BufferDesc.Height, 0.0f, 1.0f));
 		UINT num = 0;
 		DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -278,7 +321,7 @@ namespace DEN
 		_window = _screen;
 		_window.Width = sizeX;
 		_window.Height = sizeY;
-		_defaultTarget->depth->Create(this);
+		_defaultTarget->Create();
 		SetDefaultRenderTarget();
 
 		_rasterDesc.AntialiasedLineEnable = false;
@@ -378,7 +421,7 @@ namespace DEN
 			Log::Get()->Error("Device Error", "Device not be Resize Buffers");
 			return;
 		}
-		_backTarget->Restart(this);
+		_backTarget->Restart();
 		SetDefaultRenderTarget();
 		BOOL ful;
 		IDXGIOutput *dev;

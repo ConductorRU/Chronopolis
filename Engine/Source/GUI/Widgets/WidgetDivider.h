@@ -10,5 +10,6 @@ namespace DEN
 	public:
 		WidgetDivider(GUI *gui);
 		~WidgetDivider();
+		Widget *GetPartDivider(bool isSecond = false) { return _part[(int)isSecond]; };
 	};
 }
