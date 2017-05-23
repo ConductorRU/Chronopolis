@@ -217,6 +217,7 @@ namespace DEN
 		_samplerState = nullptr;
 		_blendState = nullptr;
 		_depthState = nullptr;
+		_debug = nullptr;
 	}
 	Render::~Render()
 	{
@@ -239,10 +240,117 @@ namespace DEN
 		if(_device)
 			_device->Release();
 	}
+	/*RenderTexture *Render::CreateTexture(UINT sizeX, UINT sizeY, RESOURCE_TYPE type, DXGI_FORMAT format, UINT arraySize)
+	{
+		ID3D11ShaderResourceView *_res = nullptr;
+		ID3D11Texture2D *_texture = nullptr;
+
+		RenderTexture *tex = new RenderTexture;
+		D3D11_TEXTURE2D_DESC desc = { 0 };
+		ID3D11Device *dev = Render::Get()->_device;
+		ID3D11DeviceContext *con = Render::Get()->_deviceContext;
+		desc.Width = sizeX;
+		desc.Height = sizeY;
+		desc.MipLevels = 0U;
+		desc.ArraySize = arraySize;
+		desc.Format = format;//DXGI_FORMAT_B8G8R8A8_UNORM;
+		desc.SampleDesc.Count = 1;
+		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		if (type == RESOURCE_GPU)
+		{
+			desc.Usage = D3D11_USAGE_DEFAULT;
+			desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+			desc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
+			int v = min(sizeX, sizeY) / 2;
+			int p = 0;
+			while (v > 1)
+			{
+				++p;
+				v /= 2;
+			}
+			desc.CPUAccessFlags = 0;
+			desc.MipLevels = 0;
+		}
+		else if (type == RESOURCE_IMMUTABLE)
+		{
+			desc.Usage = D3D11_USAGE_IMMUTABLE;
+			desc.CPUAccessFlags = 0;
+		}
+		else if (type == RESOURCE_DYNAMIC)
+		{
+			desc.MipLevels = 1;
+			desc.Usage = D3D11_USAGE_DYNAMIC;
+			desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		}
+		else if (type == RESOURCE_CPU)
+		{
+			desc.Usage = D3D11_USAGE_STAGING;
+			desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
+			desc.BindFlags = 0;
+			desc.MiscFlags = 0;
+		}
+		else if (type == RESOURCE_RENDER)
+		{
+			desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			desc.Usage = D3D11_USAGE_DEFAULT;
+			desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+			desc.MiscFlags = 0;
+			desc.CPUAccessFlags = 0;
+			desc.MipLevels = 1;
+		}
+		else if (type == RESOURCE_DEPTH)///заменить
+		{
+			desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+			desc.Usage = D3D11_USAGE_DEFAULT;
+			desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		}
+		HRESULT hr;
+		if (z_data == NULL)
+			hr = dev->CreateTexture2D(&desc, NULL, &_texture);//CreateTexture(sizeX, sizeY, 0, D3DUSAGE_AUTOGENMIPMAP, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &tex, NULL)
+		else
+		{
+			if (desc.Usage != D3D11_USAGE_DYNAMIC || desc.Usage != D3D11_USAGE_STAGING)
+			{
+				hr = dev->CreateTexture2D(&desc, NULL, &_texture);
+				con->UpdateSubresource(_texture, 0, 0, z_data, sizeX * 4, sizeX*sizeY * 4);
+			}
+			else
+			{
+				desc.MipLevels = 1;
+				desc.CPUAccessFlags = 0;
+				D3D11_SUBRESOURCE_DATA res;
+				res.pSysMem = z_data;
+				res.SysMemPitch = sizeX * 4;
+				res.SysMemSlicePitch = 0;
+				hr = dev->CreateTexture2D(&desc, &res, &_texture);
+			}
+		}
+		if (hr != S_OK)
+			return;
+		if (desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+			ZeroMemory(&srvDesc, sizeof(srvDesc));  //zero out shader resouce view description 
+			srvDesc.Format = desc.Format;
+			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;  //its an texture array 2d 
+			srvDesc.Texture2D.MipLevels = -1;  //we want all slices, so begin at 0
+			if (type == RESOURCE_RENDER)
+				srvDesc.Texture2D.MipLevels = 1;
+			srvDesc.Texture2D.MostDetailedMip = 0;
+			hr = dev->CreateShaderResourceView(_texture, &srvDesc, &_res);
+			if (hr != S_OK)
+				return;
+			if (type == RESOURCE_GPU)
+				con->GenerateMips(_res);
+		}
+		_texture->GetDesc(&desc);
+		return tex;
+	}*/
 	void Render::Resize()
 	{
 		if(_swapChain)
 		{
+			_debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 			for(Target* target : _targets)
 				target->Release();
 			DXGI_SWAP_CHAIN_DESC desc;
@@ -251,6 +359,7 @@ namespace DEN
 			_deviceContext->OMSetDepthStencilState(NULL, 0);
 			_deviceContext->OMSetRenderTargets(0, NULL, NULL);
 			_deviceContext->Flush();
+			_debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 			_swapChain->ResizeBuffers(desc.BufferCount, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
 			for (Target* target : _targets)
 				target->Restart();
@@ -303,6 +412,7 @@ namespace DEN
 #endif
 		if(FAILED(D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, flag, features, 5, D3D11_SDK_VERSION, &_swapDesc, &_swapChain, &_device, &_featureLevel, &_deviceContext)))
 			return false;
+		_device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&_debug));
 		_swapChain->GetContainingOutput(&_output);
 
 		SetViewport(Viewport(0, 0, _swapDesc.BufferDesc.Width, _swapDesc.BufferDesc.Height, 0.0f, 1.0f));

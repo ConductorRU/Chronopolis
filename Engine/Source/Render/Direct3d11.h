@@ -138,7 +138,9 @@ namespace DEN
 		Viewport _view;
 		Target *_defaultTarget;
 		Target *_backTarget;
+		ID3D11Debug *_debug;
 		set<Target*> _targets;
+		set<RenderTexture*> _textures;
 		int _vSync;
 		ID3D11RasterizerState *_rasterState;
 		ID3D11SamplerState *_samplerState;
@@ -154,6 +156,7 @@ namespace DEN
 		float GetAspect() { return (float)GetWidth() / (float)GetHeight(); };
 		Render();
 		~Render();
+		//RenderTexture *CreateTexture(UINT sizeX, UINT sizeY, RESOURCE_TYPE type = RESOURCE_DYNAMIC, DXGI_FORMAT format = DXGI_FORMAT_B8G8R8A8_UNORM, UINT arraySize = 1u);
 		void Resize();
 		UINT GetWidth();
 		UINT GetHeight();
