@@ -546,6 +546,9 @@ void Game::Init()
 		GetEngine()->Exit();
 		return false;
 	};
+
+	XMLNode *node = XML::Load("D:\\Release\\DirectX\\Chronopolis\\category_welcome.svg");
+
 }
 
 void Game::Update()

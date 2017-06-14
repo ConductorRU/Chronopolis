@@ -13,4 +13,5 @@
 #include "Actor/Actor.h"
 #include "Procedure/Class.h"
 #include "Modifier2D/Class.h"
+#include "Format/Class.h"
 using namespace DEN;

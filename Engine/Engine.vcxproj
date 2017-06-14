@@ -161,6 +161,9 @@
     <ClCompile Include="Source\Core\File.cpp" />
     <ClCompile Include="Source\Core\Log.cpp" />
     <ClCompile Include="Source\Core\Variable.cpp" />
+    <ClCompile Include="Source\Format\Format.cpp" />
+    <ClCompile Include="Source\Format\SVG.cpp" />
+    <ClCompile Include="Source\Format\XML.cpp" />
     <ClCompile Include="Source\GUI\Font.cpp" />
     <ClCompile Include="Source\GUI\GUI.cpp" />
     <ClCompile Include="Source\GUI\GUIListener.cpp" />
@@ -224,6 +227,10 @@
     <ClInclude Include="Source\Core\Log.h" />
     <ClInclude Include="Source\Core\Variable.h" />
     <ClInclude Include="Source\DC.h" />
+    <ClInclude Include="Source\Format\Class.h" />
+    <ClInclude Include="Source\Format\Format.h" />
+    <ClInclude Include="Source\Format\SVG.h" />
+    <ClInclude Include="Source\Format\XML.h" />
     <ClInclude Include="Source\GUI\Class.h" />
     <ClInclude Include="Source\GUI\Font.h" />
     <ClInclude Include="Source\GUI\GUI.h" />

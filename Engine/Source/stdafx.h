@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <clocale>
 #include <ctime>
 #include <stdio.h>
@@ -18,6 +19,9 @@
 #include <assert.h>
 #include <crtdbg.h>
 #include <thread>
+#include <cstdlib>
+#include <algorithm>
+#include <sstream> 
 
 #ifdef _DEBUG
 #include <crtdbg.h>

@@ -53,6 +53,9 @@
     <Filter Include="Source\Modifier">
       <UniqueIdentifier>{1de7790f-b7c4-460e-ba0c-7f2bab405560}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Format">
+      <UniqueIdentifier>{421b8dc2-e6f1-4d33-9694-c6fa9d9fd6b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -213,6 +216,15 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Format\SVG.cpp">
+      <Filter>Source\Format</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Format\XML.cpp">
+      <Filter>Source\Format</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Format\Format.cpp">
+      <Filter>Source\Format</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -422,6 +434,18 @@
     </ClInclude>
     <ClInclude Include="Source\Modifier2D\Mod2Noise.h">
       <Filter>Source\Modifier2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Format\SVG.h">
+      <Filter>Source\Format</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Format\XML.h">
+      <Filter>Source\Format</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Format\Class.h">
+      <Filter>Source\Format</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Format\Format.h">
+      <Filter>Source\Format</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
