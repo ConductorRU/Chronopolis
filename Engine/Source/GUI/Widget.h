@@ -1,6 +1,7 @@
 #pragma once
 #include "../Math/Point2.h"
 #include "../Math/Color.h"
+#include "../Math/Matrix2D.h"
 #include "Style.h"
 namespace DEN
 {
@@ -81,5 +82,27 @@ namespace DEN
 		void Rebake(bool andChilds);
 		void Draw(bool andChilds = true);
 		Widget *GetPick(const Point2 &pos);
+	};
+
+	class WidgetNode
+	{
+	private:
+		GUI *_gui;
+		Matrix2D _aTransform;
+		Matrix2D _rTransform;
+		WidgetNode *_parent;
+		vector<WidgetNode*> z_childs;
+		vector<Vertex2D> v;
+		Style _style;
+	public:
+		WidgetNode *GetParent() { return _parent; };
+		Matrix2D &GetAbsoluteTransform() { return _aTransform; };
+		Matrix2D &GetRelativeTransform() { return _rTransform; };
+		WidgetNode *GetChild(uint num) { if (num < GetChildCount()) return z_childs[num]; return nullptr; };
+		uint GetChildCount() { return (uint)z_childs.size(); };
+
+		//WidgetNode(GUI *gui);
+		//~WidgetNode();
+		//void Bake(const Style &style);//
 	};
 };

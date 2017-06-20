@@ -50,14 +50,14 @@ namespace DEN
 			{
 				int x = atoi(_line->GetData("x").c_str());
 				int v = eve.x;
-				int w = _line->GetProperty().GetSquare().maxX;
+				int w = (int)_line->GetProperty().GetSquare().maxX;
 				int hw = w/2;
 				if(v < hw)
 					v = hw;
 				else if(v > _line->GetParent()->GetProperty().GetSquare().maxX - hw)
-					v = _line->GetParent()->GetProperty().GetSquare().maxX - hw;
+					v = (int)_line->GetParent()->GetProperty().GetSquare().maxX - hw;
 				_line->GetParent()->GetByName("el1")->SetStyle("width:" + to_string(v) + "px");
-				int width = _line->GetParent()->GetProperty().GetSquare().maxX - v;
+				int width = (int)_line->GetParent()->GetProperty().GetSquare().maxX - v;
 				_line->GetParent()->GetByName("el2")->SetStyle("x:" + to_string(v) + "px;width:" + to_string(width) + "px");
 				_line->SetStyle("x:" + to_string(v - hw) + "px");
 				return true;

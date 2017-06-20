@@ -7,6 +7,15 @@ namespace DEN
 	class Widget;
 	struct Property
 	{
+	public:
+		enum DISPLAY
+		{
+			DISPLAY_NONE    = 0,
+			DISPLAY_BLOCK   = 1,
+			DISPLAY_TEXT    = 2,
+			DISPLAY_TEXTBOX = 3,
+			DISPLAY_SPINNER = 4,
+		};
 	private:
 		Square square;
 		Square margin;
@@ -17,7 +26,7 @@ namespace DEN
 		Vector2 relative;
 		Point2 caret;
 		int order;
-		int display;
+		DISPLAY display;
 		char position;
 		char align;
 		char wSpace;
@@ -42,7 +51,7 @@ namespace DEN
 		const Point2 &GetCaret() const { return caret; }
 		const Square &GetUV() const { return uv; }
 		const int &GetOrder() const { return order; }
-		const int &GetDisplay() const { return display; }
+		const DISPLAY &GetDisplay() const { return display; }
 		const char &GetAlign() const { return align; }
 		const char &GetPosition() const { return position; }
 		const char &GetWhiteSpace() const { return wSpace; }
@@ -66,7 +75,7 @@ namespace DEN
 		void SetPosition(char var) { if(position != var) z_isUpdate = true; position = var; }
 		void SetWhiteSpace(char var) { if(wSpace != var) z_isUpdate = true; wSpace = var; }
 		void SetOrder(int var) { if(order != var) z_isUpdate = true;  order = var; }
-		void SetDisplay(int var) { if(display != var) z_isUpdate = true;  display = var;  }
+		void SetDisplay(DISPLAY var) { if(display != var) z_isUpdate = true;  display = var;  }
 		void SetColor(const Color &var) { if(color != var) z_isUpdate = true; color = var; }
 		void SetBackground(const Color &var) { if(background != var) z_isUpdate = true; background = var; }
 		void SetInnerText(const string &var) { if(innerText != var) z_isUpdate = true; innerText = var; }
@@ -95,5 +104,24 @@ namespace DEN
 		void SetEvent(const string &eve, const string &style);
 		string Get(const string &name) const;
 		bool IsStyleEvent(const string &name);
+	};
+	class StyleWidget
+	{
+	public:
+		enum DISPLAY
+		{
+			DISPLAY_NONE = 0,
+			DISPLAY_BLOCK = 1,
+			DISPLAY_TEXT = 2,
+			DISPLAY_TEXTBOX = 3,
+			DISPLAY_SPINNER = 4,
+		};
+	private:
+		DISPLAY *display;
+		Color *backgroundColor;
+		float *width;
+		float *height;
+	public:
+		StyleWidget() { memset(this, 0, sizeof(StyleWidget)); };
 	};
 };

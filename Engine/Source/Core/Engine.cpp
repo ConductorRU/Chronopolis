@@ -231,12 +231,12 @@ namespace DEN
 		_wClass.cbClsExtra = 0L;
 		_wClass.cbWndExtra = 0L;
 		_wClass.hInstance = GetModuleHandle(NULL);
-		_wClass.hIcon = LoadIcon(_wClass.hInstance, MAKEINTRESOURCE(101));
+		_wClass.hIcon = LoadIcon(_wClass.hInstance, MAKEINTRESOURCE(1));
 		_wClass.hCursor = NULL;
 		_wClass.hbrBackground = NULL;
 		_wClass.lpszMenuName = NULL;
 		_wClass.lpszClassName = L"DEN";
-		_wClass.hIconSm = LoadIcon(_wClass.hInstance, MAKEINTRESOURCE(101));
+		_wClass.hIconSm = LoadIcon(_wClass.hInstance, MAKEINTRESOURCE(1));
 		RegisterClassEx(&_wClass);
 		DWORD style = 0;
 		if(!fullscreen)

@@ -3,6 +3,11 @@
 namespace DEN
 {
 	vector<string> XML::errors;
+	XMLNode::~XMLNode()
+	{
+		for(XMLNode* n: childs)
+			delete n;
+	}
 	XMLNode* XML::Load(const string &filename)
 	{
 		XML::errors.clear();

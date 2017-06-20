@@ -2,7 +2,7 @@
 #include "Struct.h"
 #include "Lexer.h"
 #include "Compiler.h"
-void Lexer::AddWord(string &word, int row, int col)
+void Lexer::AddWord(string &word, uint row, uint col)
 {
 	if(word.size())
 		_list.push_back({word, row, col});
@@ -11,12 +11,12 @@ void Lexer::AddWord(string &word, int row, int col)
 void Lexer::Compile(const string &code, Compiler *comp)
 {
 	string w;
-	size_t size = code.size();
+	uint size = (uint)code.size();
 	char c;
 	string s1, s2, s3;
 	bool isLast = false;
 	int col = 1;
-	for(size_t i = 0; i < size; ++i)
+	for(uint i = 0; i < size; ++i)
 	{
 		c = code[i];
 		if(i + 1 == size)
