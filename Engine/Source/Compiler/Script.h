@@ -3,7 +3,7 @@ typedef void (*func)(char *ob, char *ret, char *data, int &n);
 struct Function
 {
 	func f;
-	int id;
+	uint id;
 };
 class Lib
 {

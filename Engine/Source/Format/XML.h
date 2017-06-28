@@ -8,6 +8,7 @@ namespace DEN
 		map<string, string> attributes;
 		string tag;
 		string text;
+		~XMLNode();
 	};
 	class XML
 	{

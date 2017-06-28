@@ -6,7 +6,7 @@ void Lib::AddFunc(const string &name, const string &ret, const string &args, fun
 {
 	Function *fun = new Function;
 	fun->f = f;
-	fun->id = fn2.size();
+	fun->id = (uint)fn2.size();
 	fn["void"][name] = fun;
 	fn2.push_back(fun);
 }

@@ -41,3 +41,5 @@
 
 using namespace std;
 typedef unsigned __int32 uint;
+typedef unsigned __int64 ulong;
+typedef size_t uxint;

@@ -4,13 +4,13 @@
 #include "Syntaxer.h"
 #include "Compiler.h"
 
-Syntax *Syntaxer::SplitOp(const vector<Lexem> &block, int start, int end, int &cur)
+Syntax *Syntaxer::SplitOp(const vector<Lexem> &block, uint start, uint end, uint &cur)
 {
-	int maxPrior = 1000;
+	uint maxPrior = 1000;
 	Operator *rootOp = nullptr;
 	Lexem lexOp;
-	int split = 0;
-	for(int i = start; i < end; ++i)
+	uint split = 0;
+	for(uint i = start; i < end; ++i)
 	{
 		if(block[i].word == ",")
 		{
@@ -68,14 +68,14 @@ Syntax *Syntaxer::SplitOp(const vector<Lexem> &block, int start, int end, int &c
 
 Syntax *Syntaxer::TypeBlock(const vector<Lexem> &block, Type *type)
 {
-	int size = block.size();
+	uint size = (uint)block.size();
 	Syntax *parent = new Syntax;
 	parent->type = SYNTAX_TYPENAME;
 	parent->value = block[0];
 	parent->typ = type;
 	bool isComa = false;
 	Syntax *var = nullptr;
-	for(int i = 1; i < size; ++i)
+	for(uint i = 1; i < size; ++i)
 	{
 		if(compiler->IsVarName(block[i].word))//if typename
 		{
@@ -94,7 +94,7 @@ Syntax *Syntaxer::TypeBlock(const vector<Lexem> &block, Type *type)
 		else if(!isComa && var && block[i].word == "=")//if setter
 		{
 			++i;
-			Syntax *val = SplitOp(block, i, block.size(), i);
+			Syntax *val = SplitOp(block, i, (uint)block.size(), i);
 			if(val)
 			{
 				var->childs.push_back(val);
@@ -110,7 +110,7 @@ Syntax *Syntaxer::TypeBlock(const vector<Lexem> &block, Type *type)
 }
 Syntax *Syntaxer::CompileBlock(const vector<Lexem> &block)
 {
-	int size = block.size();
+	uint size = (uint)block.size();
 	if(!size)
 		return nullptr;
 	Syntax *parent = nullptr;
@@ -121,8 +121,8 @@ Syntax *Syntaxer::CompileBlock(const vector<Lexem> &block)
 	}
 	else
 	{
-		int i = 0;
-		parent = SplitOp(block, 0, block.size(), i);
+		uint i = 0;
+		parent = SplitOp(block, 0, (uint)block.size(), i);
 	}
 	return parent;
 }

@@ -398,9 +398,9 @@ namespace DEN
 				if(caret->Get("display") == "block")
 				{
 					if((clock() / 500) % 2 == 0)
-						caret->GetProperty().SetDisplay(0);
+						caret->GetProperty().SetDisplay(Property::DISPLAY_NONE);
 					else
-						caret->GetProperty().SetDisplay(1);
+						caret->GetProperty().SetDisplay(Property::DISPLAY_BLOCK);
 				}
 				return true;
 			};
@@ -480,20 +480,20 @@ namespace DEN
 			{
 				if(value == "block")
 				{
-					z_prop.SetDisplay(1);
+					z_prop.SetDisplay(Property::DISPLAY_BLOCK);
 					continue;
 				}
 				else if(value == "none")
 				{
-					z_prop.SetDisplay(0);
+					z_prop.SetDisplay(Property::DISPLAY_NONE);
 					return;
 				}
 				else if(value == "text")
-					z_prop.SetDisplay(2);
+					z_prop.SetDisplay(Property::DISPLAY_TEXT);
 				else if(value == "textbox")
-					z_prop.SetDisplay(3);
+					z_prop.SetDisplay(Property::DISPLAY_TEXTBOX);
 				else if(value == "spinner")
-					z_prop.SetDisplay(4);
+					z_prop.SetDisplay(Property::DISPLAY_SPINNER);
 			}
 			else if(name == "position")
 			{

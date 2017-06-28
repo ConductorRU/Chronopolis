@@ -381,6 +381,11 @@ void Game::Init()
 	ren->Create(texx);
 	mScene->SetBackground(Color(95, 148, 192));
 
+	Widget *text2 = divider->GetPartDivider(false)->CreateChild();
+	text2->SetStyle("x:0;y:0;width:100%;height:50px;color:#000;display:text;align:center;");
+	text2->GetProperty().SetInnerText("Text");
+	text2->SetId("vx");
+	divider->GetPartDivider(true)->SetTexture(texx);
 	divider->GetPartDivider(true)->CreateListener();
 	divider->GetPartDivider(true)->GetListener()->onUpdate = [this, divider, ren]()
 	{
@@ -388,7 +393,7 @@ void Game::Init()
 		int height = divider->GetPartDivider(true)->GetProperty().GetSquare().maxY;
 		static int i = 0;
 		static int oY = height;
-		if (i < 10)
+		if(i < 10)
 		{
 			ren->Resize(width, height);
 			++i;

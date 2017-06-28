@@ -8,7 +8,7 @@ CodeVar *CodeBlock::AddVar(const Lexem &name)
 {
 	CodeVar *v = new CodeVar;
 	v->name = name;
-	v->id = vars.size();
+	v->id = (uint)vars.size();
 	vars[name.word] = v;
 	return v;
 }

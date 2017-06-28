@@ -11,6 +11,8 @@ namespace DEN
 	class InputLayout;
 	class Style;
 	class Widget;
+	class Pass;
+	class Texture;
 	class GUI
 	{
 	private:

@@ -8,7 +8,7 @@ namespace DEN
 	Property::Property()
 	{
 		order = 0;
-		display = 1;
+		display = DISPLAY_BLOCK;
 		position = 0;
 		align = 0;
 		wSpace = 0;

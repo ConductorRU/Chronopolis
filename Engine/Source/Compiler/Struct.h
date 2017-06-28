@@ -35,14 +35,14 @@ enum SEMANTIC_TYPE
 struct Lexem
 {
 	string word;
-	int row;
-	int col;
+	uint row;
+	uint col;
 };
 struct Operator
 {
 	string name;
 	OPERATOR_TYPE type;
-	int prior;
+	uint prior;
 	ASSOC_TYPE assoc;
 };
 struct Type
@@ -63,7 +63,7 @@ struct Syntax
 };
 struct CodeVar
 {
-	int id;
+	uint id;
 	Lexem name;
 };
 struct CodeBlock
