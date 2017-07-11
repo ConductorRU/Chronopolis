@@ -2,14 +2,14 @@
 #include "../Widget.h"
 namespace DEN
 {
-	class WidgetDivider: public Widget
+	class WidgetDivider: public WidgetX
 	{
 	private:
-		Widget *_part[2];
-		Widget *_line;
+		WidgetX *_part[2];
+		WidgetX *_line;
 	public:
 		WidgetDivider(GUI *gui);
 		~WidgetDivider();
-		Widget *GetPartDivider(bool isSecond = false) { return _part[(int)isSecond]; };
+		WidgetX *GetPartDivider(bool isSecond = false) { return _part[(int)isSecond]; };
 	};
 }

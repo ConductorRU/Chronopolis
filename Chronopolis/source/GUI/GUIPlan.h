@@ -3,7 +3,7 @@
 class GUIPlan
 {
 private:
-	Widget *_root;
+	WidgetX *_root;
 public:
 	GUIPlan(GUI *gui);
 	~GUIPlan();

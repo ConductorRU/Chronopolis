@@ -9,9 +9,9 @@ namespace DEN
 	{
 		_root = nullptr;
 	}
-	Widget *SVG::ParseNode(XMLNode *node)
+	WidgetX *SVG::ParseNode(XMLNode *node)
 	{
-		Widget *w = nullptr;
+		WidgetX *w = nullptr;
 		return w;
 	}
 	SVG::SVG()

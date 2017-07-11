@@ -4,7 +4,7 @@
 #include "GUI.h"
 namespace DEN
 {
-	GUIListener::GUIListener(Widget *el)
+	GUIListener::GUIListener(WidgetX *el)
 	{
 		z_element = el;
 		z_isHover = false;
@@ -49,11 +49,11 @@ namespace DEN
 		}
 		return false;
 	}
-	void GUIListener::SetElement(Widget *el)
+	void GUIListener::SetElement(WidgetX *el)
 	{
 		z_element = el;
 	}
-	Widget *GUIListener::GetElement()
+	WidgetX *GUIListener::GetElement()
 	{
 		return z_element;
 	}

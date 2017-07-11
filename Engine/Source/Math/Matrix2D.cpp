@@ -11,6 +11,14 @@ namespace DEN
 		m[2][0] = p.x;
 		m[2][1] = p.y;
 	}
+	void Matrix2D::SetTranslationX(float x)
+	{
+		m[2][0] = x;
+	}
+	void Matrix2D::SetTranslationY(float y)
+	{
+		m[2][1] = y;
+	}
 	void Matrix2D::SetScale(const Vector2 &p)
 	{
 		m[0][0] = p.x;

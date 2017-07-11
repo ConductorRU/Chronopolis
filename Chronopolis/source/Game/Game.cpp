@@ -24,7 +24,7 @@ void ActorRoad::Generate(Pass *pass)
 	Paramesh *pm = new Paramesh();
 	vector<Sector> *v = (vector<Sector>*)GetVariable("points");
 	pm->Begin(Game::Get()->GetInputLayout());
-	uint size = v->size();
+	uint size = (uint)v->size();
 	if(size > 1)
 		for(uint i = 0; i < size - 1u; ++i)
 		{
@@ -362,12 +362,16 @@ void Game::Init()
 	Font *font = man->LoadFont("Verdana", 22);
 	Scene *mScene = _engine->CreateScene();
 	Scene *sc = _engine->CreateScene();
+
+	Widget *block = new Widget(sc->GetGUI());
+	block->SetParent(sc->GetGUI()->GetRoot());
+	block->SetStyle("display:block; top:10px;left:10px;right:10px;bottom:10px;width: 200px; height:40px; background-color: #3498db;border-radius:5px;");
 	
-	WidgetDivider *divider = new WidgetDivider(mScene->GetGUI());
+	/*WidgetDivider *divider = new WidgetDivider(mScene->GetGUI());
 	divider->SetParent(mScene->GetGUI()->GetRoot());
 	divider->SetStyle("width:100%;height:100%;background-color:#aaa;");
 
-	Widget *text1 = divider->GetPartDivider(true)->CreateChild("el1");
+	WidgetX *text1 = divider->GetPartDivider(true)->CreateChild("el1");
 	text1->SetStyle("x:0;y:0;width:100%;height:100%;background-color:#aaa;display:block;");
 	text1->SetId("v1");
 	Texture *texx = new Texture();
@@ -381,7 +385,7 @@ void Game::Init()
 	ren->Create(texx);
 	mScene->SetBackground(Color(95, 148, 192));
 
-	Widget *text2 = divider->GetPartDivider(false)->CreateChild();
+	WidgetX *text2 = divider->GetPartDivider(false)->CreateChild();
 	text2->SetStyle("x:0;y:0;width:100%;height:50px;color:#000;display:text;align:center;");
 	text2->GetProperty().SetInnerText("Text");
 	text2->SetId("vx");
@@ -398,7 +402,7 @@ void Game::Init()
 			ren->Resize(width, height);
 			++i;
 		}
-	};
+	};*/
 	sc->SetBackground(Color(64, 64, 64));
 	ia = man->CreateInputLayout();
 	ia->Add("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
@@ -411,9 +415,9 @@ void Game::Init()
 
 	//_toolset = new Toolset(sc);
 	//_toolset->InitWorkspace();
-	_guiPlayer = new GUIPlayer(sc);
-	_guiPlayer->Initialize();
-	Widget *text = sc->GetGUI()->CreateElement("el1");
+	//_guiPlayer = new GUIPlayer(sc);
+	//_guiPlayer->Initialize();
+	WidgetX *text = sc->GetGUI()->CreateElement("el1");
 	text->SetStyle("x:10px;y:0;width:100px;height:50px;color:#000;display:text;");
 	text->GetProperty().SetInnerText("Text");
 	text->SetId("v1");
@@ -564,7 +568,7 @@ void Game::Update()
 		//Paramesh *pm = (Paramesh*)act->GetComponent("mesh");
 		//char *c[2] = {(char *)_actors[0], (char *)pm};
 		//_scripts[1]->func["onAdd"](c);
-		Widget *v1 = _engine->GetScene()->GetGUI()->GetElementById("v1");
+		WidgetX *v1 = _engine->GetScene()->GetGUI()->GetElementById("v1");
 		//gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
 		_world->Update();
 		_player->Update();

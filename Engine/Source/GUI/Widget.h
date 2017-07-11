@@ -16,7 +16,7 @@ namespace DEN
 		Color col;
 		Vector2 uv;
 	};
-	class Widget: public Style
+	class WidgetX: public Style
 	{
 	protected:
 		Pass *z_pass;
@@ -24,10 +24,10 @@ namespace DEN
 		RenderMesh *z_buffer;
 		GUI *z_gui;
 		Texture *z_texture;
-		Widget *z_parent;
-		Widget *z_root;
+		WidgetX *z_parent;
+		WidgetX *z_root;
 		GUIListener *z_listener;
-		vector<Widget*> z_childs;
+		vector<WidgetX*> z_childs;
 		vector<string> z_class;
 		vector<Vertex2D> v;
 		set<string> z_set;
@@ -39,7 +39,7 @@ namespace DEN
 		void SetBake(bool isBake);
 	public:
 		int count;
-		Widget *GetParent() { return z_parent; };
+		WidgetX *GetParent() { return z_parent; };
 		GUIListener *GetListener() { return z_listener; };
 		RenderMesh *GetVertexBuffer() { return z_buffer; };
 		GUI *GetGUI() { return z_gui; };
@@ -47,12 +47,12 @@ namespace DEN
 		Property &GetProperty() { return z_prop; };
 		string GetName() { return z_name; };
 		string GetId() { return z_id; };
-		Widget(GUI *gui);
-		~Widget();
-		Widget *GetByName(const string &name);
+		WidgetX(GUI *gui);
+		~WidgetX();
+		WidgetX *GetByName(const string &name);
 		void DeleteChilds();
 		bool IsEvent(const string &name);
-		bool IsChild(Widget *c, bool depthAll);
+		bool IsChild(WidgetX *c, bool depthAll);
 		void AddClass(const string &name);
 		bool IsClass(const string &name);
 		void RemoveClass(const string &name);
@@ -64,9 +64,9 @@ namespace DEN
 		void SetName(const string &name);
 		void SetId(const string &id);
 		bool Pick(const Point2 &p, bool andChilds = false);
-		Widget *CreateChild(const string &name = "", bool isEvent = false, const string &classes = "");
+		WidgetX *CreateChild(const string &name = "", bool isEvent = false, const string &classes = "");
 		GUIListener *CreateListener();
-		Widget *GetChild(UINT num);
+		WidgetX *GetChild(UINT num);
 		UINT GetChildCount();
 		void SetTexture(Texture *tex);
 		void AddEvent(const string &name);
@@ -75,34 +75,57 @@ namespace DEN
 		void ChangeDisplay();
 		void Update(bool isPreview = false);
 		void Bake();
-		void SetParent(Widget *p);
+		void SetParent(WidgetX *p);
 		void BakeAll();
 		virtual void BakeBuffer();
 		virtual void Before() {};
 		void Rebake(bool andChilds);
 		void Draw(bool andChilds = true);
-		Widget *GetPick(const Point2 &pos);
+		WidgetX *GetPick(const Point2 &pos);
 	};
 
-	class WidgetNode
+	struct WidgetProp
+	{
+		string name;
+		string value;
+	};
+	class Widget
 	{
 	private:
 		GUI *_gui;
+		Widget *_parent;
+		RenderMesh *_buffer;
+		Pass *_pass;
+		Square _rect;//top, left, right, bottom
 		Matrix2D _aTransform;
 		Matrix2D _rTransform;
-		WidgetNode *_parent;
-		vector<WidgetNode*> z_childs;
+		vector<Widget*> z_childs;
 		vector<Vertex2D> v;
-		Style _style;
+		map<string, string> _prop;//CSS => style="" => SetProperty("name", "value");
+		string _GetStyle(const string& name, const map<string, string> &inherit);
+		bool _update;
+		bool _visible;
 	public:
-		WidgetNode *GetParent() { return _parent; };
+		Widget *GetParent() { return _parent; };
 		Matrix2D &GetAbsoluteTransform() { return _aTransform; };
 		Matrix2D &GetRelativeTransform() { return _rTransform; };
-		WidgetNode *GetChild(uint num) { if (num < GetChildCount()) return z_childs[num]; return nullptr; };
+		Widget *GetChild(uint num) { if (num < GetChildCount()) return z_childs[num]; return nullptr; };
 		uint GetChildCount() { return (uint)z_childs.size(); };
 
-		//WidgetNode(GUI *gui);
-		//~WidgetNode();
-		//void Bake(const Style &style);//
+		static float PercentWidth(const string &val, Widget *parent = nullptr);
+		static float PercentHeight(const string &val, Widget *parent = nullptr);
+		static float GetPixel(const string &name, const string &val, Widget *parent = nullptr);
+		static Color GetColor(const string &val);
+		Widget(GUI *gui);
+		~Widget();
+		void SetStyle(const string &style, const string &eve = "");
+		bool SetProperty(const string& name, const string& value);
+		string GetProperty(const string& name);
+		void SetParent(Widget *parent);
+		virtual void BakeBuffer();
+		virtual void Bake(Widget *parent, map<string, string> inherit);//inherit не должно быть по ссылке
+		void BakeAll(map<string, string> inherit = {});
+		void Draw(bool andChilds = false);
 	};
+
 };

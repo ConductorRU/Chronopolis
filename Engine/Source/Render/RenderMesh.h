@@ -13,9 +13,12 @@ namespace DEN
 		D3D11_BUFFER_DESC _indexDesc;
 		UINT _vCount;
 		UINT _iCount;
+		D3D_PRIMITIVE_TOPOLOGY _topology;
 	public:
 		RenderMesh(InputLayout *lo);
 		~RenderMesh();
+		bool IsIndex() {return _iCount != 0;};
+		void SetTopology(D3D_PRIMITIVE_TOPOLOGY type) {_topology = type;}
 		UINT GetVertexCount() { return _vCount; };
 		UINT GetIndexCount() { return _iCount; };
 		InputLayout *GetInputLayout() { return _layout; };

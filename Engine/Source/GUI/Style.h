@@ -4,7 +4,7 @@
 #include "../Math/Square.h"
 namespace DEN
 {
-	class Widget;
+	class WidgetX;
 	struct Property
 	{
 	public:
@@ -83,15 +83,15 @@ namespace DEN
 	};
 	class Style
 	{
-	friend Widget;
+	friend WidgetX;
 	protected:
 		bool z_update;
 		bool z_enable;
 		map<string, map<string, string>> z_settings;
 		vector<string> z_settingOrder;
-		float PercentWidth(const string &val, Widget *parent = nullptr);
-		float PercentHeight(const string &val, Widget *parent = nullptr);
-		float GetPixel(const string &name, const string &val, Widget *parent = nullptr);
+		float PercentWidth(const string &val, WidgetX *parent = nullptr);
+		float PercentHeight(const string &val, WidgetX *parent = nullptr);
+		float GetPixel(const string &name, const string &val, WidgetX *parent = nullptr);
 		Color GetColor(const string &name, const string &val);
 		void OffUpdate() { z_update = false; }
 	public:

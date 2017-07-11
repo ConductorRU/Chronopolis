@@ -13,6 +13,7 @@ namespace DEN
 		_layout = lo;
 		_vertexDesc = {0};
 		_indexDesc = {0};
+		_topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	}
 	RenderMesh::~RenderMesh()
 	{
@@ -61,8 +62,11 @@ namespace DEN
 	{
 		UINT u = 0;
 		UINT vSize = _layout->GetSize();
-		Render::Get()->_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Render::Get()->_deviceContext->IASetPrimitiveTopology(_topology);
 		Render::Get()->_deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &vSize, &u);
-		Render::Get()->_deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		if(_iCount)
+			Render::Get()->_deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		else
+			Render::Get()->_deviceContext->IASetIndexBuffer(0, DXGI_FORMAT_R32_UINT, 0);
 	}
 }

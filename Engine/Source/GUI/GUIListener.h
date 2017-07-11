@@ -2,14 +2,14 @@
 #include "../Input/Input.h"
 namespace DEN
 {
-	class Widget;
+	class WidgetX;
 	class GUIListener:public InputListener
 	{
 	private:
-		Widget *z_element;
+		WidgetX *z_element;
 		bool z_isHover;
 	public:
-		GUIListener(Widget *el);
+		GUIListener(WidgetX *el);
 		function<bool(MouseEvent)> onHover = nullptr;
 		function<bool(MouseEvent)> onOver = nullptr;
 		function<bool(MouseEvent)> onOut = nullptr;
@@ -19,7 +19,7 @@ namespace DEN
 		function<bool()> onRender = nullptr;
 		bool OnMouseHit(const MouseEventClick &arg);
 		bool OnMouseMove(const MouseEvent &arg);
-		void SetElement(Widget *el);
-		Widget *GetElement();
+		void SetElement(WidgetX *el);
+		WidgetX *GetElement();
 	};
 };

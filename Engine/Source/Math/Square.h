@@ -4,10 +4,10 @@ namespace DEN
 {
 	struct Square
 	{
-		float minX;
-		float minY;
-		float maxX;
-		float maxY;
+		union { float minX; float left; };
+		union { float minY; float right; };
+		union { float maxX; float top; };
+		union { float maxY; float bottom; };
 		const bool operator== (const Square &s)
 		{
 			if(minX == s.minX && minY == s.minY && maxX == s.maxX && maxY == s.maxY)

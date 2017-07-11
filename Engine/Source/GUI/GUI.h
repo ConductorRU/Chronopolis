@@ -10,6 +10,7 @@ namespace DEN
 	class PixelShader;
 	class InputLayout;
 	class Style;
+	class WidgetX;
 	class Widget;
 	class Pass;
 	class Texture;
@@ -24,7 +25,7 @@ namespace DEN
 		Font *z_font;
 		Texture *z_fontT;
 		Texture *z_blank;
-		set<Widget*> z_all;
+		set<WidgetX*> z_all;
 		struct FontPass
 		{
 			Pass *pass;
@@ -32,14 +33,18 @@ namespace DEN
 		};
 		map<string, FontPass> z_fonts;
 		map<string, Style*> z_class;
-		map<string, Widget*> z_ids;
-		map<int, vector<Widget *>> z_order;
-		Widget *z_root;
-		Widget *z_picked;
+		map<string, WidgetX*> z_ids;
+		map<int, vector<WidgetX *>> z_order;
+		WidgetX *z_root;
+		Widget *_root;
+		WidgetX *z_picked;
 		UINT z_width;
 		UINT z_height;
 		UINT z_bakeCount;
-		Widget *z_inputBox;
+		WidgetX *z_inputBox;
+
+
+
 	public:
 		Pass *GetPass() { return z_pass; };
 		VertexShader *GetVS() { return _vs; };
@@ -48,26 +53,29 @@ namespace DEN
 		Texture *GetFontTexture() { return z_fontT; };
 		Texture *GetBlank() { return z_blank; };
 		InputLayout *GetInputLayout() { return z_input; };
-		Widget *GetRoot() { return z_root; };
-		Widget *GetInputElement() { return z_inputBox; };
+		Widget *GetRoot() { return _root; };
+		WidgetX *GetInputElement() { return z_inputBox; };
 		void BakeCounter() { ++z_bakeCount; };
 		UINT GetBakeCounter() { return z_bakeCount; };
 		GUI();
 		~GUI();
-		Widget *GetElementById(const string &name);
-		void AddId(Widget *el);
-		void RemoveId(Widget *el);
-		void FreeElement(Widget *el);
-		void SetInputElement(Widget *el);
-		bool IsPickChild(Widget *el, bool andEl = true);
+		WidgetX *GetElementById(const string &name);
+		void AddId(WidgetX *el);
+		void RemoveId(WidgetX *el);
+		void FreeElement(WidgetX *el);
+		void SetInputElement(WidgetX *el);
+		bool IsPickChild(WidgetX *el, bool andEl = true);
 		Style *CreateClass(const string &name);
 		Style *GetClass(const string &name);
-		void AddOrder(Widget *el);
+		void AddOrder(WidgetX *el);
 		void ClearOrder();
 		Font *Createfont(const string &name, const string &family, int size, bool isBold = false, bool isItalic = false);
-		Widget *CreateElement(const string &name = "", bool isEvent = false);
+		WidgetX *CreateElement(const string &name = "", bool isEvent = false);
 		void Render();
 		Font *GetFont();
 		void GetFont(const string &name, Font **font, Pass **pass);
+
+
+
 	};
 };

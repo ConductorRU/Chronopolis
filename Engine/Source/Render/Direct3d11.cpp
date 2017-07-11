@@ -660,11 +660,7 @@ namespace DEN
 		_blendDesc.RenderTarget[0].SrcBlendAlpha = (D3D11_BLEND)pass->GetSrcAlpha();
 		_blendDesc.RenderTarget[0].DestBlendAlpha = (D3D11_BLEND)pass->GetDestAlpha();
 		_blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-		//z_blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-		//z_blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
 		_blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-		//z_blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
-		//z_blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 		_blendState->Release();
 		_depthState->Release();
 		_rasterState->Release();
@@ -706,7 +702,10 @@ namespace DEN
 	{
 		_deviceContext->IASetInputLayout((ID3D11InputLayout*)mesh->GetInputLayout()->GetData());
 		mesh->Update();
-		_deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+		if(mesh->IsIndex())
+			_deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+		else
+			_deviceContext->Draw(mesh->GetVertexCount(), 0);
 	}
 	void Render::SetWindow(UINT windowX, UINT windowY, UINT renderX, UINT renderY, bool maxSize, HWND hWindow)
 	{

@@ -16,7 +16,7 @@ namespace DEN
 		z_isCaret = false;
 		uv = Square(0.0f, 0.0f, 1.0f, 1.0f);
 	}
-	float Style::PercentWidth(const string &val, Widget *parent)
+	float Style::PercentWidth(const string &val, WidgetX *parent)
 	{
 		float p = ((float)atof(val.c_str()))*0.01f;
 		if(parent)
@@ -27,7 +27,7 @@ namespace DEN
 		}
 		return float(Render::Get()->GetWidth())*p;
 	}
-	float Style::PercentHeight(const string &val, Widget *parent)
+	float Style::PercentHeight(const string &val, WidgetX *parent)
 	{
 		float p = ((float)atof(val.c_str()))*0.01f;
 		if(parent)
@@ -38,7 +38,7 @@ namespace DEN
 		}
 		return float(Render::Get()->GetHeight())*p;
 	}
-	float Style::GetPixel(const string &name, const string &val, Widget *parent)
+	float Style::GetPixel(const string &name, const string &val, WidgetX *parent)
 	{
 		size_t size = val.size();
 		string n;

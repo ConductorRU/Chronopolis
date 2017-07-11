@@ -7,7 +7,7 @@
 #include "../../Core/Engine.h"
 namespace DEN
 {
-	WidgetDivider::WidgetDivider(GUI *gui): Widget(gui)
+	WidgetDivider::WidgetDivider(GUI *gui): WidgetX(gui)
 	{
 		_part[0] = CreateChild("el1");
 		_part[0]->SetStyle("x:0;y:0;width:50%;height:100%;background-color:#faa;");

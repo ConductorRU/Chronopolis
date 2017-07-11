@@ -16,7 +16,7 @@
 #include "../Core/Engine.h"
 namespace DEN
 {
-	Widget::Widget(GUI *gui)
+	WidgetX::WidgetX(GUI *gui)
 	{
 		z_parent = nullptr;
 		z_root = nullptr;
@@ -31,11 +31,11 @@ namespace DEN
 		z_buffer->Init(gui->GetPS());
 		count = 0;
 	}
-	Widget::~Widget()
+	WidgetX::~WidgetX()
 	{
 		z_gui->FreeElement(this);
 		if(z_parent)
-			for(vector<Widget*>::const_iterator s = z_parent->z_childs.begin(); s != z_parent->z_childs.end(); ++s)
+			for(vector<WidgetX*>::const_iterator s = z_parent->z_childs.begin(); s != z_parent->z_childs.end(); ++s)
 				if(*s == this)
 				{
 					z_parent->z_childs.erase(s);
@@ -50,19 +50,19 @@ namespace DEN
 		if(z_root)
 			delete z_root;
 	}
-	Widget *Widget::GetByName(const string &name)
+	WidgetX *WidgetX::GetByName(const string &name)
 	{
-		for(Widget *el : z_childs)
+		for(WidgetX *el : z_childs)
 		{
 			if(el->GetName() == name)
 				return el;
-			Widget *w = el->GetByName(name);
+			WidgetX *w = el->GetByName(name);
 			if(w)
 				return w;
 		}
 		return nullptr;
 	}
-	void Widget::DeleteChilds()
+	void WidgetX::DeleteChilds()
 	{
 		while(z_childs.size())
 		{
@@ -72,7 +72,7 @@ namespace DEN
 				return;
 		}
 	}
-	bool Widget::IsEvent(const string &name)
+	bool WidgetX::IsEvent(const string &name)
 	{
 		if(IsStyleEvent(name))
 			return true;
@@ -85,18 +85,18 @@ namespace DEN
 		}
 		return false;
 	}
-	bool Widget::IsChild(Widget *c, bool depthAll)
+	bool WidgetX::IsChild(WidgetX *c, bool depthAll)
 	{
-		for(Widget *el : z_childs)
+		for(WidgetX *el : z_childs)
 			if(el == c)
 				return true;
 		if(depthAll)
-			for(Widget *el : z_childs)
+			for(WidgetX *el : z_childs)
 				if(el->IsChild(c, depthAll))
 					return true;
 		return false;
 	}
-	void Widget::AddClass(const string &name)
+	void WidgetX::AddClass(const string &name)
 	{
 		if(!name.size())
 			return;
@@ -106,14 +106,14 @@ namespace DEN
 			z_class.push_back(name);
 		}
 	}
-	bool Widget::IsClass(const string &name)
+	bool WidgetX::IsClass(const string &name)
 	{
 		for(string &s : z_class)
 			if(s == name)
 				return true;
 		return false;
 	}
-	void Widget::RemoveClass(const string &name)
+	void WidgetX::RemoveClass(const string &name)
 	{
 		for(vector<string>::const_iterator s = z_class.begin(); s != z_class.end(); ++s)
 			if(*s == name)
@@ -123,7 +123,7 @@ namespace DEN
 				break;
 			}
 	}
-	void Widget::SetData(const string &name, const string &value)
+	void WidgetX::SetData(const string &name, const string &value)
 	{
 		if(value == "")
 		{
@@ -134,29 +134,29 @@ namespace DEN
 		else
 			_data[name] = value;
 	}
-	string Widget::GetData(const string &name)
+	string WidgetX::GetData(const string &name)
 	{
 		auto it = _data.find(name);
 		if(it != _data.end())
 			return it->second;
 		return "";
 	}
-	bool Widget::IsData(const string &name)
+	bool WidgetX::IsData(const string &name)
 	{
 		if(_data.find(name) != _data.end())
 			return true;
 		return false;
 	}
-	void Widget::SetPass(Pass *pass)
+	void WidgetX::SetPass(Pass *pass)
 	{
 		z_pass = pass;
 	}
-	void Widget::CalculateOrder()
+	void WidgetX::CalculateOrder()
 	{
 		if(z_prop.GetDisplay())
 		{
 			z_gui->AddOrder(this);
-			for(Widget *el: z_childs)
+			for(WidgetX *el: z_childs)
 				el->CalculateOrder();
 			/*UINT cnt = z_childs.size();
 			if(cnt)
@@ -164,36 +164,36 @@ namespace DEN
 					z_childs[i - 1U]->CalculateOrder();*/
 		}
 	}
-	void Widget::SetName(const string &name)
+	void WidgetX::SetName(const string &name)
 	{
 		z_name = name;
 	}
-	void Widget::SetId(const string &id)
+	void WidgetX::SetId(const string &id)
 	{
 		z_gui->RemoveId(this);
 		z_id = id;
 		z_gui->AddId(this);
 	}
-	bool Widget::Pick(const Point2 &p, bool andChilds)
+	bool WidgetX::Pick(const Point2 &p, bool andChilds)
 	{
 		bool pick = z_prop.GetSquare().PickSize(p);
 		if(!andChilds || pick)
 			return pick;
-		for(Widget *el : z_childs)
+		for(WidgetX *el : z_childs)
 			if(el->GetProperty().GetDisplay())
 				if(el->Pick(p, andChilds))
 					return true;
 		return pick;
 	}
-	Widget *Widget::CreateChild(const string &name, bool isEvent, const string &classes)
+	WidgetX *WidgetX::CreateChild(const string &name, bool isEvent, const string &classes)
 	{
-		Widget *ch = z_gui->CreateElement(name, isEvent);
+		WidgetX *ch = z_gui->CreateElement(name, isEvent);
 		ch->SetParent(this);
 		ch->GetProperty().SetOrder(z_prop.GetOrder() + 1);
 		ch->AddClass(classes);
 		return ch;
 	}
-	GUIListener *Widget::CreateListener()
+	GUIListener *WidgetX::CreateListener()
 	{
 		if(z_listener)
 			return z_listener;
@@ -201,21 +201,21 @@ namespace DEN
 		Engine::Get()->GetInput()->AddListener(z_listener);
 		return z_listener;
 	}
-	Widget *Widget::GetChild(UINT num)
+	WidgetX *WidgetX::GetChild(UINT num)
 	{
 		if(num < z_childs.size())
 			return z_childs[num];
 		return nullptr;
 	}
-	UINT Widget::GetChildCount()
+	UINT WidgetX::GetChildCount()
 	{
 		return (uint)z_childs.size();
 	}
-	void Widget::SetTexture(Texture *tex)
+	void WidgetX::SetTexture(Texture *tex)
 	{
 		z_texture = tex;
 	}
-	void Widget::SetBake(bool isBake)
+	void WidgetX::SetBake(bool isBake)
 	{
 		z_isBake = isBake;
 		OffUpdate();
@@ -223,11 +223,11 @@ namespace DEN
 		if(z_root)
 			z_root->SetBake(isBake);
 		if(!z_isBake)
-			for(Widget *e : z_childs)
+			for(WidgetX *e : z_childs)
 				e->SetBake(z_isBake);
 		++count;
 	}
-	void Widget::AddEvent(const string &name)
+	void WidgetX::AddEvent(const string &name)
 	{
 		if(z_set.find(name) == z_set.end())
 		{
@@ -251,14 +251,14 @@ namespace DEN
 			}
 		}
 	}
-	bool Widget::CurrentEvent(const string &name)
+	bool WidgetX::CurrentEvent(const string &name)
 	{
 		if(z_set.find(name) != z_set.end())
 			return true;
 		return false;
 	}
 
-	void Widget::RemoveEvent(const string &name)
+	void WidgetX::RemoveEvent(const string &name)
 	{
 		if(z_set.find(name) != z_set.end())
 		{
@@ -277,7 +277,7 @@ namespace DEN
 			}
 		}
 	}
-	void Widget::ChangeDisplay()
+	void WidgetX::ChangeDisplay()
 	{
 		if(z_root)
 			delete z_root;
@@ -286,14 +286,14 @@ namespace DEN
 		{
 		case 3://textbox
 		case 4://spinner
-			z_root = new Widget(z_gui);
+			z_root = new WidgetX(z_gui);
 			z_root->z_parent = this;
 			z_root->SetStyle("width:100%; height:100%; color:#000; background-color:#fff; border:1px; padding:2px; border-color:#000");
-			Widget *text = new Widget(z_gui);
+			WidgetX *text = new WidgetX(z_gui);
 			text->SetParent(z_root);
 			text->SetStyle("color:inherit; display:text;");
 			text->GetProperty().SetInnerText(z_prop.GetInnerText());
-			Widget *caret = new Widget(z_gui);
+			WidgetX *caret = new WidgetX(z_gui);
 			caret->SetParent(text);
 			caret->SetStyle("display:none; width:1px; height:100%; background-color:#000; word:0");
 
@@ -407,7 +407,7 @@ namespace DEN
 			break;
 		}
 	}
-	void Widget::Update(bool isPreview)
+	void WidgetX::Update(bool isPreview)
 	{
 		if(!z_enable)
 			return;
@@ -535,8 +535,8 @@ namespace DEN
 						s.minX = z_parent->GetProperty().GetSquare().minX;
 					else
 					{
-						Widget *prev = nullptr;
-						for(Widget *em : z_parent->z_childs)
+						WidgetX *prev = nullptr;
+						for(WidgetX *em : z_parent->z_childs)
 						{
 							if(em == this)
 								break;
@@ -564,8 +564,8 @@ namespace DEN
 						s.minY = z_parent->GetProperty().GetSquare().minY;
 					else
 					{
-						Widget *prev = nullptr;
-						for(Widget *em : z_parent->z_childs)
+						WidgetX *prev = nullptr;
+						for(WidgetX *em : z_parent->z_childs)
 						{
 							if(em == this)
 								break;
@@ -701,7 +701,7 @@ namespace DEN
 			if(s.minX + s.maxX > parS)
 			{
 				float maxY = s.minY;
-				for(Widget *em : z_parent->z_childs)
+				for(WidgetX *em : z_parent->z_childs)
 				{
 					if(em == this)
 						break;
@@ -716,7 +716,7 @@ namespace DEN
 			}
 			else
 			{
-				for(Widget *em : z_parent->z_childs)
+				for(WidgetX *em : z_parent->z_childs)
 				{
 					if(em == this)
 						break;
@@ -739,7 +739,7 @@ namespace DEN
 			s.maxX = 0.0f;
 			float minX = 0.0f;
 			bool isF = false;
-			for(Widget *el : z_childs)
+			for(WidgetX *el : z_childs)
 			{
 				el->Update();
 				if(!isF)
@@ -757,7 +757,7 @@ namespace DEN
 			s.maxY = 0.0f;
 			float minY = 0.0f;
 			bool isF = false;
-			for(Widget *el : z_childs)
+			for(WidgetX *el : z_childs)
 			{
 				el->Update();
 				if(!isF)
@@ -857,7 +857,7 @@ namespace DEN
 		if (z_listener && z_listener->onUpdate)
 			z_listener->onUpdate();
 	}
-	void Widget::Bake()
+	void WidgetX::Bake()
 	{
 		if(IsUpdate() || z_prop.IsUpdate())
 			SetBake(false);
@@ -957,10 +957,10 @@ namespace DEN
 			z_root->BakeAll();
 		z_isBake = true;
 	}
-	void Widget::SetParent(Widget *p)
+	void WidgetX::SetParent(WidgetX *p)
 	{
 		if(z_parent)
-			for(vector<Widget*>::const_iterator p = z_parent->z_childs.begin(); p != z_parent->z_childs.end(); ++p)
+			for(vector<WidgetX*>::const_iterator p = z_parent->z_childs.begin(); p != z_parent->z_childs.end(); ++p)
 				if(*p == this)
 				{
 					z_parent->z_childs.erase(p);
@@ -969,42 +969,28 @@ namespace DEN
 		z_parent = p;
 		p->z_childs.push_back(this);
 	}
-	void Widget::Rebake(bool andChilds)
+	void WidgetX::Rebake(bool andChilds)
 	{
 		SetBake(false);
 	}
-	void Widget::BakeAll()
+	void WidgetX::BakeAll()
 	{
 		Bake();
 		if(z_prop.GetDisplay())
-			for(Widget *el : z_childs)
+			for(WidgetX *el : z_childs)
 				el->BakeAll();
 	}
-	void Widget::BakeBuffer()
+	void WidgetX::BakeBuffer()
 	{
 		RenderMesh *buf = GetVertexBuffer();
 		buf->UpdateConst();
-		float f[20];
+		float f[2];
 		f[0] = 1.0f / (float)Render::Get()->GetWidth();
 		f[1] = 1.0f / (float)Render::Get()->GetHeight();
-		Square b = z_prop.GetBorder();
-		Square s = z_prop.GetSquare();
-		memset(&f[4], 0, sizeof(float) * 4);
-		if(s.maxX > 0.6f && s.maxY > 0.6f)
-		{
-			f[4] = b.minX / (s.maxX - 0.5f);
-			f[5] = b.minY / (s.maxY - 0.5f);
-			f[6] = 1.0f - b.maxX / (s.maxX - 0.5f);
-			if(b.maxY > 0.1f)
-				f[7] = 1.0f - b.maxY / (s.maxY - 0.5f);
-		}
-		memcpy(&f[8], &z_prop.GetBorderColor(), sizeof(float) * 4);
-		memcpy(&f[12], &z_prop.GetBorderRadius(), sizeof(float) * 4);
-		memcpy(&f[16], &z_prop.GetSquare(), sizeof(float) * 4);
 		GetVertexBuffer()->Copy(SHADER_VS, 0, &f, sizeof(f), 0u);
 		GetVertexBuffer()->Copy(SHADER_PS, 0, &f, sizeof(f), 0u);
 	}
-	void Widget::Draw(bool andChilds)
+	void WidgetX::Draw(bool andChilds)
 	{
 		Render *render = Render::Get();
 		if(z_prop.GetDisplay())
@@ -1045,15 +1031,15 @@ namespace DEN
 			}
 		}
 	}
-	Widget *Widget::GetPick(const Point2 &pos)
+	WidgetX *WidgetX::GetPick(const Point2 &pos)
 	{
 		if(z_prop.GetDisplay() == 0)
 			return nullptr;
-		Widget *p = nullptr;
-		Widget *t = nullptr;
+		WidgetX *p = nullptr;
+		WidgetX *t = nullptr;
 		if(Pick(pos, false))
 			p = this;
-		for(Widget *el : z_childs)
+		for(WidgetX *el : z_childs)
 			if(el->GetProperty().GetDisplay())
 			{
 				t = el->GetPick(pos);
@@ -1061,5 +1047,398 @@ namespace DEN
 					p = t;
 			}
 		return p;
+	}
+
+	Widget::Widget(GUI *gui)
+	{
+		_gui = gui;
+		_parent = nullptr;
+		_pass = nullptr;
+		_buffer = new RenderMesh(_gui->GetInputLayout());
+		_buffer->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		_buffer->Init(gui->GetVS());
+		_buffer->Init(gui->GetPS());
+		_update = true;
+		_visible = true;
+	}
+	Widget::~Widget()
+	{
+
+	}
+	float Widget::PercentWidth(const string &val, Widget *parent)
+	{
+		float p = ((float)atof(val.c_str()))*0.01f;
+		/*if (parent)
+		{
+			Square b = parent->GetProperty().GetBorder();
+			Square pd = parent->GetProperty().GetPadding();
+			return (parent->GetProperty().GetSquare().maxX - b.maxX - b.minX - pd.maxX - pd.minX)*p;
+		}*/
+		return float(Render::Get()->GetWidth())*p;
+	}
+	float Widget::PercentHeight(const string &val, Widget *parent)
+	{
+		float p = ((float)atof(val.c_str()))*0.01f;
+		/*if (parent)
+		{
+			Square b = parent->GetProperty().GetBorder();
+			Square pd = parent->GetProperty().GetPadding();
+			return (parent->GetProperty().GetSquare().maxY - b.maxY - b.minY - pd.maxY - pd.minY)*p;
+		}*/
+		return float(Render::Get()->GetHeight())*p;
+	}
+	float Widget::GetPixel(const string &name, const string &val, Widget *parent)
+	{
+		size_t size = val.size();
+		string n;
+		string t;
+		char op = 0;
+		string n1;
+		string t1;
+		int step = 0;
+		for (size_t i = 0; i != size; ++i)
+		{
+			if (i == 0 && val[i] == '-')
+				n += val[i];
+			else if (step < 2 && val[i] >= '0' && val[i] <= '9')
+			{
+				n += val[i];
+				step = 1;
+			}
+			else if (step < 3 && ((val[i] >= 'A' && val[i] <= 'Z') || (val[i] >= 'a' && val[i] <= 'z') || val[i] == '%'))
+			{
+				step = 2;
+				t += val[i];
+			}
+			else if (step == 2 && (val[i] == '+' || val[i] == '-' || val[i] == '/' || val[i] == '*'))
+			{
+				step = 3;
+				op = val[i];
+			}
+			else if (step >= 3 && step < 5 && val[i] >= '0' && val[i] <= '9')
+			{
+				n1 += val[i];
+				step = 4;
+			}
+			else if ((val[i] >= 'A' && val[i] <= 'Z') || (val[i] >= 'a' && val[i] <= 'z') || val[i] == '%')
+			{
+				step = 5;
+				t1 += val[i];
+			}
+			//else
+			//	return 0.0f;
+		}
+		float v1 = 0.0f;
+		float v2 = 0.0f;
+		if (t == "px")
+			v1 = (float)atof(n.c_str());
+		else if (t == "%")
+		{
+			if (name == "width" || name == "x" || name == "left" || name == "right")
+				v1 = PercentWidth(n, parent);
+			else if (name == "height" || name == "y" || name == "top" || name == "bottom")
+				v1 = PercentHeight(n, parent);
+		}
+		if (t1 == "px")
+		{
+			v2 = (float)atof(n1.c_str());
+		}
+		else if (t1 == "%")
+		{
+			if (name == "width" || name == "x" || name == "left" || name == "right")
+				v2 = PercentWidth(n, parent);
+			else if (name == "height" || name == "y" || name == "top" || name == "bottom")
+				v2 = PercentHeight(n, parent);
+		}
+		if (op == '+')
+			return v1 + v2;
+		if (op == '-')
+			return v1 - v2;
+		if (op == '/')
+			return v1 / v2;
+		if (op == '*')
+			return v1 * v2;
+		return v1;
+	}
+	Color Widget::GetColor(const string &val)
+	{
+		Color c;
+		if (c.FromHex(val))
+			return c;
+		return c;
+	}
+	void Widget::SetStyle(const string &style, const string &eve)
+	{
+		size_t size = style.size();
+		string name, value;
+		bool isVal = false;
+		for (size_t i = 0; i <= size; ++i)
+		{
+			if (i < size && style[i] != ';')
+			{
+				if (style[i] == ':')
+					isVal = true;
+				else if (!isVal)
+				{
+					if (style[i] != ' ' || name.size() > 0)
+						name += style[i];
+				}
+				else
+				{
+					if (style[i] != ' ' || value.size() > 0)
+						value += style[i];
+				}
+			}
+			else
+			{
+				while (name.size() && name[name.size() - 1U] == ' ')
+					name.pop_back();
+				while (value.size() && value[value.size() - 1U] == ' ')
+					value.pop_back();
+				if (name.size() > 0 && value.size() > 0)
+					SetProperty(name, value);
+				name = "";
+				value = "";
+				isVal = false;
+			}
+		}
+	}
+	bool Widget::SetProperty(const string& name, const string& value)
+	{
+		_prop[name] = value;
+		_update = true;
+		return true;
+	}
+	string Widget::GetProperty(const string& name)
+	{
+		auto iter = _prop.find(name);
+		if (iter == _prop.end())
+			return "";
+		return iter->second;
+	}
+	string Widget::_GetStyle(const string& name, const map<string, string> &inherit)
+	{
+		auto iter = _prop.find(name);
+		if(iter != _prop.end())
+			return iter->second;
+		auto iter1 = inherit.find(name);
+		if(iter1 != inherit.end())
+			return iter1->second;
+		return "";
+	}
+	void Widget::SetParent(Widget *parent)
+	{
+		if(_parent)
+			for (vector<Widget*>::const_iterator p = _parent->z_childs.begin(); p != _parent->z_childs.end(); ++p)
+				if (*p == this)
+				{
+					_parent->z_childs.erase(p);
+					break;
+				}
+		_parent = parent;
+		parent->z_childs.push_back(this);
+	}
+	void Widget::BakeBuffer()
+	{
+		_buffer->UpdateConst();
+		float f[10];
+		f[0] = 1.0f / (float)Render::Get()->GetWidth();
+		f[1] = 1.0f / (float)Render::Get()->GetHeight();
+		memcpy(&f[4], &_aTransform, sizeof(float)*3*2);
+		_buffer->Copy(SHADER_VS, 0, &f, sizeof(f), 0u);
+		_buffer->Copy(SHADER_PS, 0, &f, sizeof(f), 0u);
+	}
+	void Widget::Bake(Widget *parent, map<string, string> inherit)
+	{
+		if(!_update)
+			return;
+		_update = false;
+		string prop = _GetStyle("display", inherit);
+		Square rect;
+		Vector2 size;
+		Vertex2D t;
+		memset(&t, 0, sizeof(Vertex2D));
+		float val;
+		if(prop == "block")
+		{
+		}
+		prop = _GetStyle("width", inherit);
+		if(prop != "")
+			size.x = GetPixel("width", prop);
+		prop = _GetStyle("height", inherit);
+		if (prop != "")
+			size.y = GetPixel("height", prop);
+
+		prop = _GetStyle("left", inherit);
+		if(prop != "")
+			rect.left = GetPixel("left", prop);
+		prop = _GetStyle("right", inherit);
+		if(prop != "")
+			rect.right = GetPixel("right", prop);
+		prop = _GetStyle("top", inherit);
+		if(prop != "")
+			rect.top = GetPixel("top", prop);
+		prop = _GetStyle("bottom", inherit);
+		if(prop != "")
+			rect.bottom = GetPixel("bottom", prop);
+
+		prop = _GetStyle("border-radius", inherit);
+		if(prop != "")
+		{
+			val = GetPixel("border-radius", prop);
+			if(val > 0)
+			{
+				v.clear();
+				val = min(val, min(size.x, size.y));
+				for(float f = 0.0f; f <= val; f += 1.0f)//left top
+				{
+					t.pos.x = val + rect.left;
+					t.pos.y = val + rect.top;
+					v.push_back(t);
+					t.pos.x = val + cos(-PI - (f/val)*PI_HALF)*val + rect.left;
+					t.pos.y = val - sin((f/val)*PI_HALF)*val + rect.top;
+					v.push_back(t);
+				}
+				t.pos.x = size.x - val - rect.right;
+				t.pos.y = val + rect.top;
+				v.push_back(t);
+				t.pos.x = size.x - val - rect.right;
+				t.pos.y = rect.top;
+				v.push_back(t);
+				for(float f = val; f >= 0.0f; f -= 1.0f)//right top
+				{
+					t.pos.x = size.x - val - rect.right;
+					t.pos.y = val + rect.top;
+					v.push_back(t);
+					t.pos.x = size.x - (val + cos(-PI - (f/val)*PI_HALF)*val) - rect.right;
+					t.pos.y = val + sin(PI + (f/val)*PI_HALF)*val + rect.top;
+					v.push_back(t);
+				}
+				t.pos.x = size.x - val - rect.right;
+				t.pos.y = size.y - val - rect.bottom;
+				v.push_back(t);
+				t.pos.x = size.x - rect.right;
+				t.pos.y = size.y - val - rect.bottom;
+				v.push_back(t);
+				for(float f = 0.0f; f <= val; f += 1.0f)//right bottom
+				{
+					t.pos.x = size.x - val - rect.right;
+					t.pos.y = size.y - val - rect.bottom;
+					v.push_back(t);
+					t.pos.x = size.x - (val + cos(-PI - (f/val)*PI_HALF)*val) - rect.right;
+					t.pos.y = size.y - val + sin((f/val)*PI_HALF)*val - rect.bottom;
+					v.push_back(t);
+				}
+				t.pos.x = val + rect.left;
+				t.pos.y = size.y - val - rect.bottom;
+				v.push_back(t);
+				t.pos.x = val + rect.left;
+				t.pos.y = size.y - rect.bottom;
+				v.push_back(t);
+				for(float f = val; f >= 0.0f; f -= 1.0f)//left bottom
+				{
+					t.pos.x = val + rect.left;
+					t.pos.y = size.y - val - rect.bottom;
+					v.push_back(t);
+					t.pos.x = (val + cos(-PI - (f/val)*PI_HALF)*val) + rect.left;
+					t.pos.y = size.y - val - sin(PI + (f/val)*PI_HALF)*val - rect.bottom;
+					v.push_back(t);
+				}
+				t.pos.x = val + rect.left;
+				t.pos.y = val + rect.top;
+				v.push_back(t);
+				t.pos.x = 0.0f + rect.left;
+				t.pos.y = val + rect.top;
+				v.push_back(t);
+
+				t.pos.x = val + rect.left;//center
+				t.pos.y = val + rect.top;
+				v.push_back(t);
+				t.pos.x = size.x - val - rect.right;
+				t.pos.y = val + rect.top;
+				v.push_back(t);
+				t.pos.x = val;
+				t.pos.y = size.y - val - rect.bottom;
+				v.push_back(t);
+				t.pos.x = size.x - val - rect.right;
+				t.pos.y = size.y - val - rect.bottom;
+				v.push_back(t);
+			}
+		}
+		else
+		{
+			for(int i = 0; i < 4; ++i)
+				v.push_back(t);
+			v[1].uv.x = v[3].uv.x = v[2].uv.y = v[3].uv.y = 1.0f;
+			v[0].pos.x = v[2].pos.x = rect.left;
+			v[0].pos.y = v[1].pos.y = rect.top;
+			v[1].pos.x = v[3].pos.x = size.x - rect.right;
+			v[2].pos.y = v[3].pos.y = size.y - rect.bottom;
+			if(v[0].pos.x > v[1].pos.x)
+				v[1].pos.x = v[3].pos.x = v[0].pos.x;
+			if(v[0].pos.y > v[2].pos.y)
+				v[2].pos.y = v[3].pos.y = v[0].pos.y;
+		}
+
+
+		prop = _GetStyle("background-color", inherit);
+		if (prop != "")
+		{
+			Color col = GetColor(prop);
+			for(Vertex2D &v1 : v)
+				v1.col = col;
+		}
+		if (v.size())
+		{
+			_buffer->Bake(&v[0], (uint)v.size(), sizeof(Vertex2D));
+			BakeBuffer();
+		}
+	}
+	void Widget::BakeAll(map<string, string> inherit)
+	{
+		Bake(_parent, inherit);
+		for (Widget *el : z_childs)
+			el->BakeAll(inherit);
+	}
+	void Widget::Draw(bool andChilds)
+	{
+		Render *render = Render::Get();
+		if (_visible)
+		{
+			//if (z_listener && z_listener->onRender)
+			//	z_listener->onRender();
+			_buffer->Update();
+			_buffer->Unmap();
+			if (_pass)
+			{
+				render->RenderPass(_pass);
+				render->ExecuteMesh(_buffer);
+			}
+			else
+			{
+				/*if (GetTexture())
+				{
+					Texture *tex = _gui->GetBlankPass()->GetTexture(0);
+					_gui->GetBlankPass()->SetTexture(0, GetTexture());
+					render->RenderPass(_gui->GetBlankPass());
+					render->ExecuteMesh(_buffer);
+					_gui->GetBlankPass()->SetTexture(0, tex);
+				}
+				else*/
+				{
+					render->RenderPass(_gui->GetBlankPass());
+					render->ExecuteMesh(_buffer);
+				}
+			}
+			//if(_root)
+			//	_root->Draw(true);
+			if (andChilds)
+			{
+				size_t cnt = z_childs.size();
+				if (cnt)
+					for (size_t i = cnt; i > 0; --i)
+						z_childs[i - (size_t)1]->Draw(true);
+			}
+		}
 	}
 };

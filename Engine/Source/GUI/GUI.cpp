@@ -60,8 +60,10 @@ namespace DEN
 		z_blank->SetPixel(0u, 0u, ColorRGB::C_WHITE);
 		z_blank->Unlock();
 		z_passB->SetTexture(0, z_blank);
-		z_root = new Widget(this);
+		z_root = new WidgetX(this);
 		z_root->SetStyle("width: 100%; height:100%; background-color: #0000;");
+		_root = new Widget(this);
+		_root->SetStyle("display:block; width: 100%; height:100%; background-color: #0000;");
 		z_width = Render::Get()->GetWidth();
 		z_height = Render::Get()->GetHeight();
 		z_bakeCount = 0;
@@ -73,33 +75,33 @@ namespace DEN
 		delete z_root;
 		delete z_inputBox;
 	}
-	Widget *GUI::GetElementById(const string &name)
+	WidgetX *GUI::GetElementById(const string &name)
 	{
 		auto &it = z_ids.find(name);
 		if(it != z_ids.end())
 			return it->second;
 		return nullptr;
 	}
-	void GUI::AddId(Widget *el)
+	void GUI::AddId(WidgetX *el)
 	{
 		if(el->GetId().size())
 			z_ids[el->GetId()] = el;
 	}
-	void GUI::RemoveId(Widget *el)
+	void GUI::RemoveId(WidgetX *el)
 	{
 		if(el->GetId().size())
 			z_ids.erase(el->GetId());
 	}
-	void GUI::FreeElement(Widget *el)
+	void GUI::FreeElement(WidgetX *el)
 	{
 		RemoveId(el);
 		el = nullptr;
 	}
-	void GUI::SetInputElement(Widget *el)
+	void GUI::SetInputElement(WidgetX *el)
 	{
 		z_inputBox = el;
 	}
-	bool GUI::IsPickChild(Widget *el, bool andEl)
+	bool GUI::IsPickChild(WidgetX *el, bool andEl)
 	{
 		if(!z_picked || (z_picked == el && andEl))
 			return true;
@@ -118,7 +120,7 @@ namespace DEN
 			return it->second;
 		return nullptr;
 	}
-	void GUI::AddOrder(Widget *el)
+	void GUI::AddOrder(WidgetX *el)
 	{
 		z_order[el->GetProperty().GetOrder()].push_back(el);
 	}
@@ -142,9 +144,9 @@ namespace DEN
 		z_fonts[name] = {pass, font};
 		return font;
 	}
-	Widget *GUI::CreateElement(const string &name, bool isEvent)
+	WidgetX *GUI::CreateElement(const string &name, bool isEvent)
 	{
-		Widget *el = new Widget(this);
+		WidgetX *el = new WidgetX(this);
 		el->SetName(name);
 		if(isEvent)
 			el->CreateListener();
@@ -161,9 +163,9 @@ namespace DEN
 		{
 			z_width = Render::Get()->GetWidth();
 			z_height = Render::Get()->GetHeight();
-			z_root->Rebake(true);
+			//z_root->Rebake(true);
 		}
-		z_root->BakeAll();
+		/*z_root->BakeAll();
 		z_root->CalculateOrder();
 		Point2 cur = Engine::Get()->GetInput()->GetCursorPos();
 		z_picked = z_root->GetPick(cur);
@@ -173,8 +175,10 @@ namespace DEN
 			{
 				it2->Before();
 				it2->Draw(false);
-			}
-		//z_root->Render(render);
+			}*/
+		_root->BakeAll();
+		_root->Draw(true);
+
 	}
 	Font *GUI::GetFont()
 	{

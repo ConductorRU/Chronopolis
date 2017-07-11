@@ -5,9 +5,9 @@ namespace DEN
 	{
 	private:
 		XMLNode* _node;
-		class Widget* _root;
+		class WidgetX* _root;
 		void Parse();
-		static Widget *ParseNode(XMLNode *node);
+		static WidgetX *ParseNode(XMLNode *node);
 	public:
 		SVG();
 		static SVG *Load(const string &filename, class GUI *gui);
