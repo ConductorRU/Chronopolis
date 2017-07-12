@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "../Math/Square.h"
 #include "../Math/Vector2.h"
+#include "../Math/Matrix.h"
 #include "../Math/Rect.h"
 #include "../Math/Func.h"
 #include "../Material/Pass.h"
@@ -1241,10 +1242,14 @@ namespace DEN
 	void Widget::BakeBuffer()
 	{
 		_buffer->UpdateConst();
-		float f[10];
+		float f[20];
 		f[0] = 1.0f / (float)Render::Get()->GetWidth();
 		f[1] = 1.0f / (float)Render::Get()->GetHeight();
-		memcpy(&f[4], &_aTransform, sizeof(float)*3*2);
+		if(_parent)
+			_aTransform = _parent->_aTransform*_rTransform;
+		else
+			_aTransform = _rTransform;
+		memcpy(&f[4], &_aTransform.ToMatrix(), sizeof(float)*4*4);
 		_buffer->Copy(SHADER_VS, 0, &f, sizeof(f), 0u);
 		_buffer->Copy(SHADER_PS, 0, &f, sizeof(f), 0u);
 	}
@@ -1281,6 +1286,12 @@ namespace DEN
 		prop = _GetStyle("bottom", inherit);
 		if(prop != "")
 			rect.bottom = GetPixel("bottom", prop);
+		prop = _GetStyle("x", inherit);
+		if(prop != "")
+			_rTransform.SetTranslationX(GetPixel("x", prop));
+		prop = _GetStyle("y", inherit);
+		if(prop != "")
+			_rTransform.SetTranslationY(GetPixel("y", prop));
 
 		prop = _GetStyle("border-radius", inherit);
 		if(prop != "")
@@ -1357,7 +1368,7 @@ namespace DEN
 				t.pos.x = size.x - val - rect.right;
 				t.pos.y = val + rect.top;
 				v.push_back(t);
-				t.pos.x = val;
+				t.pos.x = val + rect.left;
 				t.pos.y = size.y - val - rect.bottom;
 				v.push_back(t);
 				t.pos.x = size.x - val - rect.right;

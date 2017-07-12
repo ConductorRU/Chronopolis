@@ -365,7 +365,7 @@ void Game::Init()
 
 	Widget *block = new Widget(sc->GetGUI());
 	block->SetParent(sc->GetGUI()->GetRoot());
-	block->SetStyle("display:block; top:10px;left:10px;right:10px;bottom:10px;width: 200px; height:40px; background-color: #3498db;border-radius:5px;");
+	block->SetStyle("display:block; x:10px;y:10px;width: 200px; height:40px; background-color: #3498db;border-radius:5px;");
 	
 	/*WidgetDivider *divider = new WidgetDivider(mScene->GetGUI());
 	divider->SetParent(mScene->GetGUI()->GetRoot());

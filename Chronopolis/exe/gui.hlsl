@@ -3,7 +3,7 @@ SamplerState SampleType;
 cbuffer Properties
 {
 	float4 screen;
-	float3x2 rect;
+	float4x4 rect;
 };
 struct VType
 {
@@ -23,8 +23,9 @@ PType mainVS(VType input)
 	PType output;
 	output.position.w = 1.0f;
 	output.position.z = 1.0f;
-	output.position.x = input.position.x*screen.x*2 - 1;
-	output.position.y = -input.position.y*screen.y*2 + 1;
+	output.position.xy = mul(rect, input.position).xy;
+	output.position.x = output.position.x*screen.x*2 - 1;
+	output.position.y = -output.position.y*screen.y*2 + 1;
 	output.tex = input.tex;
 	output.color = input.color;
 	return output;
