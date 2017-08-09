@@ -101,6 +101,18 @@
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>
+      </Message>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -114,6 +126,18 @@
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>
+      </Message>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -129,6 +153,18 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>
+      </Message>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -144,6 +180,18 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>
+      </Message>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -154,6 +202,7 @@
     <ClCompile Include="Source\Compiler\Compiler.cpp" />
     <ClCompile Include="Source\Compiler\Error.cpp" />
     <ClCompile Include="Source\Compiler\Lexer.cpp" />
+    <ClCompile Include="Source\Compiler\Lib.cpp" />
     <ClCompile Include="Source\Compiler\Script.cpp" />
     <ClCompile Include="Source\Compiler\Semantic.cpp" />
     <ClCompile Include="Source\Compiler\Syntaxer.cpp" />
@@ -177,6 +226,7 @@
     <ClCompile Include="Source\Material\Pass.cpp" />
     <ClCompile Include="Source\Material\Shader.cpp" />
     <ClCompile Include="Source\Material\Texture.cpp" />
+    <ClCompile Include="Source\Math\Basic.cpp" />
     <ClCompile Include="Source\Math\BBox.cpp" />
     <ClCompile Include="Source\Math\Color.cpp" />
     <ClCompile Include="Source\Math\ColorHSV.cpp" />
@@ -218,6 +268,7 @@
     <ClInclude Include="Source\Compiler\Delegate.h" />
     <ClInclude Include="Source\Compiler\Error.h" />
     <ClInclude Include="Source\Compiler\Lexer.h" />
+    <ClInclude Include="Source\Compiler\Lib.h" />
     <ClInclude Include="Source\Compiler\Script.h" />
     <ClInclude Include="Source\Compiler\Semantic.h" />
     <ClInclude Include="Source\Compiler\Struct.h" />
@@ -247,6 +298,7 @@
     <ClInclude Include="Source\Material\Pass.h" />
     <ClInclude Include="Source\Material\Shader.h" />
     <ClInclude Include="Source\Material\Texture.h" />
+    <ClInclude Include="Source\Math\Basic.h" />
     <ClInclude Include="Source\Math\BBox.h" />
     <ClInclude Include="Source\Math\Color.h" />
     <ClInclude Include="Source\Math\ColorHSV.h" />

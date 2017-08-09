@@ -122,6 +122,17 @@ bool Compiler::IsKeyword(const string &val)
 		return false;
 	return true;
 }
+bool Compiler::IsNumber(const string &val)
+{
+	uint s = 0;
+	uint size = val.size();
+	if(size > 1 && val[0] == '-')
+		s = 1;
+	for(uint i = s; i < size; ++i)
+		if(!(val[i] >= '0' && val[i] <= '9'))
+			return false;
+	return true;
+}
 bool Compiler::IsVarName(const string &val)
 {
 	if(IsKeyword(val) || GetType(val) || IsOperator(val))

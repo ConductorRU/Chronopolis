@@ -10,6 +10,7 @@ private:
 	Semantix *Create(Syntax *syn, SEMANTIC_TYPE type);
 	Semantix *GetValue(Syntax *syn);
 public:
+	Semantix *GetRoot() { return _root; };
 	void Compile(Syntaxer *syn, Compiler *comp);
 	void Print();
 };

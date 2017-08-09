@@ -214,6 +214,31 @@ namespace DEN
 			return;
 		_stop = false;
 	}
+	bool Engine::CreateConsole()
+	{
+		FreeConsole();
+		if (AllocConsole())
+		{
+			FILE *fin = stdin;
+			FILE *fout = stdout;
+			freopen_s(&fout, "CONOUT$", "wt", stdout);
+			freopen_s(&fin, "CONIN$", "rt", stdin);
+			/*int hCrt = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
+			*stdout = *(::_fdopen(hCrt, "w"));
+			setvbuf(stdout, NULL, _IONBF, 0);
+			*stderr = *(_fdopen(hCrt, "w"));
+			setvbuf(stderr, NULL, _IONBF, 0);
+			ios::sync_with_stdio();
+
+			int hCrtInput = _open_osfhandle((long)GetStdHandle(STD_INPUT_HANDLE), _O_TEXT);
+
+			*stdin = *(_fdopen(hCrtInput, "r"));
+			setvbuf(stdin, NULL, _IOFBF, 4096);
+			*/
+			return true;
+		}
+		return false;
+	}
 	void Engine::Create(int sizeX, int sizeY, bool fullscreen, const wstring &name)
 	{
 		srand((uint)time(NULL));

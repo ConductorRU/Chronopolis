@@ -226,6 +226,12 @@
     <ClCompile Include="Source\Format\Format.cpp">
       <Filter>Source\Format</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Compiler\Lib.cpp">
+      <Filter>Source\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Basic.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h">
@@ -446,6 +452,12 @@
     </ClInclude>
     <ClInclude Include="Source\Format\Format.h">
       <Filter>Source\Format</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Compiler\Lib.h">
+      <Filter>Source\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Basic.h">
+      <Filter>Source\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

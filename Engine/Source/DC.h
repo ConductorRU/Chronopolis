@@ -14,4 +14,5 @@
 #include "Procedure/Class.h"
 #include "Modifier2D/Class.h"
 #include "Format/Class.h"
+#include "Compiler/Class.h"
 using namespace DEN;

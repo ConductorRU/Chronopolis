@@ -20,6 +20,7 @@ public:
 	bool IsOperator(const string &val);
 	Type *GetType(const string &val);
 	bool IsKeyword(const string &val);
+	bool IsNumber(const string &val);
 	bool IsVarName(const string &val);
 	void Compile(const string &code);
 };

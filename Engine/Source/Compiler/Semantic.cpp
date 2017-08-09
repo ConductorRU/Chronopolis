@@ -10,6 +10,7 @@ CodeVar *CodeBlock::AddVar(const Lexem &name)
 	v->name = name;
 	v->id = (uint)vars.size();
 	vars[name.word] = v;
+	varList.push_back(v);
 	return v;
 }
 
@@ -74,6 +75,10 @@ void Semantic::Compile(Syntaxer *syn, Compiler *comp)
 				}
 			}
 			_root->childs.push_back(sem);
+		}
+		else
+		{
+			
 		}
 	}
 }

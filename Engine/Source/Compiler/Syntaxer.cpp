@@ -21,12 +21,36 @@ Syntax *Syntaxer::SplitOp(const vector<Lexem> &block, uint start, uint end, uint
 		bool lPar = false, rPar = false;
 		if(i > start)
 			lPar = compiler->IsVarName(block[i - 1].word);
-		if(i + 1< end)
+		if(i + 1 < end)
 			rPar = compiler->IsVarName(block[i + 1].word);
 		Operator *op = compiler->GetOperator(block[i].word, lPar, rPar);
 		if(op)
 		{
-			if(!rootOp || maxPrior < op->prior)
+			if(i == start + 1 && !rootOp && op->name == "(")
+			{
+				Syntax *par = new Syntax;
+				par->value = block[start];
+				par->type = SYNTAX_FUNCTION;
+				uint eBracket = 0;
+				uint bStart = i + 1;
+				for(uint b = end - 1u; b > 1; --b)
+					if(block[b].word == ")")
+					{
+						eBracket = b;
+						break;
+					}
+				for(uint b = i + 1; b <= eBracket; ++b)
+				{
+					if(block[b].word == "," || b == eBracket)
+					{
+						par->AddChild(SplitOp(block, bStart, b, cur));
+						bStart = b + 1;
+					}
+				}
+				cur = eBracket + 1;
+				return par;
+			}
+			else if(!rootOp || maxPrior < op->prior)
 			{
 				rootOp = op;
 				lexOp = block[i];

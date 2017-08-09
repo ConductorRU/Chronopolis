@@ -22,6 +22,9 @@
 #include <cstdlib>
 #include <algorithm>
 #include <sstream> 
+#include <stdio.h>
+#include <io.h>
+#include <fcntl.h>
 
 #ifdef _DEBUG
 #include <crtdbg.h>

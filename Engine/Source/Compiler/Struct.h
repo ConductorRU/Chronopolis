@@ -14,13 +14,14 @@ enum ASSOC_TYPE
 };
 enum SYNTAX_TYPE
 {
-	SYNTAX_NONE = 0,
-	SYNTAX_KEYWORD = 1,
+	SYNTAX_NONE     = 0,
+	SYNTAX_KEYWORD  = 1,
 	SYNTAX_OPERATOR = 2,
 	SYNTAX_VARIABLE = 3,
-	SYNTAX_BLOCK = 4,
+	SYNTAX_BLOCK    = 4,
 	SYNTAX_TYPENAME = 5,
-	SYNTAX_CONST = 6,
+	SYNTAX_CONST    = 6,
+	SYNTAX_FUNCTION = 7,
 };
 enum SEMANTIC_TYPE
 {
@@ -65,9 +66,12 @@ struct CodeVar
 {
 	uint id;
 	Lexem name;
+	uint pos = 0;
+	uint size = 0;
 };
 struct CodeBlock
 {
+	vector<CodeVar*> varList;
 	map<string, CodeVar*> vars;
 	CodeVar *AddVar(const Lexem &name);
 	CodeVar *GetVar(const string &name) { auto it = vars.find(name); if(it != vars.end()) return it->second; return nullptr; };

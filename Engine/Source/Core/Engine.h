@@ -74,6 +74,7 @@ namespace DEN
 		const Time &GetTime() { return _time; };
 		Engine();
 		~Engine();
+		bool CreateConsole();
 		Scene *CreateScene();
 		void SetCursor(CURSOR_TYPE id);
 		bool IsExit();
