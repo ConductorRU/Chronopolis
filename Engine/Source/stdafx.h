@@ -26,17 +26,16 @@
 #include <io.h>
 #include <fcntl.h>
 
+//#define D3D10_IGNORE_SDK_LAYERS
 #ifdef _DEBUG
 #include <crtdbg.h>
 #define _CRTDBG_MAP_ALLOC
 #define new new( _NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
-
-#include <windows.h>
-
 #include <d3d11.h>
 #include <d3d11shader.h>
 #include <d3dcompiler.h>
+#include <windows.h>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib,"d3dcompiler.lib")

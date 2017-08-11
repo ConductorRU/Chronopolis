@@ -357,12 +357,12 @@ Game::~Game()
 
 void Game::Init()
 {
-	Compiler comp;
+	/*Compiler comp;
 	comp.Init();
 	string code = "int i = 5, v = 6 + 2; i = 8; print(i);";
 	comp.Compile(code);
 	int i;
-	cin >> i;
+	cin >> i;*/
 
 	_engine->Create(1024, 768, false);
 	Manager *man = _engine->GetManager();
