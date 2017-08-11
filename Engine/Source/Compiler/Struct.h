@@ -76,6 +76,19 @@ struct CodeBlock
 	CodeVar *AddVar(const Lexem &name);
 	CodeVar *GetVar(const string &name) { auto it = vars.find(name); if(it != vars.end()) return it->second; return nullptr; };
 };
+struct Param
+{
+	Type *type;
+	string name;
+	bool isConst;
+};
+struct Func
+{
+	Type *iReturn;
+	Type *iClass;
+	string name;
+	vector<Param> iParams;
+};
 struct Semantix
 {
 	Semantix *root = nullptr;

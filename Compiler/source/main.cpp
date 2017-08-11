@@ -21,8 +21,16 @@ int main(int argc, char* argv[])
 		ofstream fout;
 		fout.open(file);
 		fout << "#include \"stdafx.h\"" << endl;
+		fout << "#include \"Compiler\\Compiler.h\"" << endl;
 		fout << "namespace Lib" << endl;
 		fout << "{" << endl;
+
+		fout << "void InitFunc(Compiler *comp)" << endl;
+		fout << "{" << endl;
+		fout << "comp->AddFunc(\"int int::operator+(int)\");" << endl;
+
+		fout << "}" << endl;
+
 		fout << "}" << endl;
 		fout.close();
 	}

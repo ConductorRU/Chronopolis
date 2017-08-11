@@ -6,6 +6,7 @@
 #include "Semantic.h"
 #include "Coder.h"
 #include "Compiler.h"
+#include "Lib.h"
 
 void Compiler::AddType(const string &name, int size)
 {
@@ -79,6 +80,8 @@ void Compiler::Init()
 	_ops.push_back({"++", OPERATOR_UNARY, 2, ASSOC_LEFT_TO_RIGHT});
 
 	_ops.push_back({"::", OPERATOR_BINARY, 1, ASSOC_LEFT_TO_RIGHT});
+
+	_keywords.insert("operator");
 	AddType("bool", sizeof(bool));
 	AddType("char", sizeof(char));
 	AddType("uchar", sizeof(unsigned char));
@@ -90,6 +93,57 @@ void Compiler::Init()
 	AddType("ulong", sizeof(unsigned long long));
 	AddType("float", sizeof(float));
 	AddType("double", sizeof(double));
+	Lib::InitFunc(this);
+}
+
+void Compiler::AddFunc(const string &func)
+{
+	lex->Compile(func, this);
+	vector<Lexem> lexes = lex->GetList();
+	Func *f = new Func;
+	f->iReturn = GetType(lexes[0].word);
+	size_t i = 1;
+	string cl = "";
+	if(lexes[2].word == "::")
+	{
+		f->iClass = GetType(lexes[1].word);
+		cl = lexes[1].word;
+		i = 3;
+	}
+	else
+		f->iClass = nullptr;
+	f->name = lexes[i].word;
+	if(f->name == "operator")
+		f->name = lexes[++i].word;
+	++i;
+	_funcs[cl][f->name] = f;
+	Type *t = nullptr;
+	string tName;
+	if(lexes[i].word == "(")
+	{
+		++i;
+		while(i < lexes.size())
+		{
+			if(lexes[i].word == "," || lexes[i].word == ")")
+			{
+				Param p;
+				p.type = t;
+				p.name = tName;
+				f->iParams.push_back(p);
+				t = nullptr;
+				tName.clear();
+			}
+			else
+			{
+				Type *x = GetType(lexes[i].word);
+				if(x)
+					t = x;
+				else if(t)
+					tName = lexes[i].word;
+			}
+			++i;
+		}
+	}
 }
 Operator *Compiler::GetOperator(const string &val, bool isLeft, bool isRight)
 {
@@ -122,13 +176,26 @@ bool Compiler::IsKeyword(const string &val)
 		return false;
 	return true;
 }
+bool Compiler::IsWord(const char &c)
+{
+	if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+		return true;
+	return false;
+}
+bool Compiler::IsNumber(const char &c)
+{
+	if((c >= '0' && c <= '9'))
+		return true;
+	return false;
+}
+
 bool Compiler::IsNumber(const string &val)
 {
 	uint s = 0;
-	uint size = val.size();
+	size_t size = val.size();
 	if(size > 1 && val[0] == '-')
 		s = 1;
-	for(uint i = s; i < size; ++i)
+	for(size_t i = s; i < size; ++i)
 		if(!(val[i] >= '0' && val[i] <= '9'))
 			return false;
 	return true;

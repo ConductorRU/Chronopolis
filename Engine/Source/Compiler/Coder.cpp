@@ -55,7 +55,7 @@ uint Coder::AddData(uint size)
 }
 uint Coder::AddCode(uint fId, uint retId, const vector<uint> &data)
 {
-	return AddCode(fId, retId, (BYTE*)(&data[0]), data.size()*sizeof(uint));
+	return AddCode(fId, retId, (BYTE*)(&data[0]), (uint)data.size()*sizeof(uint));
 }
 uint Coder::FinishCode()
 {
