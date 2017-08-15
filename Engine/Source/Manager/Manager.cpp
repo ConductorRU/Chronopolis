@@ -39,6 +39,18 @@ namespace DEN
 			delete f;
 		_this = nullptr;
 	}
+	string Manager::GetExtension(const string &filename)
+	{
+		size_t size = filename.size();
+		string res = "";
+		for(size_t s = size - 1u; s != 0; --s)
+		{
+			if(filename[s] == '.')
+				return res;
+			res = filename[s] + res;
+		}
+		return "";
+	}
 	Mesh *Manager::CreateMesh(InputLayout *ia)
 	{
 		Mesh *mesh = new Mesh(ia);
@@ -102,18 +114,24 @@ namespace DEN
 	}
 	Texture *Manager::LoadTexture(const string &filename, bool isSprite)
 	{
-		BMP *bmp = BMP::Load(filename.c_str());
-		if(bmp)
+		string ext = GetExtension(filename);
+		transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+		ImageFormat *img = nullptr;
+		if(ext == "tga")
+			img = TGA::Load(filename.c_str());
+		else if(ext == "bmp")
+			img = BMP::Load(filename.c_str());
+		if(img)
 		{
-			uchar *data = bmp->GetData();
+			uchar *data = img->GetData();
 			Texture *bTex = new Texture();
 			bTex->SetAddress(TEXTURE_ADDRESS_WRAP);
 			if(isSprite)
-				bTex->Create(bmp->GetWidth(), bmp->GetHeight(), RESOURCE_SPRITE);
+				bTex->Create(img->GetWidth(), img->GetHeight(), RESOURCE_SPRITE);
 			else
-				bTex->Create(bmp->GetWidth(), bmp->GetHeight(), RESOURCE_GPU);
-			bTex->SetRaw(bmp->GetData(), bmp->GetWidth(), bmp->GetHeight());
-			delete bmp;
+				bTex->Create(img->GetWidth(), img->GetHeight(), RESOURCE_GPU);
+			bTex->SetRaw(img->GetData(), img->GetWidth(), img->GetHeight());
+			delete img;
 			_texture.insert(bTex);
 			return bTex;
 		}

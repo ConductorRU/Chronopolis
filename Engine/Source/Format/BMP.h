@@ -1,7 +1,8 @@
 #pragma once
+#include "Format.h"
 namespace DEN
 {
-	class BMP
+	class BMP: public ImageFormat
 	{
 	private:
 		#pragma pack(push,1)
@@ -25,17 +26,7 @@ namespace DEN
 			int  clrImportant; // Количество существенных цветов, Можно считать, просто 0
 		} BMPHeader;
 		#pragma pack(pop)
-		uchar *data;
-		uint width;
-		uint height;
-		uint size;
 	public:
-		BMP();
-		~BMP();
-		uint GetWidth() const { return width; }
-		uint GetHeight() const { return height; }
-		uint GetSize() const { return size; }
-		uchar *GetData() const { return data; }
 		static BMP *Load(const string &filename);
 		static bool Save(const string &filename, uchar *data, uint sixeX, uint sizeY);
 	};

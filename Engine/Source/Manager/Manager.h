@@ -31,6 +31,7 @@ namespace DEN
 		static Manager *_this;
 	public:
 		static Manager *Get() { return _this; }
+		static string GetExtension(const string &filename);
 		Manager();
 		~Manager();
 		Mesh *CreateMesh(InputLayout *ia);

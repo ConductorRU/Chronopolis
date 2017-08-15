@@ -126,9 +126,9 @@ namespace DEN
 		}
 		_texture->GetDesc(&z_desc);
 	}
-	void RenderTexture::SetRaw(uchar *data, UINT width, UINT height)
+	void RenderTexture::SetRaw(uchar *data, UINT width, UINT height, uint pixelSize)
 	{
-		Render::Get()->_deviceContext->UpdateSubresource(_texture, 0, 0, data, width * 4, width*height * 4);
+		Render::Get()->_deviceContext->UpdateSubresource(_texture, 0, 0, data, width*pixelSize, width*height*pixelSize);
 		_texture->GetDesc(&z_desc);
 	}
 	void RenderTexture::FreeTexture()

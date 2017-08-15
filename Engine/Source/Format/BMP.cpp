@@ -2,16 +2,6 @@
 #include "BMP.h"
 namespace DEN
 {
-	BMP::BMP()
-	{
-		data = nullptr;
-		width = height = size = 0;
-	}
-	BMP::~BMP()
-	{
-		delete[] data;
-	}
-
 	BMP *BMP::Load(const string &filename)
 	{
 		FILE *f = nullptr;

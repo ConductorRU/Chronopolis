@@ -378,7 +378,12 @@ void Game::Init()
 	iblock->SetParent(sc->GetGUI()->GetRoot());
 	iblock->SetStyle("display:block; x:10px;y:60px; background-color: #fff;");
 
-	Texture *bTex = Manager::Get()->LoadTexture("D:\\Release\\DirectX\\Chronopolis\\Img.bmp", true);
+	WidgetText *iText = new WidgetText(sc->GetGUI());
+	iText->SetParent(sc->GetGUI()->GetRoot());
+	iText->SetStyle("x:220px;y:60px; background-color: #fff;color:#000;");
+	iText->SetText("Hello");
+
+	Texture *bTex = Manager::Get()->LoadTexture("D:\\Release\\DirectX\\Chronopolis\\Img.tga", true);
 	iblock->SetImage(bTex);
 	/*WidgetDivider *divider = new WidgetDivider(mScene->GetGUI());
 	divider->SetParent(mScene->GetGUI()->GetRoot());

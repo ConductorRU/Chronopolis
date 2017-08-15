@@ -44,7 +44,7 @@ namespace DEN
 		void Lock(TEXTURE_LOCK type = TEXTURE_LOCK_READ_WRITE, DWORD flags = 0, UINT subID = 0);
 		void Unlock(UINT subID = 0);
 		void Create(UINT sizeX, UINT sizeY, RESOURCE_TYPE type = RESOURCE_DYNAMIC, DXGI_FORMAT format = DXGI_FORMAT_B8G8R8A8_UNORM, UINT arraySize = 1u);
-		void SetRaw(uchar *data, UINT width, UINT height);
+		void SetRaw(uchar *data, UINT width, UINT height, uint pixelSize = 4);
 		void FreeTexture();//освободить текстуру
 		void Reset();//освободить текстуру (динамические сохраняются в памяти)
 		void Set(Color *data);
