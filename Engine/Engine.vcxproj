@@ -210,7 +210,9 @@
     <ClCompile Include="Source\Core\File.cpp" />
     <ClCompile Include="Source\Core\Log.cpp" />
     <ClCompile Include="Source\Core\Variable.cpp" />
+    <ClCompile Include="Source\Format\BMP.cpp" />
     <ClCompile Include="Source\Format\Format.cpp" />
+    <ClCompile Include="Source\Format\TGA.cpp" />
     <ClCompile Include="Source\Format\SVG.cpp" />
     <ClCompile Include="Source\Format\XML.cpp" />
     <ClCompile Include="Source\GUI\Font.cpp" />
@@ -218,7 +220,10 @@
     <ClCompile Include="Source\GUI\GUIListener.cpp" />
     <ClCompile Include="Source\GUI\Style.cpp" />
     <ClCompile Include="Source\GUI\Widget.cpp" />
+    <ClCompile Include="Source\GUI\Widgets\WidgetBlock.cpp" />
     <ClCompile Include="Source\GUI\Widgets\WidgetDivider.cpp" />
+    <ClCompile Include="Source\GUI\Widgets\WidgetImage.cpp" />
+    <ClCompile Include="Source\GUI\Widgets\WidgetText.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Manager\Manager.cpp" />
     <ClCompile Include="Source\Material\Atlas.cpp" />
@@ -278,8 +283,10 @@
     <ClInclude Include="Source\Core\Log.h" />
     <ClInclude Include="Source\Core\Variable.h" />
     <ClInclude Include="Source\DC.h" />
+    <ClInclude Include="Source\Format\BMP.h" />
     <ClInclude Include="Source\Format\Class.h" />
     <ClInclude Include="Source\Format\Format.h" />
+    <ClInclude Include="Source\Format\TGA.h" />
     <ClInclude Include="Source\Format\SVG.h" />
     <ClInclude Include="Source\Format\XML.h" />
     <ClInclude Include="Source\GUI\Class.h" />
@@ -288,7 +295,10 @@
     <ClInclude Include="Source\GUI\GUIListener.h" />
     <ClInclude Include="Source\GUI\Style.h" />
     <ClInclude Include="Source\GUI\Widget.h" />
+    <ClInclude Include="Source\GUI\Widgets\WidgetBlock.h" />
     <ClInclude Include="Source\GUI\Widgets\WidgetDivider.h" />
+    <ClInclude Include="Source\GUI\Widgets\WidgetImage.h" />
+    <ClInclude Include="Source\GUI\Widgets\WidgetText.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Manager\Class.h" />
     <ClInclude Include="Source\Manager\Manager.h" />

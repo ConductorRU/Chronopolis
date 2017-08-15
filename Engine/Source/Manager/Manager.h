@@ -12,6 +12,7 @@ namespace DEN
 	class Paramesh;
 	class InputLayout;
 	class Font;
+	class Texture;
 	class Manager
 	{
 	private:
@@ -25,6 +26,8 @@ namespace DEN
 		set<Paramesh*> _paras;
 		set<Font*> _fonts;
 		set<InputLayout*> _inputs;
+		set<Texture*> _texture;
+		map<string, Texture*> _textureFile;
 		static Manager *_this;
 	public:
 		static Manager *Get() { return _this; }
@@ -40,5 +43,6 @@ namespace DEN
 		HullShader *CreateHS();
 		DomainShader *CreateDS();
 		Font *LoadFont(const string &family, int height, bool isBold = false, bool isItalic = false);
+		Texture *LoadTexture(const string &filename, bool isSprite);
 	};
 }

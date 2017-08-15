@@ -91,20 +91,25 @@ namespace DEN
 	};
 	class Widget
 	{
-	private:
+	protected:
 		GUI *_gui;
 		Widget *_parent;
 		RenderMesh *_buffer;
 		Pass *_pass;
-		Square _rect;//top, left, right, bottom
-		Matrix2D _aTransform;
-		Matrix2D _rTransform;
 		vector<Widget*> z_childs;
 		vector<Vertex2D> v;
+		Matrix2D _aTransform;
+		Matrix2D _rTransform;
+		Square _rect;//top, left, right, bottom
+		Vector2 _size;//width, height
 		map<string, string> _prop;//CSS => style="" => SetProperty("name", "value");
 		string _GetStyle(const string& name, const map<string, string> &inherit);
 		bool _update;
 		bool _visible;
+		void _UpdateTransform(map<string, string> &inherit);
+		void _UpdateBackground(map<string, string> &inherit);
+		virtual void _Update(map<string, string> &inherit);
+		virtual void _Render(Pass *pass);
 	public:
 		Widget *GetParent() { return _parent; };
 		Matrix2D &GetAbsoluteTransform() { return _aTransform; };
@@ -122,8 +127,8 @@ namespace DEN
 		bool SetProperty(const string& name, const string& value);
 		string GetProperty(const string& name);
 		void SetParent(Widget *parent);
-		virtual void BakeBuffer();
-		virtual void Bake(Widget *parent, map<string, string> inherit);//inherit не должно быть по ссылке
+		void BakeBuffer();
+		void Bake(Widget *parent, map<string, string> inherit);//inherit не должно быть по ссылке
 		void BakeAll(map<string, string> inherit = {});
 		void Draw(bool andChilds = false);
 	};

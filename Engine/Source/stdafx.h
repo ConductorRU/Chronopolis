@@ -43,6 +43,8 @@
 #pragma comment(lib,"dxguid.lib")
 
 using namespace std;
+typedef unsigned __int8 uchar;
+typedef unsigned __int16 ushort;
 typedef unsigned __int32 uint;
 typedef unsigned __int64 ulong;
 typedef size_t uxint;

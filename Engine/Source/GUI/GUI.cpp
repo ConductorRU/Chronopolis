@@ -40,7 +40,7 @@ namespace DEN
 		LPVOID v = z_font->GetRaw(x, y);
 		z_fontT = new Texture;
 		z_fontT->Create(x, y, RESOURCE_GPU);
-		z_fontT->SetRaw((char*)v, x, y);
+		z_fontT->SetRaw((uchar*)v, x, y);
 		z_pass->SetTexture(0, z_fontT);
 
 		z_passB = new Pass;
@@ -139,7 +139,7 @@ namespace DEN
 		LPVOID v = font->GetRaw(x, y);
 		Texture *fontT = new Texture;
 		fontT->Create(x, y);
-		fontT->SetRaw((char*)v, x, y);
+		fontT->SetRaw((uchar*)v, x, y);
 		pass->SetTexture(0, fontT);
 		z_fonts[name] = {pass, font};
 		return font;

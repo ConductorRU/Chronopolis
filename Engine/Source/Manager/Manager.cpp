@@ -5,6 +5,8 @@
 #include "../Material/Pass.h"
 #include "../GUI/Font.h"
 #include "../Render/InputLayout.h"
+#include "../Format/Class.h"
+#include "../Material/Texture.h"
 #include "Manager.h"
 namespace DEN
 {
@@ -97,5 +99,24 @@ namespace DEN
 		f->LoadFont(family, height, isBold, isItalic);
 		_fonts.insert(f);
 		return f;
+	}
+	Texture *Manager::LoadTexture(const string &filename, bool isSprite)
+	{
+		BMP *bmp = BMP::Load(filename.c_str());
+		if(bmp)
+		{
+			uchar *data = bmp->GetData();
+			Texture *bTex = new Texture();
+			bTex->SetAddress(TEXTURE_ADDRESS_WRAP);
+			if(isSprite)
+				bTex->Create(bmp->GetWidth(), bmp->GetHeight(), RESOURCE_SPRITE);
+			else
+				bTex->Create(bmp->GetWidth(), bmp->GetHeight(), RESOURCE_GPU);
+			bTex->SetRaw(bmp->GetData(), bmp->GetWidth(), bmp->GetHeight());
+			delete bmp;
+			_texture.insert(bTex);
+			return bTex;
+		}
+		return nullptr;
 	}
 }

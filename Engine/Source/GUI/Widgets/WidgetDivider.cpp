@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "WidgetDivider.h"
-#include "../Widget.h"
 #include "../GUIListener.h"
 #include "../GUI.h"
 #include "../../Input/Input.h"

@@ -357,12 +357,12 @@ Game::~Game()
 
 void Game::Init()
 {
-	Compiler comp;
+	/*Compiler comp;
 	comp.Init();
 	string code = "int i = 5, v = 6 + 2; i = 8; print(i);";
 	comp.Compile(code);
 	int i;
-	cin >> i;
+	cin >> i;*/
 
 	_engine->Create(1024, 768, false);
 	Manager *man = _engine->GetManager();
@@ -370,10 +370,16 @@ void Game::Init()
 	Scene *mScene = _engine->CreateScene();
 	Scene *sc = _engine->CreateScene();
 
-	Widget *block = new Widget(sc->GetGUI());
+	Widget *block = new WidgetBlock(sc->GetGUI());
 	block->SetParent(sc->GetGUI()->GetRoot());
-	block->SetStyle("display:block; x:10px;y:10px;width: 200px; height:40px; background-color: #3498db;border-radius:5px;");
+	block->SetStyle("display:block; x:10px;y:10px;width: 200px; height:40px; background-color: #3498db;border-radius:8px;");
 	
+	WidgetImage *iblock = new WidgetImage(sc->GetGUI());
+	iblock->SetParent(sc->GetGUI()->GetRoot());
+	iblock->SetStyle("display:block; x:10px;y:60px; background-color: #fff;");
+
+	Texture *bTex = Manager::Get()->LoadTexture("D:\\Release\\DirectX\\Chronopolis\\Img.bmp", true);
+	iblock->SetImage(bTex);
 	/*WidgetDivider *divider = new WidgetDivider(mScene->GetGUI());
 	divider->SetParent(mScene->GetGUI()->GetRoot());
 	divider->SetStyle("width:100%;height:100%;background-color:#aaa;");
@@ -455,6 +461,7 @@ void Game::Init()
 	tex->Unlock();
 	//tex->Clear(ColorRGB(0, 127, 255));
 	pass->SetTexture(0, tex);
+
 	VertexShader *vs = man->CreateVS();
 	vs->CompileFile(L"vs.txt", "mainVS");
 	pass->SetVS(vs);
@@ -547,13 +554,13 @@ void Game::Init()
 		return nullptr;
 	};
 	_actors.push_back(bricks);
-	_scripts.push_back(aScrX);
-	_scripts.push_back(aScr);
-	_player = new Player();
-	_player->Initialize();
-	_world = new World();
-	_world->Initialize();
-	GUIPlan *plan = new GUIPlan(sc->GetGUI());
+	//_scripts.push_back(aScrX);
+	//_scripts.push_back(aScr);
+	//_player = new Player();
+	//_player->Initialize();
+	//_world = new World();
+	//_world->Initialize();
+	//GUIPlan *plan = new GUIPlan(sc->GetGUI());
 
 	InputListener *lis = new InputListener();
 	GetEngine()->GetInput()->AddListener(lis);
@@ -577,8 +584,8 @@ void Game::Update()
 		//_scripts[1]->func["onAdd"](c);
 		WidgetX *v1 = _engine->GetScene()->GetGUI()->GetElementById("v1");
 		//gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
-		_world->Update();
-		_player->Update();
+		//_world->Update();
+		//_player->Update();
 		float s = _engine->GetTime().spf;
 		_clock->Update(s);
 		//Scene::Stats stats = _engine->GetScene()->stats;
