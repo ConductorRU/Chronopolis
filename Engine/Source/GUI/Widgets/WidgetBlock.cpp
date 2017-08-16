@@ -101,7 +101,7 @@ namespace DEN
 		{
 			for (int i = 0; i < 4; ++i)
 				v.push_back(t);
-			v[1].uv.x = v[3].uv.x = v[2].uv.y = v[3].uv.y = 1.0f;
+			v[1].uv.x = v[3].uv.x = v[0].uv.y = v[1].uv.y = 1.0f;
 			v[0].pos.x = v[2].pos.x = _rect.left;
 			v[0].pos.y = v[1].pos.y = _rect.top;
 			v[1].pos.x = v[3].pos.x = _size.x - _rect.right;

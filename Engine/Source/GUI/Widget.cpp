@@ -772,10 +772,9 @@ namespace DEN
 			z_prop.SetSquare(s);
 		}
 		size_t size = z_prop.GetInnerText().size();
-		Pass *fontP = z_gui->GetPass();
 		Font *fontF = z_gui->GetFont();
 		if(z_prop.GetFont() != "")
-			z_gui->GetFont(z_prop.GetFont(), &fontF, &fontP);
+			z_gui->GetFont(z_prop.GetFont(), &fontF);
 		if(z_prop.GetDisplay() == 2)
 		{
 			char c;
@@ -869,7 +868,6 @@ namespace DEN
 			return;
 		}
 		z_gui->BakeCounter();
-		Pass *fontP = z_gui->GetPass();
 		Font *fontF = z_gui->GetFont();
 		UINT lSize = 0;
 		UINT vSize = 0;
@@ -897,7 +895,7 @@ namespace DEN
 		v[2].uv.y = v[3].uv.y = uv.maxY;
 		
 		if(z_prop.GetFont() != "")
-			z_gui->GetFont(z_prop.GetFont(), &fontF, &fontP);
+			z_gui->GetFont(z_prop.GetFont(), &fontF);
 
 		if(z_parent && z_prop.GetPosition() != 1)
 			parP = z_parent->GetProperty().GetPadding();
@@ -914,7 +912,6 @@ namespace DEN
 		if(size > 0 && z_prop.GetDisplay() == 2)
 		{
 			///z_gui->GetPass()->SetSlot(0, 1);
-			z_pass = fontP;
 			uint n = (uint)v.size();
 			char c;
 			Square s;
@@ -1061,10 +1058,12 @@ namespace DEN
 		_buffer->Init(gui->GetPS());
 		_update = true;
 		_visible = true;
+		_indexes = nullptr;
 	}
 	Widget::~Widget()
 	{
-
+		if(_indexes)
+			delete _indexes;
 	}
 	float Widget::PercentWidth(const string &val, Widget *parent)
 	{
@@ -1282,9 +1281,13 @@ namespace DEN
 		prop = _GetStyle("x", inherit);
 		if (prop != "")
 			_rTransform.SetTranslationX(GetPixel("x", prop));
+		else if(prop == "inline")
+			_rTransform.SetTranslationX(_parent->_rTransform.GetTranslation().x);
 		prop = _GetStyle("y", inherit);
 		if (prop != "")
 			_rTransform.SetTranslationY(GetPixel("y", prop));
+		else if(prop == "inline")
+			_rTransform.SetTranslationY(_parent->_rTransform.GetTranslation().y);
 	}
 	void Widget::_UpdateBackground(map<string, string> &inherit)
 	{
@@ -1310,14 +1313,25 @@ namespace DEN
 		if(v.size())
 		{
 			_buffer->Bake(&v[0], (uint)v.size(), sizeof(Vertex2D));
+			if(_indexes && _indexes->size())
+				_buffer->BakeIndex(&_indexes->at(0), (uint)_indexes->size());
 			BakeBuffer();
 		}
 	}
 	void Widget::BakeAll(map<string, string> inherit)
 	{
 		Bake(_parent, inherit);
-		for (Widget *el : z_childs)
-			el->BakeAll(inherit);
+		if(z_childs.size())
+		{
+			Widget *prev = _gui->GetPrevChild();
+			_gui->SetPrevChild(nullptr);
+			for (Widget *el : z_childs)
+			{
+				el->BakeAll(inherit);
+				_gui->SetPrevChild(el);
+			}
+			_gui->SetPrevChild(prev);
+		}
 	}
 	void Widget::_Render(Pass *pass)
 	{

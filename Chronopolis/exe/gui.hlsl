@@ -4,6 +4,7 @@ cbuffer Properties
 {
 	float4 screen;
 	float4x4 rect;
+	float4 color;
 };
 struct VType
 {

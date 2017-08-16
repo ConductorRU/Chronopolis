@@ -370,9 +370,9 @@ void Game::Init()
 	Scene *mScene = _engine->CreateScene();
 	Scene *sc = _engine->CreateScene();
 
-	Widget *block = new WidgetBlock(sc->GetGUI());
-	block->SetParent(sc->GetGUI()->GetRoot());
-	block->SetStyle("display:block; x:10px;y:10px;width: 200px; height:40px; background-color: #3498db;border-radius:8px;");
+	//Widget *block = new WidgetBlock(sc->GetGUI());
+	//block->SetParent(sc->GetGUI()->GetRoot());
+	//block->SetStyle("display:block; x:10px;y:10px;width: 200px; height:40px; background-color: #3498db;border-radius:8px;");
 	
 	WidgetImage *iblock = new WidgetImage(sc->GetGUI());
 	iblock->SetParent(sc->GetGUI()->GetRoot());
@@ -380,8 +380,13 @@ void Game::Init()
 
 	WidgetText *iText = new WidgetText(sc->GetGUI());
 	iText->SetParent(sc->GetGUI()->GetRoot());
-	iText->SetStyle("x:220px;y:60px; background-color: #fff;color:#000;");
-	iText->SetText("Hello");
+	iText->SetStyle("color:#000;font-family:arial;font-size:32px;font-weight:bold;");
+	iText->SetText("Hello, ");
+	iText = new WidgetText(sc->GetGUI());
+	iText->SetParent(sc->GetGUI()->GetRoot());
+	iText->SetStyle("color:#000;font-family:arial;font-size:32px;font-weight:normal;");
+	iText->SetText("world!");
+
 
 	Texture *bTex = Manager::Get()->LoadTexture("D:\\Release\\DirectX\\Chronopolis\\Img.tga", true);
 	iblock->SetImage(bTex);

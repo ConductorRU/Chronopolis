@@ -36,25 +36,19 @@ namespace DEN
 				return nullptr;
 			}
 			file->data = new uchar[file->width*file->height*4];
-			uchar *ptr = file->data;
-			for (int y = file->height - 1; y >= 0; y--)
+			if(bytepp == 4)
+				memcpy(file->data, data, file->size);
+			else for (uint y = 0; y < file->height; ++y)
 			{
+				uchar *ptr = file->data;
 				unsigned char *pRow = data + file->width*y*bytepp;
-				if(bytepp == 4)
+				for(uint x = 0; x < file->width; ++x)
 				{
-					memcpy(ptr, pRow, file->width*bytepp);
-					ptr += file->width*bytepp;
-				}
-				else
-				{
-					for(uint x = 0; x < file->width; ++x)
-					{
-						*ptr++ = *(pRow);
-						*ptr++ = *(pRow + 1);
-						*ptr++ = *(pRow + 2);
-						*ptr++ = 255;
-						pRow += 3;
-					}
+					*ptr++ = *(pRow);
+					*ptr++ = *(pRow + 1);
+					*ptr++ = *(pRow + 2);
+					*ptr++ = 255;
+					pRow += 3;
 				}
 			}
 			fclose(fTGA);
@@ -115,14 +109,7 @@ namespace DEN
 				}
 			}
 			while(curPixel < pixelcount);
-			file->data = new uchar[file->width*file->height*4];
-			uchar *ptr = file->data;
-			for(int y = file->height - 1; y >= 0; --y)
-			{
-				unsigned char *pRow = data + file->width*y*4;
-				memcpy(ptr, pRow, file->width*bytepp);
-				ptr += file->width*bytepp;
-			}
+			file->data = data;
 			fclose(fTGA);
 			return file;
 		}

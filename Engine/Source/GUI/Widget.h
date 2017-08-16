@@ -98,6 +98,7 @@ namespace DEN
 		Pass *_pass;
 		vector<Widget*> z_childs;
 		vector<Vertex2D> v;
+		vector<uint> *_indexes;
 		Matrix2D _aTransform;
 		Matrix2D _rTransform;
 		Square _rect;//top, left, right, bottom
@@ -116,6 +117,8 @@ namespace DEN
 		Matrix2D &GetRelativeTransform() { return _rTransform; };
 		Widget *GetChild(uint num) { if (num < GetChildCount()) return z_childs[num]; return nullptr; };
 		uint GetChildCount() { return (uint)z_childs.size(); };
+		Square &GetSquare() { return _rect;}
+		Vector2 &GetSize() { return _size;}
 
 		static float PercentWidth(const string &val, Widget *parent = nullptr);
 		static float PercentHeight(const string &val, Widget *parent = nullptr);

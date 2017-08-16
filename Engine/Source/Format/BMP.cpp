@@ -48,7 +48,7 @@ namespace DEN
 		fclose(f);// данные прочитаны
 		uchar *v = new uchar[mx*my*4];// выделим память для результата
 		uchar *ptr = v;// Перенос данных (не забудем про BGR->RGB)
-		for (int y = my - 1; y >= 0; y--)
+		for (uint y = 0; y < my; ++y)
 		{
 			unsigned char *pRow = tmp_buf + mx3*y;
 			for (uint x = 0; x < mx; ++x)
