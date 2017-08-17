@@ -4,4 +4,7 @@
 #include "Style.h"
 #include "Widget.h"
 #include "Widgets/WidgetDivider.h"
+#include "Widgets/WidgetBlock.h"
+#include "Widgets/WidgetImage.h"
+#include "Widgets/WidgetText.h"
 #include "GUI.h"

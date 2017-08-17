@@ -32,7 +32,10 @@ namespace DEN
 	}
 	void Pass::SetTexture(UCHAR slot, Texture *tex)
 	{
-		_textures[slot] = tex;
+		if(tex)
+			_textures[slot] = tex;
+		else
+			_textures.erase(slot);
 	}
 	Texture *Pass::GetTexture(UCHAR slot)
 	{

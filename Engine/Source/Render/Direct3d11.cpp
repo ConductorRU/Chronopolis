@@ -661,6 +661,7 @@ namespace DEN
 		_blendDesc.RenderTarget[0].DestBlendAlpha = (D3D11_BLEND)pass->GetDestAlpha();
 		_blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 		_blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+
 		_blendState->Release();
 		_depthState->Release();
 		_rasterState->Release();

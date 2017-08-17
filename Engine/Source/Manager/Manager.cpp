@@ -5,6 +5,8 @@
 #include "../Material/Pass.h"
 #include "../GUI/Font.h"
 #include "../Render/InputLayout.h"
+#include "../Format/Class.h"
+#include "../Material/Texture.h"
 #include "Manager.h"
 namespace DEN
 {
@@ -36,6 +38,18 @@ namespace DEN
 		for(Font *f : _fonts)
 			delete f;
 		_this = nullptr;
+	}
+	string Manager::GetExtension(const string &filename)
+	{
+		size_t size = filename.size();
+		string res = "";
+		for(size_t s = size - 1u; s != 0; --s)
+		{
+			if(filename[s] == '.')
+				return res;
+			res = filename[s] + res;
+		}
+		return "";
 	}
 	Mesh *Manager::CreateMesh(InputLayout *ia)
 	{
@@ -97,5 +111,30 @@ namespace DEN
 		f->LoadFont(family, height, isBold, isItalic);
 		_fonts.insert(f);
 		return f;
+	}
+	Texture *Manager::LoadTexture(const string &filename, bool isSprite)
+	{
+		string ext = GetExtension(filename);
+		transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+		ImageFormat *img = nullptr;
+		if(ext == "tga")
+			img = TGA::Load(filename.c_str());
+		else if(ext == "bmp")
+			img = BMP::Load(filename.c_str());
+		if(img)
+		{
+			uchar *data = img->GetData();
+			Texture *bTex = new Texture();
+			bTex->SetAddress(TEXTURE_ADDRESS_WRAP);
+			if(isSprite)
+				bTex->Create(img->GetWidth(), img->GetHeight(), RESOURCE_SPRITE);
+			else
+				bTex->Create(img->GetWidth(), img->GetHeight(), RESOURCE_GPU);
+			bTex->SetRaw(img->GetData(), img->GetWidth(), img->GetHeight());
+			delete img;
+			_texture.insert(bTex);
+			return bTex;
+		}
+		return nullptr;
 	}
 }

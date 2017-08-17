@@ -10,6 +10,7 @@ namespace DEN
 		RESOURCE_CPU = 3,//можно читать и писать в CPU
 		RESOURCE_RENDER = 4,//
 		RESOURCE_DEPTH = 5,//
+		RESOURCE_SPRITE = 6,//
 	};
 	enum TEXTURE_LOCK
 	{
@@ -24,6 +25,7 @@ namespace DEN
 		friend struct RenderTarget;
 	protected:
 		UCHAR* z_data;
+		uint _rowPitch;
 		bool z_dynamic;
 		D3D11_TEXTURE2D_DESC z_desc;//данные текстурной поверхности
 		RESOURCE_TYPE z_type;
@@ -42,7 +44,7 @@ namespace DEN
 		void Lock(TEXTURE_LOCK type = TEXTURE_LOCK_READ_WRITE, DWORD flags = 0, UINT subID = 0);
 		void Unlock(UINT subID = 0);
 		void Create(UINT sizeX, UINT sizeY, RESOURCE_TYPE type = RESOURCE_DYNAMIC, DXGI_FORMAT format = DXGI_FORMAT_B8G8R8A8_UNORM, UINT arraySize = 1u);
-		void SetRaw(char *data, UINT width, UINT height);
+		void SetRaw(uchar *data, UINT width, UINT height, uint pixelSize = 4);
 		void FreeTexture();//освободить текстуру
 		void Reset();//освободить текстуру (динамические сохраняются в памяти)
 		void Set(Color *data);

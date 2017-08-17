@@ -772,10 +772,9 @@ namespace DEN
 			z_prop.SetSquare(s);
 		}
 		size_t size = z_prop.GetInnerText().size();
-		Pass *fontP = z_gui->GetPass();
 		Font *fontF = z_gui->GetFont();
 		if(z_prop.GetFont() != "")
-			z_gui->GetFont(z_prop.GetFont(), &fontF, &fontP);
+			z_gui->GetFont(z_prop.GetFont(), &fontF);
 		if(z_prop.GetDisplay() == 2)
 		{
 			char c;
@@ -869,7 +868,6 @@ namespace DEN
 			return;
 		}
 		z_gui->BakeCounter();
-		Pass *fontP = z_gui->GetPass();
 		Font *fontF = z_gui->GetFont();
 		UINT lSize = 0;
 		UINT vSize = 0;
@@ -897,7 +895,7 @@ namespace DEN
 		v[2].uv.y = v[3].uv.y = uv.maxY;
 		
 		if(z_prop.GetFont() != "")
-			z_gui->GetFont(z_prop.GetFont(), &fontF, &fontP);
+			z_gui->GetFont(z_prop.GetFont(), &fontF);
 
 		if(z_parent && z_prop.GetPosition() != 1)
 			parP = z_parent->GetProperty().GetPadding();
@@ -914,7 +912,6 @@ namespace DEN
 		if(size > 0 && z_prop.GetDisplay() == 2)
 		{
 			///z_gui->GetPass()->SetSlot(0, 1);
-			z_pass = fontP;
 			uint n = (uint)v.size();
 			char c;
 			Square s;
@@ -1061,10 +1058,12 @@ namespace DEN
 		_buffer->Init(gui->GetPS());
 		_update = true;
 		_visible = true;
+		_indexes = nullptr;
 	}
 	Widget::~Widget()
 	{
-
+		if(_indexes)
+			delete _indexes;
 	}
 	float Widget::PercentWidth(const string &val, Widget *parent)
 	{
@@ -1217,7 +1216,7 @@ namespace DEN
 			return "";
 		return iter->second;
 	}
-	string Widget::_GetStyle(const string& name, const map<string, string> &inherit)
+	string Widget::GetStyle(const string& name, const map<string, string> &inherit)
 	{
 		auto iter = _prop.find(name);
 		if(iter != _prop.end())
@@ -1253,163 +1252,126 @@ namespace DEN
 		_buffer->Copy(SHADER_VS, 0, &f, sizeof(f), 0u);
 		_buffer->Copy(SHADER_PS, 0, &f, sizeof(f), 0u);
 	}
-	void Widget::Bake(Widget *parent, map<string, string> inherit)
+	void Widget::_UpdateTransform(map<string, string> &inherit)
 	{
-		if(!_update)
-			return;
-		_update = false;
-		string prop = _GetStyle("display", inherit);
-		Square rect;
-		Vector2 size;
-		Vertex2D t;
-		memset(&t, 0, sizeof(Vertex2D));
-		float val;
+		string prop = GetStyle("display", inherit);
 		if(prop == "block")
 		{
 		}
-		prop = _GetStyle("width", inherit);
-		if(prop != "")
-			size.x = GetPixel("width", prop);
-		prop = _GetStyle("height", inherit);
+		prop = GetStyle("width", inherit);
 		if (prop != "")
-			size.y = GetPixel("height", prop);
+			_size.x = GetPixel("width", prop);
+		prop = GetStyle("height", inherit);
+		if (prop != "")
+			_size.y = GetPixel("height", prop);
 
-		prop = _GetStyle("left", inherit);
-		if(prop != "")
-			rect.left = GetPixel("left", prop);
-		prop = _GetStyle("right", inherit);
-		if(prop != "")
-			rect.right = GetPixel("right", prop);
-		prop = _GetStyle("top", inherit);
-		if(prop != "")
-			rect.top = GetPixel("top", prop);
-		prop = _GetStyle("bottom", inherit);
-		if(prop != "")
-			rect.bottom = GetPixel("bottom", prop);
-		prop = _GetStyle("x", inherit);
-		if(prop != "")
+		prop = GetStyle("left", inherit);
+		if (prop != "")
+			_rect.left = GetPixel("left", prop);
+		prop = GetStyle("right", inherit);
+		if (prop != "")
+			_rect.right = GetPixel("right", prop);
+		prop = GetStyle("top", inherit);
+		if (prop != "")
+			_rect.top = GetPixel("top", prop);
+		prop = GetStyle("bottom", inherit);
+		if (prop != "")
+			_rect.bottom = GetPixel("bottom", prop);
+
+		prop = GetStyle("x", inherit);
+		if (prop != "")
 			_rTransform.SetTranslationX(GetPixel("x", prop));
-		prop = _GetStyle("y", inherit);
-		if(prop != "")
-			_rTransform.SetTranslationY(GetPixel("y", prop));
-
-		prop = _GetStyle("border-radius", inherit);
-		if(prop != "")
-		{
-			val = GetPixel("border-radius", prop);
-			if(val > 0)
-			{
-				v.clear();
-				val = min(val, min(size.x, size.y));
-				for(float f = 0.0f; f <= val; f += 1.0f)//left top
-				{
-					t.pos.x = val + rect.left;
-					t.pos.y = val + rect.top;
-					v.push_back(t);
-					t.pos.x = val + cos(-PI - (f/val)*PI_HALF)*val + rect.left;
-					t.pos.y = val - sin((f/val)*PI_HALF)*val + rect.top;
-					v.push_back(t);
-				}
-				t.pos.x = size.x - val - rect.right;
-				t.pos.y = val + rect.top;
-				v.push_back(t);
-				t.pos.x = size.x - val - rect.right;
-				t.pos.y = rect.top;
-				v.push_back(t);
-				for(float f = val; f >= 0.0f; f -= 1.0f)//right top
-				{
-					t.pos.x = size.x - val - rect.right;
-					t.pos.y = val + rect.top;
-					v.push_back(t);
-					t.pos.x = size.x - (val + cos(-PI - (f/val)*PI_HALF)*val) - rect.right;
-					t.pos.y = val + sin(PI + (f/val)*PI_HALF)*val + rect.top;
-					v.push_back(t);
-				}
-				t.pos.x = size.x - val - rect.right;
-				t.pos.y = size.y - val - rect.bottom;
-				v.push_back(t);
-				t.pos.x = size.x - rect.right;
-				t.pos.y = size.y - val - rect.bottom;
-				v.push_back(t);
-				for(float f = 0.0f; f <= val; f += 1.0f)//right bottom
-				{
-					t.pos.x = size.x - val - rect.right;
-					t.pos.y = size.y - val - rect.bottom;
-					v.push_back(t);
-					t.pos.x = size.x - (val + cos(-PI - (f/val)*PI_HALF)*val) - rect.right;
-					t.pos.y = size.y - val + sin((f/val)*PI_HALF)*val - rect.bottom;
-					v.push_back(t);
-				}
-				t.pos.x = val + rect.left;
-				t.pos.y = size.y - val - rect.bottom;
-				v.push_back(t);
-				t.pos.x = val + rect.left;
-				t.pos.y = size.y - rect.bottom;
-				v.push_back(t);
-				for(float f = val; f >= 0.0f; f -= 1.0f)//left bottom
-				{
-					t.pos.x = val + rect.left;
-					t.pos.y = size.y - val - rect.bottom;
-					v.push_back(t);
-					t.pos.x = (val + cos(-PI - (f/val)*PI_HALF)*val) + rect.left;
-					t.pos.y = size.y - val - sin(PI + (f/val)*PI_HALF)*val - rect.bottom;
-					v.push_back(t);
-				}
-				t.pos.x = val + rect.left;
-				t.pos.y = val + rect.top;
-				v.push_back(t);
-				t.pos.x = 0.0f + rect.left;
-				t.pos.y = val + rect.top;
-				v.push_back(t);
-
-				t.pos.x = val + rect.left;//center
-				t.pos.y = val + rect.top;
-				v.push_back(t);
-				t.pos.x = size.x - val - rect.right;
-				t.pos.y = val + rect.top;
-				v.push_back(t);
-				t.pos.x = val + rect.left;
-				t.pos.y = size.y - val - rect.bottom;
-				v.push_back(t);
-				t.pos.x = size.x - val - rect.right;
-				t.pos.y = size.y - val - rect.bottom;
-				v.push_back(t);
-			}
-		}
-		else
-		{
-			for(int i = 0; i < 4; ++i)
-				v.push_back(t);
-			v[1].uv.x = v[3].uv.x = v[2].uv.y = v[3].uv.y = 1.0f;
-			v[0].pos.x = v[2].pos.x = rect.left;
-			v[0].pos.y = v[1].pos.y = rect.top;
-			v[1].pos.x = v[3].pos.x = size.x - rect.right;
-			v[2].pos.y = v[3].pos.y = size.y - rect.bottom;
-			if(v[0].pos.x > v[1].pos.x)
-				v[1].pos.x = v[3].pos.x = v[0].pos.x;
-			if(v[0].pos.y > v[2].pos.y)
-				v[2].pos.y = v[3].pos.y = v[0].pos.y;
-		}
-
-
-		prop = _GetStyle("background-color", inherit);
+		else if(prop == "inline")
+			_rTransform.SetTranslationX(_parent->_rTransform.GetTranslation().x);
+		prop = GetStyle("y", inherit);
 		if (prop != "")
+			_rTransform.SetTranslationY(GetPixel("y", prop));
+		else if(prop == "inline")
+			_rTransform.SetTranslationY(_parent->_rTransform.GetTranslation().y);
+	}
+	void Widget::_UpdateBackground(map<string, string> &inherit)
+	{
+		string prop = GetStyle("background-color", inherit);
+		if(prop != "")
 		{
 			Color col = GetColor(prop);
-			for(Vertex2D &v1 : v)
+			for (Vertex2D &v1 : v)
 				v1.col = col;
 		}
-		if (v.size())
+	}
+	void Widget::_UpdateAlign(map<string, string> &inherit)
+	{
+		string prop = GetStyle("text-align", inherit);
+		if(prop == "center")
+		{
+			float length = 0.0f;
+			for(Widget *el : z_childs)
+			{
+				string display = GetStyle("display", inherit);
+				if(display == "inline")
+				{
+					length += el->GetSquare().maxX;
+				}
+				else
+				{
+					length = 0.0f;
+				}
+			}
+
+		}
+	}
+	void Widget::_Update(map<string, string> &inherit)
+	{
+		_UpdateTransform(inherit);
+		_UpdateBackground(inherit);
+	}
+	bool Widget::Update(map<string, string> inherit)
+	{
+		if(!_update)
+			return false;
+		_update = false;
+		_Update(inherit);
+		return true;
+	}
+	void Widget::Bake()
+	{
+		if(v.size())
 		{
 			_buffer->Bake(&v[0], (uint)v.size(), sizeof(Vertex2D));
+			if(_indexes && _indexes->size())
+				_buffer->BakeIndex(&_indexes->at(0), (uint)_indexes->size());
 			BakeBuffer();
 		}
 	}
 	void Widget::BakeAll(map<string, string> inherit)
 	{
-		Bake(_parent, inherit);
-		for (Widget *el : z_childs)
-			el->BakeAll(inherit);
+		if(_gui->GetRoot() == this)
+		{
+			Update(inherit);
+			Bake();
+		}
+		if(z_childs.size())
+		{
+			Widget *prev = _gui->GetPrevChild();
+			_gui->SetPrevChild(nullptr);
+			for(Widget *el : z_childs)
+			{
+				el->Update(inherit);
+				_gui->SetPrevChild(el);
+			}
+			_UpdateAlign(inherit);
+			for(Widget *el : z_childs)
+				el->Bake();
+			for(Widget *el : z_childs)
+				el->BakeAll(inherit);
+			_gui->SetPrevChild(prev);
+		}
+	}
+	void Widget::_Render(Pass *pass)
+	{
+		Render *render = Render::Get();
+		render->RenderPass(pass);
+		render->ExecuteMesh(_buffer);
 	}
 	void Widget::Draw(bool andChilds)
 	{
@@ -1421,26 +1383,9 @@ namespace DEN
 			_buffer->Update();
 			_buffer->Unmap();
 			if (_pass)
-			{
-				render->RenderPass(_pass);
-				render->ExecuteMesh(_buffer);
-			}
+				_Render(_pass);
 			else
-			{
-				/*if (GetTexture())
-				{
-					Texture *tex = _gui->GetBlankPass()->GetTexture(0);
-					_gui->GetBlankPass()->SetTexture(0, GetTexture());
-					render->RenderPass(_gui->GetBlankPass());
-					render->ExecuteMesh(_buffer);
-					_gui->GetBlankPass()->SetTexture(0, tex);
-				}
-				else*/
-				{
-					render->RenderPass(_gui->GetBlankPass());
-					render->ExecuteMesh(_buffer);
-				}
-			}
+				_Render(_gui->GetBlankPass());
 			//if(_root)
 			//	_root->Draw(true);
 			if (andChilds)

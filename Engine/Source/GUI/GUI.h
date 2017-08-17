@@ -26,24 +26,19 @@ namespace DEN
 		Texture *z_fontT;
 		Texture *z_blank;
 		set<WidgetX*> z_all;
-		struct FontPass
-		{
-			Pass *pass;
-			Font *font;
-		};
-		map<string, FontPass> z_fonts;
+		map<string, Font*> z_fonts;
+		map<string, Font*> z_autofonts;
 		map<string, Style*> z_class;
 		map<string, WidgetX*> z_ids;
 		map<int, vector<WidgetX *>> z_order;
 		WidgetX *z_root;
 		Widget *_root;
+		Widget *_prevChild;
 		WidgetX *z_picked;
 		UINT z_width;
 		UINT z_height;
 		UINT z_bakeCount;
 		WidgetX *z_inputBox;
-
-
 
 	public:
 		Pass *GetPass() { return z_pass; };
@@ -57,6 +52,8 @@ namespace DEN
 		WidgetX *GetInputElement() { return z_inputBox; };
 		void BakeCounter() { ++z_bakeCount; };
 		UINT GetBakeCounter() { return z_bakeCount; };
+		Widget *GetPrevChild() { return _prevChild; };
+		void SetPrevChild(Widget *widget) { _prevChild = widget; };
 		GUI();
 		~GUI();
 		WidgetX *GetElementById(const string &name);
@@ -73,8 +70,8 @@ namespace DEN
 		WidgetX *CreateElement(const string &name = "", bool isEvent = false);
 		void Render();
 		Font *GetFont();
-		void GetFont(const string &name, Font **font, Pass **pass);
-
+		void GetFont(const string &name, Font **font);
+		void GetFont(const string &family, int size, bool isBold, bool isItalic, Font **font);
 
 
 	};

@@ -74,7 +74,7 @@ namespace DEN
 		void *v = GetRaw(x, y);
 		_texture = new Texture;
 		_texture->Create(x, y, RESOURCE_GPU);
-		_texture->SetRaw((char*)v, x, y);
+		_texture->SetRaw((uchar*)v, x, y);
 	}
 	void Font::LoadFont()
 	{

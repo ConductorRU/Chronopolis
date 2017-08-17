@@ -40,7 +40,7 @@ namespace DEN
 		LPVOID v = z_font->GetRaw(x, y);
 		z_fontT = new Texture;
 		z_fontT->Create(x, y, RESOURCE_GPU);
-		z_fontT->SetRaw((char*)v, x, y);
+		z_fontT->SetRaw((uchar*)v, x, y);
 		z_pass->SetTexture(0, z_fontT);
 
 		z_passB = new Pass;
@@ -69,6 +69,7 @@ namespace DEN
 		z_bakeCount = 0;
 		z_picked = nullptr;
 		z_inputBox = nullptr;
+		_prevChild = nullptr;
 	}
 	GUI::~GUI()
 	{
@@ -130,18 +131,12 @@ namespace DEN
 	}
 	Font *GUI::Createfont(const string &name, const string &family, int size, bool isBold, bool isItalic)
 	{
-		Pass *pass = new Pass;
-		pass->SetVS(_vs);
-		pass->SetPS(_ps);
 		Font *font = new Font();
 		font->LoadFont(family, size, isBold, isItalic);
-		UINT x, y;
-		LPVOID v = font->GetRaw(x, y);
-		Texture *fontT = new Texture;
-		fontT->Create(x, y);
-		fontT->SetRaw((char*)v, x, y);
-		pass->SetTexture(0, fontT);
-		z_fonts[name] = {pass, font};
+		if(name != "")
+			z_fonts[name] = font;
+		string autoName = family + "_" + to_string(size) + (isBold ? "b" : "") + (isItalic ? "i" : "");
+		z_autofonts[autoName] = font;
 		return font;
 	}
 	WidgetX *GUI::CreateElement(const string &name, bool isEvent)
@@ -184,18 +179,27 @@ namespace DEN
 	{
 		return z_font;
 	}
-	void GUI::GetFont(const string &name, Font **font, Pass **pass)
+	void GUI::GetFont(const string &name, Font **font)
 	{
 		auto f = z_fonts.find(name);
 		if(f != z_fonts.end())
-		{
-			*pass = f->second.pass;
-			*font = f->second.font;
-		}
+			*font = f->second;
+		else
+			*font = z_font;
+	}
+	void GUI::GetFont(const string &family, int size, bool isBold, bool isItalic, Font **font)
+	{
+		string autoName = family + "_" + to_string(size) + (isBold ? "b" : "") + (isItalic ? "i" : "");
+		auto f = z_autofonts.find(family);
+		if(f != z_autofonts.end())
+			*font = f->second;
 		else
 		{
-			*pass = z_pass;
-			*font = z_font;
+			Font *fn = Createfont("", family, size, isBold, isItalic);
+			if(fn)
+				*font = fn;
+			else
+				*font = z_font;
 		}
 	}
 };

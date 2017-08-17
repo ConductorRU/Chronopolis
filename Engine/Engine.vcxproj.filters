@@ -232,6 +232,21 @@
     <ClCompile Include="Source\Math\Basic.cpp">
       <Filter>Source\Math</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GUI\Widgets\WidgetImage.cpp">
+      <Filter>Source\GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\Widgets\WidgetBlock.cpp">
+      <Filter>Source\GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\Widgets\WidgetText.cpp">
+      <Filter>Source\GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Format\BMP.cpp">
+      <Filter>Source\Format</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Format\TGA.cpp">
+      <Filter>Source\Format</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h">
@@ -458,6 +473,21 @@
     </ClInclude>
     <ClInclude Include="Source\Math\Basic.h">
       <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\Widgets\WidgetImage.h">
+      <Filter>Source\GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\Widgets\WidgetBlock.h">
+      <Filter>Source\GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\Widgets\WidgetText.h">
+      <Filter>Source\GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Format\BMP.h">
+      <Filter>Source\Format</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Format\TGA.h">
+      <Filter>Source\Format</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
