@@ -104,14 +104,15 @@ namespace DEN
 		Square _rect;//top, left, right, bottom
 		Vector2 _size;//width, height
 		map<string, string> _prop;//CSS => style="" => SetProperty("name", "value");
-		string _GetStyle(const string& name, const map<string, string> &inherit);
 		bool _update;
 		bool _visible;
 		void _UpdateTransform(map<string, string> &inherit);
 		void _UpdateBackground(map<string, string> &inherit);
+		void _UpdateAlign(map<string, string> &inherit);
 		virtual void _Update(map<string, string> &inherit);
 		virtual void _Render(Pass *pass);
 	public:
+		string GetStyle(const string& name, const map<string, string> &inherit);
 		Widget *GetParent() { return _parent; };
 		Matrix2D &GetAbsoluteTransform() { return _aTransform; };
 		Matrix2D &GetRelativeTransform() { return _rTransform; };
@@ -131,7 +132,8 @@ namespace DEN
 		string GetProperty(const string& name);
 		void SetParent(Widget *parent);
 		void BakeBuffer();
-		void Bake(Widget *parent, map<string, string> inherit);//inherit не должно быть по ссылке
+		bool Update(map<string, string> inherit);//inherit не должно быть по ссылке
+		void Bake();
 		void BakeAll(map<string, string> inherit = {});
 		void Draw(bool andChilds = false);
 	};

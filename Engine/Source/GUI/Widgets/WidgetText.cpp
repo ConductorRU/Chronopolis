@@ -19,9 +19,9 @@ namespace DEN
 		size_t size = _text.size();
 		char c;
 		Rect r;
-		string sSize = _GetStyle("font-size", inherit);
+		string sSize = GetStyle("font-size", inherit);
 		float pSize = (int)(GetPixel("font-size", sSize)*0.1);
-		string prop = _GetStyle("color", inherit);
+		string prop = GetStyle("color", inherit);
 		Color color = GetColor(prop);
 		float posX = _rect.minX;
 		float posY = _rect.minY;
@@ -34,22 +34,23 @@ namespace DEN
 		if(!size)
 			r = _font->GetRect(' ');
 		_rect = Square(_rect.minX, _rect.minY, posX - _rect.minX, float(r.maxY - r.minY));
-		/*if(z_prop.GetAlign() == 1 || z_prop.GetAlign() == 2)
+		string align = _parent->GetStyle("text-align", inherit);
+		if(align == "center" || align == "right")
 		{
-			s = z_prop.GetSquare();
+			/*Square s = _parent->GetSquare();
 			float fx = m.minX + parP.minX;
 			if(_parent)
 			{
-				Square sq = _parent->_rect;
-				if(z_prop.GetAlign() == 1)
+				Square sq = _parent->GetSquare();
+				if(align == "center")
 					fx = float(int(sq.maxX*0.5f - s.maxX*0.5f)) + m.minX - parP.maxX;
 				else
 					fx = sq.maxX - s.maxX - parP.maxX - m.maxX - m.minX;
 				s.minX = s.minX + fx;
-				z_prop.SetSquare(s);
-			}
+				_prop.SetSquare(s);
+			}*/
 		}
-		if(z_prop.GetAlign() == 8 || z_prop.GetAlign() == 16)
+		/*if(z_prop.GetAlign() == 8 || z_prop.GetAlign() == 16)
 		{
 			s = z_prop.GetSquare();
 			float fy = m.minY + parP.minY;
@@ -74,6 +75,7 @@ namespace DEN
 		else
 			_indexes = new vector<uint>;
 		posX = 0.0f;
+		float leftX = posX;
 		if(_gui->GetPrevChild())
 			posX = _gui->GetPrevChild()->GetSquare().maxX;
 		for(size_t i = 0; i < size; ++i)
@@ -96,7 +98,6 @@ namespace DEN
 			v[n + 1].pos.x = v[n + 3].pos.x = posX;
 			v[n].pos.y = v[n + 1].pos.y = posY;
 			v[n + 2].pos.y = v[n + 3].pos.y = posY + float(r.maxY - r.minY);
-
 			_indexes->push_back(n);
 			_indexes->push_back(n + 1u);
 			_indexes->push_back(n + 2u);
@@ -111,10 +112,10 @@ namespace DEN
 	{
 		_fontPass = _gui->GetPass();
 		_font = _gui->GetFont();
-		string family = _GetStyle("font-family", inherit);
-		string size = _GetStyle("font-size", inherit);
-		string weight = _GetStyle("font-weight", inherit);
-		string style = _GetStyle("font-style", inherit);
+		string family = GetStyle("font-family", inherit);
+		string size = GetStyle("font-size", inherit);
+		string weight = GetStyle("font-weight", inherit);
+		string style = GetStyle("font-style", inherit);
 		if(family != "")
 			_gui->GetFont(family, GetPixel("font-size", size), weight == "bold", style == "italic", &_font);
 	}

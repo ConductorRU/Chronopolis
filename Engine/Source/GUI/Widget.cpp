@@ -1216,7 +1216,7 @@ namespace DEN
 			return "";
 		return iter->second;
 	}
-	string Widget::_GetStyle(const string& name, const map<string, string> &inherit)
+	string Widget::GetStyle(const string& name, const map<string, string> &inherit)
 	{
 		auto iter = _prop.find(name);
 		if(iter != _prop.end())
@@ -1254,36 +1254,36 @@ namespace DEN
 	}
 	void Widget::_UpdateTransform(map<string, string> &inherit)
 	{
-		string prop = _GetStyle("display", inherit);
+		string prop = GetStyle("display", inherit);
 		if(prop == "block")
 		{
 		}
-		prop = _GetStyle("width", inherit);
+		prop = GetStyle("width", inherit);
 		if (prop != "")
 			_size.x = GetPixel("width", prop);
-		prop = _GetStyle("height", inherit);
+		prop = GetStyle("height", inherit);
 		if (prop != "")
 			_size.y = GetPixel("height", prop);
 
-		prop = _GetStyle("left", inherit);
+		prop = GetStyle("left", inherit);
 		if (prop != "")
 			_rect.left = GetPixel("left", prop);
-		prop = _GetStyle("right", inherit);
+		prop = GetStyle("right", inherit);
 		if (prop != "")
 			_rect.right = GetPixel("right", prop);
-		prop = _GetStyle("top", inherit);
+		prop = GetStyle("top", inherit);
 		if (prop != "")
 			_rect.top = GetPixel("top", prop);
-		prop = _GetStyle("bottom", inherit);
+		prop = GetStyle("bottom", inherit);
 		if (prop != "")
 			_rect.bottom = GetPixel("bottom", prop);
 
-		prop = _GetStyle("x", inherit);
+		prop = GetStyle("x", inherit);
 		if (prop != "")
 			_rTransform.SetTranslationX(GetPixel("x", prop));
 		else if(prop == "inline")
 			_rTransform.SetTranslationX(_parent->_rTransform.GetTranslation().x);
-		prop = _GetStyle("y", inherit);
+		prop = GetStyle("y", inherit);
 		if (prop != "")
 			_rTransform.SetTranslationY(GetPixel("y", prop));
 		else if(prop == "inline")
@@ -1291,7 +1291,7 @@ namespace DEN
 	}
 	void Widget::_UpdateBackground(map<string, string> &inherit)
 	{
-		string prop = _GetStyle("background-color", inherit);
+		string prop = GetStyle("background-color", inherit);
 		if(prop != "")
 		{
 			Color col = GetColor(prop);
@@ -1299,17 +1299,42 @@ namespace DEN
 				v1.col = col;
 		}
 	}
+	void Widget::_UpdateAlign(map<string, string> &inherit)
+	{
+		string prop = GetStyle("text-align", inherit);
+		if(prop == "center")
+		{
+			float length = 0.0f;
+			for(Widget *el : z_childs)
+			{
+				string display = GetStyle("display", inherit);
+				if(display == "inline")
+				{
+					length += el->GetSquare().maxX;
+				}
+				else
+				{
+					length = 0.0f;
+				}
+			}
+
+		}
+	}
 	void Widget::_Update(map<string, string> &inherit)
 	{
 		_UpdateTransform(inherit);
 		_UpdateBackground(inherit);
 	}
-	void Widget::Bake(Widget *parent, map<string, string> inherit)
+	bool Widget::Update(map<string, string> inherit)
 	{
 		if(!_update)
-			return;
+			return false;
 		_update = false;
 		_Update(inherit);
+		return true;
+	}
+	void Widget::Bake()
+	{
 		if(v.size())
 		{
 			_buffer->Bake(&v[0], (uint)v.size(), sizeof(Vertex2D));
@@ -1320,16 +1345,25 @@ namespace DEN
 	}
 	void Widget::BakeAll(map<string, string> inherit)
 	{
-		Bake(_parent, inherit);
+		if(_gui->GetRoot() == this)
+		{
+			Update(inherit);
+			Bake();
+		}
 		if(z_childs.size())
 		{
 			Widget *prev = _gui->GetPrevChild();
 			_gui->SetPrevChild(nullptr);
-			for (Widget *el : z_childs)
+			for(Widget *el : z_childs)
 			{
-				el->BakeAll(inherit);
+				el->Update(inherit);
 				_gui->SetPrevChild(el);
 			}
+			_UpdateAlign(inherit);
+			for(Widget *el : z_childs)
+				el->Bake();
+			for(Widget *el : z_childs)
+				el->BakeAll(inherit);
 			_gui->SetPrevChild(prev);
 		}
 	}

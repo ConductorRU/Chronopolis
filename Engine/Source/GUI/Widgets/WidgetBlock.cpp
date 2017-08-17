@@ -6,7 +6,7 @@ namespace DEN
 {
 	WidgetBlock::WidgetBlock(GUI *gui): Widget(gui)
 	{
-
+		_prop["display"] = "block";
 	}
 	void WidgetBlock::_UpdateBorders(map<string, string> &inherit)
 	{
@@ -14,7 +14,7 @@ namespace DEN
 		Vertex2D t;
 		float val;
 		memset(&t, 0, sizeof(Vertex2D));
-		prop = _GetStyle("border-radius", inherit);
+		prop = GetStyle("border-radius", inherit);
 		if (prop != "")
 		{
 			val = GetPixel("border-radius", prop);
