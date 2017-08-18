@@ -372,11 +372,22 @@ void Game::Init()
 
 	Widget *block = new WidgetBlock(sc->GetGUI());
 	block->SetParent(sc->GetGUI()->GetRoot());
-	block->SetStyle("display:block; x:50px;y:10px;width: 200px; height:40px; background-color: #3498db;border-radius:8px;text-align:center;");
+	block->SetStyle("width:100%;height:100%;");
+	block = new WidgetBlock(sc->GetGUI());
+	block->SetParent(sc->GetGUI()->GetRoot());
+	block->SetStyle("width:100%;height:32px;background-color:#eee;");
+
+	Widget *child = new WidgetBlock(sc->GetGUI());
+	child->SetParent(block);
+	child->SetStyle("position:absolute;bottom:3px;right:3px;width:80px;height:100%;background-color:#ddd;");
+
+	block = new WidgetBlock(sc->GetGUI());
+	block->SetParent(sc->GetGUI()->GetRoot());
+	block->SetStyle("x:50px;y:10px;width: 200px; height:40px; background-color: #3498db;border-radius:8px;text-align:center;");
 	
 	WidgetImage *iblock = new WidgetImage(sc->GetGUI());
 	iblock->SetParent(sc->GetGUI()->GetRoot());
-	iblock->SetStyle("display:block; x:10px;y:60px; background-color: #fff;");
+	iblock->SetStyle("x:10px;y:60px; background-color: #fff;");
 
 	WidgetText *iText = new WidgetText(sc->GetGUI());
 	iText->SetParent(block);

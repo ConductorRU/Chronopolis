@@ -104,6 +104,7 @@ namespace DEN
 		Square _rect;//top, left, right, bottom
 		Vector2 _size;//width, height
 		map<string, string> _prop;//CSS => style="" => SetProperty("name", "value");
+		bool _rectEnable[4];
 		bool _update;
 		bool _visible;
 		void _UpdateTransform(map<string, string> &inherit);
@@ -121,9 +122,9 @@ namespace DEN
 		Square &GetSquare() { return _rect;}
 		Vector2 &GetSize() { return _size;}
 
-		static float PercentWidth(const string &val, Widget *parent = nullptr);
-		static float PercentHeight(const string &val, Widget *parent = nullptr);
-		static float GetPixel(const string &name, const string &val, Widget *parent = nullptr);
+		float PercentWidth(const string &val);
+		float PercentHeight(const string &val);
+		float GetPixel(const string &name, const string &val);
 		static Color GetColor(const string &val);
 		Widget(GUI *gui);
 		~Widget();

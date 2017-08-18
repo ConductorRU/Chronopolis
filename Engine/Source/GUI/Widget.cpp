@@ -1059,35 +1059,36 @@ namespace DEN
 		_update = true;
 		_visible = true;
 		_indexes = nullptr;
+		memset(_rectEnable, 0, sizeof(_rectEnable));
 	}
 	Widget::~Widget()
 	{
 		if(_indexes)
 			delete _indexes;
 	}
-	float Widget::PercentWidth(const string &val, Widget *parent)
+	float Widget::PercentWidth(const string &val)
 	{
 		float p = ((float)atof(val.c_str()))*0.01f;
-		/*if (parent)
+		if(_parent)
 		{
-			Square b = parent->GetProperty().GetBorder();
-			Square pd = parent->GetProperty().GetPadding();
-			return (parent->GetProperty().GetSquare().maxX - b.maxX - b.minX - pd.maxX - pd.minX)*p;
-		}*/
+			//Square b = parent->GetProperty().GetBorder();
+			//Square pd = parent->GetProperty().GetPadding();
+			return (_parent->GetSize().x/* - b.maxX - b.minX - pd.maxX - pd.minX*/)*p;
+		}
 		return float(Render::Get()->GetWidth())*p;
 	}
-	float Widget::PercentHeight(const string &val, Widget *parent)
+	float Widget::PercentHeight(const string &val)
 	{
 		float p = ((float)atof(val.c_str()))*0.01f;
-		/*if (parent)
+		if(_parent)
 		{
-			Square b = parent->GetProperty().GetBorder();
-			Square pd = parent->GetProperty().GetPadding();
-			return (parent->GetProperty().GetSquare().maxY - b.maxY - b.minY - pd.maxY - pd.minY)*p;
-		}*/
+			//Square b = parent->GetProperty().GetBorder();
+			//Square pd = parent->GetProperty().GetPadding();
+			return (_parent->GetSize().y/* - b.maxY - b.minY - pd.maxY - pd.minY*/)*p;
+		}
 		return float(Render::Get()->GetHeight())*p;
 	}
-	float Widget::GetPixel(const string &name, const string &val, Widget *parent)
+	float Widget::GetPixel(const string &name, const string &val)
 	{
 		size_t size = val.size();
 		string n;
@@ -1135,9 +1136,9 @@ namespace DEN
 		else if (t == "%")
 		{
 			if (name == "width" || name == "x" || name == "left" || name == "right")
-				v1 = PercentWidth(n, parent);
+				v1 = PercentWidth(n);
 			else if (name == "height" || name == "y" || name == "top" || name == "bottom")
-				v1 = PercentHeight(n, parent);
+				v1 = PercentHeight(n);
 		}
 		if (t1 == "px")
 		{
@@ -1146,9 +1147,9 @@ namespace DEN
 		else if (t1 == "%")
 		{
 			if (name == "width" || name == "x" || name == "left" || name == "right")
-				v2 = PercentWidth(n, parent);
+				v2 = PercentWidth(n);
 			else if (name == "height" || name == "y" || name == "top" || name == "bottom")
-				v2 = PercentHeight(n, parent);
+				v2 = PercentHeight(n);
 		}
 		if (op == '+')
 			return v1 + v2;
@@ -1267,16 +1268,28 @@ namespace DEN
 
 		prop = GetStyle("left", inherit);
 		if (prop != "")
+		{
+			_rectEnable[3] = true;
 			_rect.left = GetPixel("left", prop);
+		}
 		prop = GetStyle("right", inherit);
 		if (prop != "")
+		{
+			_rectEnable[1] = true;
 			_rect.right = GetPixel("right", prop);
+		}
 		prop = GetStyle("top", inherit);
 		if (prop != "")
+		{
+			_rectEnable[0] = true;
 			_rect.top = GetPixel("top", prop);
+		}
 		prop = GetStyle("bottom", inherit);
 		if (prop != "")
+		{
+			_rectEnable[2] = true;
 			_rect.bottom = GetPixel("bottom", prop);
+		}
 
 		prop = GetStyle("x", inherit);
 		if (prop != "")
