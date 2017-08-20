@@ -399,7 +399,7 @@ void Game::Init()
 	iText->SetText("world!");
 
 
-	Texture *bTex = Manager::Get()->LoadTexture("D:\\Release\\DirectX\\Chronopolis\\Img.tga", true);
+	Texture *bTex = Manager::Get()->LoadTexture("..\\..\\Img.tga", true);
 	iblock->SetImage(bTex);
 	/*WidgetDivider *divider = new WidgetDivider(mScene->GetGUI());
 	divider->SetParent(mScene->GetGUI()->GetRoot());

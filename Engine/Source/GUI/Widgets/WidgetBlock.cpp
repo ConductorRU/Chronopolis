@@ -39,7 +39,7 @@ namespace DEN
 			}
 			else if(_rectEnable[2])
 			{
-				siz.top = _parent->GetSize().y - _size.y - _rect.top;
+				siz.top = _parent->GetSize().y - _size.y - _rect.bottom;
 				siz.bottom = siz.top + _size.y;
 			}
 
@@ -50,13 +50,13 @@ namespace DEN
 			}
 			else if(_rectEnable[1])
 			{
-				siz.left = _rect.left;
-				siz.right = _rect.left + _size.x;
+				siz.left = _parent->GetSize().x - _size.x - _rect.right;
+				siz.right = siz.left + _size.x;
 			}
 			else if(_rectEnable[3])
 			{
-				siz.left = _parent->GetSize().x - _size.x - _rect.left;
-				siz.right = siz.left + _size.x;
+				siz.left = _rect.left;
+				siz.right = _rect.left + _size.x;				
 			}
 		}
 		prop = GetStyle("border-radius", inherit);

@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "Common/Class.h"
 #include "Math/Math.h"
 #include "Input/Input.h"
 #include "Material/Class.h"

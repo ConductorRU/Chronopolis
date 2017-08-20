@@ -22,7 +22,7 @@
     <ProjectGuid>{3008EA85-8660-492E-8E69-84D4B64B1C68}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Engine</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -198,6 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Actor\Actor.cpp" />
+    <ClCompile Include="Source\Common\String.cpp" />
     <ClCompile Include="Source\Compiler\Coder.cpp" />
     <ClCompile Include="Source\Compiler\Compiler.cpp" />
     <ClCompile Include="Source\Compiler\Error.cpp" />
@@ -267,6 +268,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor\Actor.h" />
+    <ClInclude Include="Source\Common\Class.h" />
+    <ClInclude Include="Source\Common\String.h" />
     <ClInclude Include="Source\Compiler\Class.h" />
     <ClInclude Include="Source\Compiler\Coder.h" />
     <ClInclude Include="Source\Compiler\Compiler.h" />

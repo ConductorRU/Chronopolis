@@ -56,6 +56,9 @@
     <Filter Include="Source\Format">
       <UniqueIdentifier>{421b8dc2-e6f1-4d33-9694-c6fa9d9fd6b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Common">
+      <UniqueIdentifier>{95012e0d-7f8b-4aeb-89b3-3fb97cb9d948}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -246,6 +249,9 @@
     </ClCompile>
     <ClCompile Include="Source\Format\TGA.cpp">
       <Filter>Source\Format</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\String.cpp">
+      <Filter>Source\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -488,6 +494,12 @@
     </ClInclude>
     <ClInclude Include="Source\Format\TGA.h">
       <Filter>Source\Format</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\String.h">
+      <Filter>Source\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\Class.h">
+      <Filter>Source\Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

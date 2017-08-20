@@ -37,6 +37,8 @@ namespace DEN
 		inline bool IsDynamic() { return z_dynamic; };
 		inline RESOURCE_TYPE GetType() { return z_type; };
 		inline D3D11_TEXTURE2D_DESC GetTextureDesc() { return z_desc; };
+		inline uint GetWidth() { return z_desc.Width; };
+		inline uint GetHeight() { return z_desc.Height; };
 		inline string GetFilename() { return z_name; };
 		inline bool IsFilter() { return z_filter; };
 		RenderTexture();

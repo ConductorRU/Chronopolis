@@ -4,6 +4,7 @@
 #include "../Math/Matrix.h"
 #include "../Math/Rect.h"
 #include "../Math/Func.h"
+#include "../Common/String.h"
 #include "../Material/Pass.h"
 #include "../Material/Texture.h"
 #include "../Material/Atlas.h"
