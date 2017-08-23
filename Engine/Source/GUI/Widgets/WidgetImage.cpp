@@ -9,6 +9,7 @@ namespace DEN
 	WidgetImage::WidgetImage(GUI *gui): WidgetBlock(gui)
 	{
 		_img = nullptr;
+		_prop["display"] = "inline";
 	}
 	void WidgetImage::_Render(Pass *pass)
 	{
@@ -33,31 +34,41 @@ namespace DEN
 		vector<string> vars = explode(style, ' ', true);
 		if(vars.size() >= 2)
 		{
-			float posX = atof(vars[0].c_str());
-			float posY = atof(vars[1].c_str());
+			float posX = (float)atof(vars[0].c_str());
+			float posY = (float)atof(vars[1].c_str());
 			float sizX, sizY;
 			if(vars.size() >= 4)
 			{
-				sizX = atof(vars[2].c_str());
-				sizY = atof(vars[3].c_str());
+				sizX = (float)atof(vars[2].c_str());
+				sizY = (float)atof(vars[3].c_str());
+				_size.x = sizX;
+				_size.y = sizY;
 			}
 			else
 			{
-				
+				sizX = _rect.right;
+				sizY = _rect.bottom;
 			}
+			_uv.minX = posX/(float)width;
+			_uv.maxY = 1.0f - posY/(float)height;
+			_uv.maxX = _uv.minX + sizX/(float)width;
+			_uv.minY = 1.0f - (_uv.minY + sizY/(float)height);
+		}
+		if(_parent)
+		{
+			Vector2 size = _parent->GetSize();
+
 		}
 	}
 	void WidgetImage::_Update(map<string, string> &inherit)
 	{
-		WidgetBlock::_Update(inherit);
 		_UpdateAtlas(inherit);
+		WidgetBlock::_Update(inherit);
 	}
 	void WidgetImage::SetImage(Texture *img)
 	{
 		_img = img;
-		if(_prop.find("width") == _prop.end())
-			_prop["width"] = to_string(_img->GetTextureDesc().Width) + "px";
-		if(_prop.find("height") == _prop.end())
-			_prop["height"] = to_string(_img->GetTextureDesc().Height) + "px";
+		_size.x = (float)_img->GetWidth();
+		_size.y = (float)_img->GetHeight();
 	}
 };

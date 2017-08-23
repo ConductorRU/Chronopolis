@@ -67,7 +67,7 @@ namespace DEN
 		z_width = Render::Get()->GetWidth();
 		z_height = Render::Get()->GetHeight();
 		z_bakeCount = 0;
-		z_picked = nullptr;
+		_picked = nullptr;
 		z_inputBox = nullptr;
 		_prevChild = nullptr;
 	}
@@ -75,6 +75,78 @@ namespace DEN
 	{
 		delete z_root;
 		delete z_inputBox;
+	}
+	map<string, string> GUI::ParseStyles(const string &styles)
+	{
+		map<string, string> result;
+		size_t size = styles.size();
+		string name, value;
+		bool isVal = false;
+		for (size_t i = 0; i <= size; ++i)
+		{
+			if (i < size && styles[i] != ';')
+			{
+				if (styles[i] == ':')
+					isVal = true;
+				else if (!isVal)
+				{
+					if (styles[i] != ' ' || name.size() > 0)
+						name += styles[i];
+				}
+				else
+				{
+					if (styles[i] != ' ' || value.size() > 0)
+						value += styles[i];
+				}
+			}
+			else
+			{
+				while(name.size() && name[name.size() - 1U] == ' ')
+					name.pop_back();
+				while(value.size() && value[value.size() - 1U] == ' ')
+					value.pop_back();
+				if(name.size() > 0 && value.size() > 0)
+					result[name] = value;
+				name = "";
+				value = "";
+				isVal = false;
+			}
+		}
+		return result;
+	}
+	void GUI::AddSelector(const string& name, const string& value)
+	{
+		Selector *s = new Selector;
+		s->name = name;
+		s->props = ParseStyles(value);
+		size_t size = name.size();
+		string val, typ, hie;
+		for(size_t i = 0; i <= size; ++i)
+		{
+			if(i == size || name[i] == ' ' || name[i] == '.' || name[i] == '#')
+			{
+				if(val != "")
+				{
+					SelectorDesc desc;
+					desc.name = val;
+					//if(hie == ">")
+					//	desc.hierarchy = 
+					val.clear();
+					typ.clear();
+					hie.clear();
+				}
+				if(i < size && name[i] != ' ')
+					typ = name[i];
+			}
+			else if(i == size || name[i] == '>' || name[i] == '+' || name[i] == '~' || name[i] == ':')
+			{
+				if(i < size)
+					hie = name[i];
+			}
+			else if(i < size)
+				val += name[i];
+		}
+		_css.push_back(s);
 	}
 	WidgetX *GUI::GetElementById(const string &name)
 	{
@@ -102,19 +174,19 @@ namespace DEN
 	{
 		z_inputBox = el;
 	}
-	bool GUI::IsPickChild(WidgetX *el, bool andEl)
+	bool GUI::IsPickChild(Widget *el, bool andEl)
 	{
-		if(!z_picked || (z_picked == el && andEl))
+		if(!_picked || (_picked == el && andEl))
 			return true;
-		return el->IsChild(z_picked, true);
+		return el->IsChild(_picked, true);
 	}
-	Style *GUI::CreateClass(const string &name)
+	StyleX *GUI::CreateClass(const string &name)
 	{
-		Style *s = new Style();
+		StyleX *s = new StyleX();
 		z_class[name] = s;
 		return s;
 	}
-	Style *GUI::GetClass(const string &name)
+	StyleX *GUI::GetClass(const string &name)
 	{
 		auto &it = z_class.find(name);
 		if(it != z_class.end())

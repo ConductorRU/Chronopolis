@@ -5,8 +5,8 @@ namespace DEN
 	struct Square
 	{
 		union { float minX; float left; };
-		union { float minY; float right; };
-		union { float maxX; float top; };
+		union { float maxX; float right; };
+		union { float minY; float top; };
 		union { float maxY; float bottom; };
 		const bool operator== (const Square &s)
 		{

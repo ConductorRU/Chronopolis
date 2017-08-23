@@ -16,7 +16,7 @@ namespace DEN
 		z_isCaret = false;
 		uv = Square(0.0f, 0.0f, 1.0f, 1.0f);
 	}
-	float Style::PercentWidth(const string &val, WidgetX *parent)
+	float StyleX::PercentWidth(const string &val, WidgetX *parent)
 	{
 		float p = ((float)atof(val.c_str()))*0.01f;
 		if(parent)
@@ -27,7 +27,7 @@ namespace DEN
 		}
 		return float(Render::Get()->GetWidth())*p;
 	}
-	float Style::PercentHeight(const string &val, WidgetX *parent)
+	float StyleX::PercentHeight(const string &val, WidgetX *parent)
 	{
 		float p = ((float)atof(val.c_str()))*0.01f;
 		if(parent)
@@ -38,7 +38,7 @@ namespace DEN
 		}
 		return float(Render::Get()->GetHeight())*p;
 	}
-	float Style::GetPixel(const string &name, const string &val, WidgetX *parent)
+	float StyleX::GetPixel(const string &name, const string &val, WidgetX *parent)
 	{
 		size_t size = val.size();
 		string n;
@@ -111,25 +111,25 @@ namespace DEN
 			return v1 * v2;
 		return v1;
 	}
-	Color Style::GetColor(const string &name, const string &val)
+	Color StyleX::GetColor(const string &name, const string &val)
 	{
 		Color c;
 		if(c.FromHex(val))
 			return c;
 		return c;
 	}
-	void Style::SetValue(const string &name, const string &value, const string &eve)
+	void StyleX::SetValue(const string &name, const string &value, const string &eve)
 	{
 		if(z_settings.find(eve) == z_settings.end())
 			z_settingOrder.push_back(eve);
 		z_settings[eve][name] = value;
 		z_update = true;
 	}
-	void Style::SetEnable(bool enable)
+	void StyleX::SetEnable(bool enable)
 	{
 		z_enable = enable;
 	}
-	void Style::SetStyle(const string &style, const string &eve)
+	void StyleX::SetStyle(const string &style, const string &eve)
 	{
 		size_t size = style.size();
 		string name, value;
@@ -170,15 +170,15 @@ namespace DEN
 			}
 		}
 	}
-	void Style::SetEvent(const string &eve, const string &name, const string &value)
+	void StyleX::SetEvent(const string &eve, const string &name, const string &value)
 	{
 		SetValue(name, value, eve);
 	}
-	void Style::SetEvent(const string &eve, const string &style)
+	void StyleX::SetEvent(const string &eve, const string &style)
 	{
 		SetStyle(style, eve);
 	}
-	string Style::Get(const string &name) const
+	string StyleX::Get(const string &name) const
 	{
 		auto &cx = z_settings.find("");
 		if(cx != z_settings.end())
@@ -189,7 +189,7 @@ namespace DEN
 		}
 		return "";
 	}
-	bool Style::IsStyleEvent(const string &name)
+	bool StyleX::IsStyleEvent(const string &name)
 	{
 		auto &cx = z_settings.find(name);
 		if(cx != z_settings.end())

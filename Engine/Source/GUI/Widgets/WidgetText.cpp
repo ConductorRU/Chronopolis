@@ -20,7 +20,7 @@ namespace DEN
 		char c;
 		Rect r;
 		string sSize = GetStyle("font-size", inherit);
-		float pSize = (int)(GetPixel("font-size", sSize)*0.1);
+		float pSize = (float)(int)(GetPixel("font-size", sSize)*0.1);
 		string prop = GetStyle("color", inherit);
 		Color color = GetColor(prop);
 		float posX = _rect.minX;
@@ -34,7 +34,7 @@ namespace DEN
 		if(!size)
 			r = _font->GetRect(' ');
 		_rect = Square(_rect.minX, _rect.minY, posX - _rect.minX, float(r.maxY - r.minY));
-		string align = _parent->GetStyle("text-align", inherit);
+		string align = _parent->GetStyle("align", inherit);
 		if(align == "center" || align == "right")
 		{
 			/*Square s = _parent->GetSquare();
@@ -77,7 +77,10 @@ namespace DEN
 		posX = 0.0f;
 		float leftX = posX;
 		if(_gui->GetPrevChild())
-			posX = _gui->GetPrevChild()->GetSquare().maxX;
+			posX = _gui->GetPrevChild()->GetOffset().maxX;
+		_offset.minX = posX;
+		_offset.minY = posY;
+		float lineHeight = (float)(_font->tm.tmAscent - _font->tm.tmDescent);
 		for(size_t i = 0; i < size; ++i)
 		{
 			c = _text[i];
@@ -106,7 +109,8 @@ namespace DEN
 			_indexes->push_back(n + 3u);
 			n += 4;
 		}
-		_rect.maxX = posX;
+		_offset.maxX = posX;
+		_offset.maxY = lineHeight;
 	}
 	void WidgetText::_UpdateFont(map<string, string> &inherit)
 	{
@@ -117,11 +121,11 @@ namespace DEN
 		string weight = GetStyle("font-weight", inherit);
 		string style = GetStyle("font-style", inherit);
 		if(family != "")
-			_gui->GetFont(family, GetPixel("font-size", size), weight == "bold", style == "italic", &_font);
+			_gui->GetFont(family, (int)GetPixel("font-size", size), weight == "bold", style == "italic", &_font);
 	}
 	void WidgetText::_Update(map<string, string> &inherit)
 	{
-		_UpdateTransform(inherit);
+		_UpdatePosition(inherit);
 		_UpdateFont(inherit);
 		_UpdateText(inherit);
 		_UpdateBackground(inherit);

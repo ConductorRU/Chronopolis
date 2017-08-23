@@ -81,7 +81,7 @@ namespace DEN
 		void SetInnerText(const string &var) { if(innerText != var) z_isUpdate = true; innerText = var; }
 		void SetFont(const string &var) { if(font != var) z_isUpdate = true; font = var; }
 	};
-	class Style
+	class StyleX
 	{
 	friend WidgetX;
 	protected:
@@ -95,7 +95,7 @@ namespace DEN
 		Color GetColor(const string &name, const string &val);
 		void OffUpdate() { z_update = false; }
 	public:
-		Style() { z_update = true; z_enable = true; };
+		StyleX() { z_update = true; z_enable = true; };
 		bool IsUpdate() { return z_update; };
 		void SetEnable(bool enable);
 		void SetValue(const string &name, const string &value, const string &eve = "");

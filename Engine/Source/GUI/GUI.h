@@ -9,11 +9,40 @@ namespace DEN
 	class VertexShader;
 	class PixelShader;
 	class InputLayout;
-	class Style;
+	class StyleX;
 	class WidgetX;
 	class Widget;
 	class Pass;
 	class Texture;
+	enum SELECTOR_TYPE
+	{
+		SELECTOR_ANY       = 0,
+		SELECTOR_ID        = 1,
+		SELECTOR_CLASS     = 2,
+		SELECTOR_ATTRIBUTE = 3,
+		SELECTOR_WIDGET    = 4,
+	};
+	enum SELECTOR_HIERARCHY
+	{
+		SELECTOR_ALL       = 0,
+		SELECTOR_THIS      = 1,
+		SELECTOR_CHILDS    = 2,
+		SELECTOR_NEXT      = 3,
+		SELECTOR_NEARBY    = 4,
+		SELECTOR_STATE     = 5,
+	};
+	struct SelectorDesc
+	{
+		string name;
+		SELECTOR_TYPE type;//class, id or...
+		SELECTOR_HIERARCHY hierarchy;//this
+	};
+	struct Selector
+	{
+		string name;
+		SelectorDesc desc;
+		map<string, string> props;
+	};
 	class GUI
 	{
 	private:
@@ -28,13 +57,14 @@ namespace DEN
 		set<WidgetX*> z_all;
 		map<string, Font*> z_fonts;
 		map<string, Font*> z_autofonts;
-		map<string, Style*> z_class;
+		map<string, StyleX*> z_class;
 		map<string, WidgetX*> z_ids;
+		vector<Selector*> _css;
 		map<int, vector<WidgetX *>> z_order;
 		WidgetX *z_root;
 		Widget *_root;
 		Widget *_prevChild;
-		WidgetX *z_picked;
+		Widget *_picked;
 		UINT z_width;
 		UINT z_height;
 		UINT z_bakeCount;
@@ -56,14 +86,16 @@ namespace DEN
 		void SetPrevChild(Widget *widget) { _prevChild = widget; };
 		GUI();
 		~GUI();
+		static map<string, string> ParseStyles(const string &styles);
+		void AddSelector(const string& name, const string& value);
 		WidgetX *GetElementById(const string &name);
 		void AddId(WidgetX *el);
 		void RemoveId(WidgetX *el);
 		void FreeElement(WidgetX *el);
 		void SetInputElement(WidgetX *el);
-		bool IsPickChild(WidgetX *el, bool andEl = true);
-		Style *CreateClass(const string &name);
-		Style *GetClass(const string &name);
+		bool IsPickChild(Widget *el, bool andEl = true);
+		StyleX *CreateClass(const string &name);
+		StyleX *GetClass(const string &name);
 		void AddOrder(WidgetX *el);
 		void ClearOrder();
 		Font *Createfont(const string &name, const string &family, int size, bool isBold = false, bool isItalic = false);

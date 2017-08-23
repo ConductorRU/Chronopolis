@@ -16,11 +16,11 @@ namespace DEN
 		Color col;
 		Vector2 uv;
 	};
-	class WidgetX: public Style
+	class WidgetX: public StyleX
 	{
 	protected:
 		Pass *z_pass;
-		Style *z_style;
+		StyleX *z_style;
 		RenderMesh *z_buffer;
 		GUI *z_gui;
 		Texture *z_texture;
@@ -102,14 +102,20 @@ namespace DEN
 		Matrix2D _aTransform;
 		Matrix2D _rTransform;
 		Square _rect;//top, left, right, bottom
+		Square _offset;
 		Vector2 _size;//width, height
+		Vector2 _align;//width, height
+		Square _uv;
 		map<string, string> _prop;//CSS => style="" => SetProperty("name", "value");
+		map<string, string> _attr;
 		bool _rectEnable[4];
 		bool _update;
 		bool _visible;
-		void _UpdateTransform(map<string, string> &inherit);
+		void _UpdatePosition(map<string, string> &inherit);
+		void _UpdateTransform();
 		void _UpdateBackground(map<string, string> &inherit);
 		void _UpdateAlign(map<string, string> &inherit);
+		void _Align(const Vector2 &align);
 		virtual void _Update(map<string, string> &inherit);
 		virtual void _Render(Pass *pass);
 	public:
@@ -117,6 +123,8 @@ namespace DEN
 		Widget *GetParent() { return _parent; };
 		Matrix2D &GetAbsoluteTransform() { return _aTransform; };
 		Matrix2D &GetRelativeTransform() { return _rTransform; };
+		GUI *GetGUI() { return _gui; };
+		Square &GetOffset() { return _offset; };
 		Widget *GetChild(uint num) { if (num < GetChildCount()) return z_childs[num]; return nullptr; };
 		uint GetChildCount() { return (uint)z_childs.size(); };
 		Square &GetSquare() { return _rect;}
@@ -128,9 +136,13 @@ namespace DEN
 		static Color GetColor(const string &val);
 		Widget(GUI *gui);
 		~Widget();
+		bool IsChild(Widget *c, bool depthAll);
+		bool Pick(const Point2 &p, bool andChilds = false);
 		void SetStyle(const string &style, const string &eve = "");
 		bool SetProperty(const string& name, const string& value);
 		string GetProperty(const string& name);
+		void SetAttribute(const string& name, const string& value);
+		string GetAttribute(const string& name);
 		void SetParent(Widget *parent);
 		void BakeBuffer();
 		bool Update(map<string, string> inherit);//inherit не должно быть по ссылке

@@ -52,6 +52,8 @@ namespace DEN
 			}
 			else
 				w += c;
+		if(w.size() || !notEmpty)
+			result.push_back(w);
 		return result;
 	}
 };

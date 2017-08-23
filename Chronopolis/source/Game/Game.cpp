@@ -379,19 +379,21 @@ void Game::Init()
 
 	Widget *child = new WidgetBlock(sc->GetGUI());
 	child->SetParent(block);
-	child->SetStyle("position:absolute;bottom:3px;right:3px;width:80px;height:100%;background-color:#ddd;");
+	child->SetStyle("position:absolute;bottom:3px;right:3px;width:80px;height:29px;background-color:#ddd;align:center middle;");
+
+	WidgetImage *iblock = new WidgetImage(sc->GetGUI());
+	iblock->SetParent(child);
+	iblock->SetStyle("background-color: #fff;atlas:0 0 10 10");
 
 	block = new WidgetBlock(sc->GetGUI());
 	block->SetParent(sc->GetGUI()->GetRoot());
-	block->SetStyle("x:50px;y:10px;width: 200px; height:40px; background-color: #3498db;border-radius:8px;text-align:center;");
+	block->SetStyle("position:absolute;left:50px;top:40px;width: 200px; height:40px; background-color: #3498db;border-radius:8px;align:center middle;");
 	
-	WidgetImage *iblock = new WidgetImage(sc->GetGUI());
-	iblock->SetParent(sc->GetGUI()->GetRoot());
-	iblock->SetStyle("x:10px;y:60px; background-color: #fff;");
-
+	
 	WidgetText *iText = new WidgetText(sc->GetGUI());
+	iText->SetAttribute("class", "tFont");
 	iText->SetParent(block);
-	iText->SetStyle("color:#fff;font-family:arial;font-size:32px;font-weight:bold;");
+	iText->SetStyle("color:#fff;font-family:arial;font-size:12px;font-weight:bold;");
 	iText->SetText("Hello, ");
 	iText = new WidgetText(sc->GetGUI());
 	iText->SetParent(block);
@@ -399,7 +401,7 @@ void Game::Init()
 	iText->SetText("world!");
 
 
-	Texture *bTex = Manager::Get()->LoadTexture("..\\..\\Img.tga", true);
+	Texture *bTex = Manager::Get()->LoadTexture("..\\..\\menu.tga", true);
 	iblock->SetImage(bTex);
 	/*WidgetDivider *divider = new WidgetDivider(mScene->GetGUI());
 	divider->SetParent(mScene->GetGUI()->GetRoot());
