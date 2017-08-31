@@ -1,5 +1,6 @@
 #pragma once
 #include "../Math/Point2.h"
+#include "../Math/Square.h"
 #include "../Math/Color.h"
 #include "../Math/Matrix2D.h"
 #include "Style.h"
@@ -89,6 +90,26 @@ namespace DEN
 		string name;
 		string value;
 	};
+	enum WIDGET_ALIGN
+	{
+		WIDGET_TOP_LEFT       = 0,
+		WIDGET_TOP_CENTER     = 1,
+		WIDGET_TOP_RIGHT      = 2,
+		WIDGET_TOP_STRETCH    = 3,
+		WIDGET_MIDDLE_LEFT    = 4,
+		WIDGET_CENTER         = 5,
+		WIDGET_MIDDLE_RIGHT   = 6,
+		WIDGET_MIDDLE_STRETCH = 7,
+		WIDGET_BOTTOM_LEFT    = 8,
+		WIDGET_BOTTOM_CENTER  = 9,
+		WIDGET_BOTTOM_RIGHT   = 10,
+		WIDGET_BOTTOM_STRETCH = 11,
+		WIDGET_STRETCH_LEFT   = 12,
+		WIDGET_STRETCH_TOP    = 13,
+		WIDGET_STRETCH_BOTTOM = 14,
+		WIDGET_STRETCH        = 15,
+		WIDGET_INLINE         = 16,
+	};
 	class Widget
 	{
 	protected:
@@ -102,24 +123,20 @@ namespace DEN
 		Matrix2D _aTransform;
 		Matrix2D _rTransform;
 		Square _rect;//top, left, right, bottom
-		Square _offset;
 		Vector2 _size;//width, height
-		Vector2 _align;//width, height
+		WIDGET_ALIGN _align;
+		Square _offset;
 		Square _uv;
-		map<string, string> _prop;//CSS => style="" => SetProperty("name", "value");
-		map<string, string> _attr;
-		bool _rectEnable[4];
+		Color _background;
 		bool _update;
 		bool _visible;
-		void _UpdatePosition(map<string, string> &inherit);
+		void _UpdatePosition();
 		void _UpdateTransform();
-		void _UpdateBackground(map<string, string> &inherit);
-		void _UpdateAlign(map<string, string> &inherit);
-		void _Align(const Vector2 &align);
-		virtual void _Update(map<string, string> &inherit);
+		void _UpdateBackground();
+		void _UpdateAlign();
+		virtual void _Update();
 		virtual void _Render(Pass *pass);
 	public:
-		string GetStyle(const string& name, const map<string, string> &inherit);
 		Widget *GetParent() { return _parent; };
 		Matrix2D &GetAbsoluteTransform() { return _aTransform; };
 		Matrix2D &GetRelativeTransform() { return _rTransform; };
@@ -136,16 +153,22 @@ namespace DEN
 		static Color GetColor(const string &val);
 		Widget(GUI *gui);
 		~Widget();
+		void SetAlign(WIDGET_ALIGN align);
+		WIDGET_ALIGN GetAlign();
+		void SetWidth(float value, bool isPercent = false);
+		void SetHeight(float value, bool isPercent = false);
+		void SetTop(float value, bool isPercent = false);
+		void SetLeft(float value, bool isPercent = false);
+		void SetRight(float value, bool isPercent = false);
+		void SetBottom(float value, bool isPercent = false);
+
+		void SetBackgroundColor(const Color &color);
+		Color GetBackgroundColor();
 		bool IsChild(Widget *c, bool depthAll);
 		bool Pick(const Point2 &p, bool andChilds = false);
-		void SetStyle(const string &style, const string &eve = "");
-		bool SetProperty(const string& name, const string& value);
-		string GetProperty(const string& name);
-		void SetAttribute(const string& name, const string& value);
-		string GetAttribute(const string& name);
 		void SetParent(Widget *parent);
 		void BakeBuffer();
-		bool Update(map<string, string> inherit);//inherit не должно быть по ссылке
+		bool Update();
 		void Bake();
 		void BakeAll(map<string, string> inherit = {});
 		void Draw(bool andChilds = false);

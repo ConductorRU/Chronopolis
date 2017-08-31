@@ -5,9 +5,12 @@ namespace DEN
 	class WidgetBlock : public Widget
 	{
 	protected:
-		void _UpdateBorders(map<string, string> &inherit);
-		void _Update(map<string, string> &inherit);
+		Square _borderRadius;
+		void _UpdateBorders();
+		void _Update();
 	public:
 		WidgetBlock(GUI *gui);
+		void SetBorderRadius(const Square &radius);
+		Square GetBorderRadius();
 	};
 };

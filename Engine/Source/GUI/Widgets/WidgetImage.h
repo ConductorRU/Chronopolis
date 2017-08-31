@@ -7,11 +7,15 @@ namespace DEN
 	{
 	protected:
 		Texture *_img;
+		Square *_atlas;
 		void _Render(Pass *pass);
-		void _Update(map<string, string> &inherit);
-		void _UpdateAtlas(map<string, string> &inherit);
+		void _Update();
+		void _UpdateAtlas();
 	public:
 		WidgetImage(GUI *gui);
+		~WidgetImage();
 		void SetImage(Texture *img);
+		void SetAtlas(const Square &rect);
+		Square *GetAtlas();
 	};
 };

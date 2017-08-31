@@ -63,7 +63,8 @@ namespace DEN
 		z_root = new WidgetX(this);
 		z_root->SetStyle("width: 100%; height:100%; background-color: #0000;");
 		_root = new Widget(this);
-		_root->SetStyle("display:block; width: 100%; height:100%; background-color: #0000;");
+		_root->SetAlign(WIDGET_STRETCH);
+		_root->SetBackgroundColor(Color(0, 0, 0, 0));
 		z_width = Render::Get()->GetWidth();
 		z_height = Render::Get()->GetHeight();
 		z_bakeCount = 0;
@@ -129,8 +130,31 @@ namespace DEN
 				{
 					SelectorDesc desc;
 					desc.name = val;
-					//if(hie == ">")
-					//	desc.hierarchy = 
+					if(hie == ">")
+						desc.hierarchy = SELECTOR_CHILDS;
+					else if(hie == "" && !s->desc.size())
+						desc.hierarchy = SELECTOR_ALL;
+					else if(hie == "")
+						desc.hierarchy = SELECTOR_THIS;
+					else if(hie == "+")
+						desc.hierarchy = SELECTOR_NEXT;
+					else if(hie == "~")
+						desc.hierarchy = SELECTOR_NEARBY;
+					else if(hie == ":")
+						desc.hierarchy = SELECTOR_STATE;
+
+					if(typ == "")
+						desc.type = SELECTOR_ANY;
+					else if(typ == "#")
+						desc.type = SELECTOR_ID;
+					else if(typ == ".")
+						desc.type = SELECTOR_CLASS;
+					else if(typ == ".")
+						desc.type = SELECTOR_CLASS;
+					else if(typ == ".")
+						desc.type = SELECTOR_CLASS;
+
+					s->desc.push_back(desc);
 					val.clear();
 					typ.clear();
 					hie.clear();

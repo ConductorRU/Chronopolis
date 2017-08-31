@@ -370,35 +370,46 @@ void Game::Init()
 	Scene *mScene = _engine->CreateScene();
 	Scene *sc = _engine->CreateScene();
 
+
+	sc->GetGUI()->AddSelector(".button", "background-color:#a00;");
 	Widget *block = new WidgetBlock(sc->GetGUI());
 	block->SetParent(sc->GetGUI()->GetRoot());
-	block->SetStyle("width:100%;height:100%;");
-	block = new WidgetBlock(sc->GetGUI());
-	block->SetParent(sc->GetGUI()->GetRoot());
-	block->SetStyle("width:100%;height:32px;background-color:#eee;");
+	block->SetAlign(WIDGET_TOP_STRETCH);
+	block->SetHeight(32.0f);
+	block->SetBackgroundColor(Color("#eee"));//#999
 
 	Widget *child = new WidgetBlock(sc->GetGUI());
 	child->SetParent(block);
-	child->SetStyle("position:absolute;bottom:3px;right:3px;width:80px;height:29px;background-color:#ddd;align:center middle;");
+	child->SetAlign(WIDGET_TOP_RIGHT);
+	child->SetTop(0.0f);
+	child->SetRight(3.0f);
+	child->SetWidth(80.0f);
+	child->SetHeight(29.0f);
+	child->SetBackgroundColor(Color("#ddd"));
 
 	WidgetImage *iblock = new WidgetImage(sc->GetGUI());
 	iblock->SetParent(child);
-	iblock->SetStyle("background-color: #fff;atlas:0 0 10 10");
+	iblock->SetBackgroundColor(Color::C_WHITE);
+	iblock->SetAtlas(Square(0, 0, 10, 10));
 
-	block = new WidgetBlock(sc->GetGUI());
-	block->SetParent(sc->GetGUI()->GetRoot());
-	block->SetStyle("position:absolute;left:50px;top:40px;width: 200px; height:40px; background-color: #3498db;border-radius:8px;align:center middle;");
+	WidgetBlock *bblock = new WidgetBlock(sc->GetGUI());
+	bblock->SetParent(sc->GetGUI()->GetRoot());
+	bblock->SetLeft(50.0f);
+	bblock->SetTop(40.0f);
+	bblock->SetWidth(200.0f);
+	bblock->SetHeight(40.0f);
+	bblock->SetBackgroundColor(Color("#3498db"));
+	bblock->SetBorderRadius(Square(40.0f, 40.0f, 40.0f, 40.0f));
 	
 	
 	WidgetText *iText = new WidgetText(sc->GetGUI());
-	iText->SetAttribute("class", "tFont");
-	iText->SetParent(block);
-	iText->SetStyle("color:#fff;font-family:arial;font-size:12px;font-weight:bold;");
-	iText->SetText("Hello, ");
-	iText = new WidgetText(sc->GetGUI());
-	iText->SetParent(block);
-	iText->SetStyle("color:#fff;font-family:arial;font-size:32px;font-weight:normal;");
-	iText->SetText("world!");
+	iText->SetParent(bblock);
+	iText->SetTextColor(Color::C_WHITE);
+	iText->SetFamily("arial");
+	iText->SetFontSize(12);
+	iText->SetBold(true);
+	iText->SetText("Hello!");
+	iText->SetAlign(WIDGET_STRETCH);
 
 
 	Texture *bTex = Manager::Get()->LoadTexture("..\\..\\menu.tga", true);
@@ -594,6 +605,10 @@ void Game::Init()
 	};
 
 	XMLNode *node = XML::Load("D:\\Release\\DirectX\\Chronopolis\\category_welcome.svg");
+
+}
+void Game::Init2()
+{
 
 }
 

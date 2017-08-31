@@ -12,17 +12,15 @@ namespace DEN
 	WidgetText::WidgetText(GUI *gui): Widget(gui)
 	{
 		_buffer->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		_prop["display"] = "inline";
+		_isBold = false;
+		_isItalic = false;
 	}
-	void WidgetText::_UpdateText(map<string, string> &inherit)
+	void WidgetText::_UpdateText()
 	{
 		size_t size = _text.size();
 		char c;
 		Rect r;
-		string sSize = GetStyle("font-size", inherit);
-		float pSize = (float)(int)(GetPixel("font-size", sSize)*0.1);
-		string prop = GetStyle("color", inherit);
-		Color color = GetColor(prop);
+		float pSize = (float)(int)(_fontSize*0.1);
 		float posX = _rect.minX;
 		float posY = _rect.minY;
 		for(size_t i = 0; i < size; ++i)
@@ -34,10 +32,9 @@ namespace DEN
 		if(!size)
 			r = _font->GetRect(' ');
 		_rect = Square(_rect.minX, _rect.minY, posX - _rect.minX, float(r.maxY - r.minY));
-		string align = _parent->GetStyle("align", inherit);
-		if(align == "center" || align == "right")
+		/*if(align == "center" || align == "right")
 		{
-			/*Square s = _parent->GetSquare();
+			Square s = _parent->GetSquare();
 			float fx = m.minX + parP.minX;
 			if(_parent)
 			{
@@ -48,8 +45,8 @@ namespace DEN
 					fx = sq.maxX - s.maxX - parP.maxX - m.maxX - m.minX;
 				s.minX = s.minX + fx;
 				_prop.SetSquare(s);
-			}*/
-		}
+			}
+		}*/
 		/*if(z_prop.GetAlign() == 8 || z_prop.GetAlign() == 16)
 		{
 			s = z_prop.GetSquare();
@@ -74,12 +71,12 @@ namespace DEN
 			_indexes->clear();
 		else
 			_indexes = new vector<uint>;
-		posX = 0.0f;
-		float leftX = posX;
+		posX = _offset.minX;
+		/*float leftX = posX;
 		if(_gui->GetPrevChild())
 			posX = _gui->GetPrevChild()->GetOffset().maxX;
 		_offset.minX = posX;
-		_offset.minY = posY;
+		_offset.minY = posY;*/
 		float lineHeight = (float)(_font->tm.tmAscent - _font->tm.tmDescent);
 		for(size_t i = 0; i < size; ++i)
 		{
@@ -90,7 +87,7 @@ namespace DEN
 			v.push_back(bl);
 			v.push_back(bl);
 			v.push_back(bl);
-			v[n].col = v[n + 1].col = v[n + 2].col = v[n + 3].col = color;
+			v[n].col = v[n + 1].col = v[n + 2].col = v[n + 3].col = _textColor;
 			v[n].uv.x = v[n + 2].uv.x = s.minX;
 			v[n + 1].uv.x = v[n + 3].uv.x = s.maxX;
 			v[n].uv.y = v[n + 1].uv.y = s.minY;
@@ -109,26 +106,22 @@ namespace DEN
 			_indexes->push_back(n + 3u);
 			n += 4;
 		}
-		_offset.maxX = posX;
-		_offset.maxY = lineHeight;
+		//_offset.maxX = posX;
+		//_offset.maxY = lineHeight;
 	}
-	void WidgetText::_UpdateFont(map<string, string> &inherit)
+	void WidgetText::_UpdateFont()
 	{
 		_fontPass = _gui->GetPass();
 		_font = _gui->GetFont();
-		string family = GetStyle("font-family", inherit);
-		string size = GetStyle("font-size", inherit);
-		string weight = GetStyle("font-weight", inherit);
-		string style = GetStyle("font-style", inherit);
-		if(family != "")
-			_gui->GetFont(family, (int)GetPixel("font-size", size), weight == "bold", style == "italic", &_font);
+		if(_family != "")
+			_gui->GetFont(_family, _fontSize, _isBold, _isItalic, &_font);
 	}
-	void WidgetText::_Update(map<string, string> &inherit)
+	void WidgetText::_Update()
 	{
-		_UpdatePosition(inherit);
-		_UpdateFont(inherit);
-		_UpdateText(inherit);
-		_UpdateBackground(inherit);
+		_UpdatePosition();
+		_UpdateFont();
+		_UpdateText();
+		_UpdateBackground();
 	}
 	void WidgetText::_Render(Pass *pass)
 	{

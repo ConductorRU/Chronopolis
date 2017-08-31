@@ -6,97 +6,98 @@ namespace DEN
 {
 	WidgetBlock::WidgetBlock(GUI *gui): Widget(gui)
 	{
-		_prop["display"] = "block";
+		
 	}
-	void WidgetBlock::_UpdateBorders(map<string, string> &inherit)
+	void WidgetBlock::SetBorderRadius(const Square &radius)
+	{
+		_borderRadius = radius;
+	}
+	Square WidgetBlock::GetBorderRadius()
+	{
+		return _borderRadius;
+	}
+	void WidgetBlock::_UpdateBorders()
 	{
 		string prop;
 		Vertex2D t;
-		float val;
-		memset(&t, 0, sizeof(Vertex2D));
-
-		prop = GetStyle("border-radius", inherit);
-		if (prop != "")
+		float val = _borderRadius.minX;
+		if (val > 0)
 		{
-			val = GetPixel("border-radius", prop);
-			if (val > 0)
+			v.clear();
+			val = min(val, min(_size.x, _size.y));
+			for (float f = 0.0f; f <= val; f += 1.0f)//left top
 			{
-				v.clear();
-				val = min(val, min(_size.x, _size.y));
-				for (float f = 0.0f; f <= val; f += 1.0f)//left top
-				{
-					t.pos.x = val + _offset.left;
-					t.pos.y = val + _offset.top;
-					v.push_back(t);
-					t.pos.x = val + cos(-PI - (f / val)*PI_HALF)*val + _offset.left;
-					t.pos.y = val - sin((f / val)*PI_HALF)*val + _offset.top;
-					v.push_back(t);
-				}
-				t.pos.x = -val + _offset.right;
-				t.pos.y = val + _offset.top;
-				v.push_back(t);
-				t.pos.x = -val + _offset.right;
-				t.pos.y = _offset.top;
-				v.push_back(t);
-				for (float f = val; f >= 0.0f; f -= 1.0f)//right top
-				{
-					t.pos.x = -val + _offset.right;
-					t.pos.y = val + _offset.top;
-					v.push_back(t);
-					t.pos.x = -(val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.right;
-					t.pos.y = val + sin(PI + (f / val)*PI_HALF)*val + _offset.top;
-					v.push_back(t);
-				}
-				t.pos.x = - val + _offset.right;
-				t.pos.y = - val + _offset.bottom;
-				v.push_back(t);
-				t.pos.x = _offset.right;
-				t.pos.y = - val + _offset.bottom;
-				v.push_back(t);
-				for (float f = 0.0f; f <= val; f += 1.0f)//right bottom
-				{
-					t.pos.x = - val + _offset.right;
-					t.pos.y = - val + _offset.bottom;
-					v.push_back(t);
-					t.pos.x = - (val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.right;
-					t.pos.y = - val + sin((f / val)*PI_HALF)*val + _offset.bottom;
-					v.push_back(t);
-				}
-				t.pos.x = val + _offset.left;
-				t.pos.y = - val + _offset.bottom;
-				v.push_back(t);
-				t.pos.x = val + _offset.left;
-				t.pos.y = _offset.bottom;
-				v.push_back(t);
-				for (float f = val; f >= 0.0f; f -= 1.0f)//left bottom
-				{
-					t.pos.x = val + _offset.left;
-					t.pos.y = - val + _offset.bottom;
-					v.push_back(t);
-					t.pos.x = (val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.left;
-					t.pos.y = - val - sin(PI + (f / val)*PI_HALF)*val + _offset.bottom;
-					v.push_back(t);
-				}
 				t.pos.x = val + _offset.left;
 				t.pos.y = val + _offset.top;
 				v.push_back(t);
-				t.pos.x = 0.0f + _offset.left;
-				t.pos.y = val + _offset.top;
-				v.push_back(t);
-
-				t.pos.x = val + _offset.left;//center
-				t.pos.y = val + _offset.top;
-				v.push_back(t);
-				t.pos.x = - val + _offset.right;
-				t.pos.y = val + _offset.top;
-				v.push_back(t);
-				t.pos.x = val + _offset.left;
-				t.pos.y = - val + _offset.bottom;
-				v.push_back(t);
-				t.pos.x = - val + _offset.right;
-				t.pos.y = - val + _offset.bottom;
+				t.pos.x = val + cos(-PI - (f / val)*PI_HALF)*val + _offset.left;
+				t.pos.y = val - sin((f / val)*PI_HALF)*val + _offset.top;
 				v.push_back(t);
 			}
+			t.pos.x = -val + _offset.right;
+			t.pos.y = val + _offset.top;
+			v.push_back(t);
+			t.pos.x = -val + _offset.right;
+			t.pos.y = _offset.top;
+			v.push_back(t);
+			for (float f = val; f >= 0.0f; f -= 1.0f)//right top
+			{
+				t.pos.x = -val + _offset.right;
+				t.pos.y = val + _offset.top;
+				v.push_back(t);
+				t.pos.x = -(val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.right;
+				t.pos.y = val + sin(PI + (f / val)*PI_HALF)*val + _offset.top;
+				v.push_back(t);
+			}
+			t.pos.x = - val + _offset.right;
+			t.pos.y = - val + _offset.bottom;
+			v.push_back(t);
+			t.pos.x = _offset.right;
+			t.pos.y = - val + _offset.bottom;
+			v.push_back(t);
+			for (float f = 0.0f; f <= val; f += 1.0f)//right bottom
+			{
+				t.pos.x = - val + _offset.right;
+				t.pos.y = - val + _offset.bottom;
+				v.push_back(t);
+				t.pos.x = - (val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.right;
+				t.pos.y = - val + sin((f / val)*PI_HALF)*val + _offset.bottom;
+				v.push_back(t);
+			}
+			t.pos.x = val + _offset.left;
+			t.pos.y = - val + _offset.bottom;
+			v.push_back(t);
+			t.pos.x = val + _offset.left;
+			t.pos.y = _offset.bottom;
+			v.push_back(t);
+			for (float f = val; f >= 0.0f; f -= 1.0f)//left bottom
+			{
+				t.pos.x = val + _offset.left;
+				t.pos.y = - val + _offset.bottom;
+				v.push_back(t);
+				t.pos.x = (val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.left;
+				t.pos.y = - val - sin(PI + (f / val)*PI_HALF)*val + _offset.bottom;
+				v.push_back(t);
+			}
+			t.pos.x = val + _offset.left;
+			t.pos.y = val + _offset.top;
+			v.push_back(t);
+			t.pos.x = 0.0f + _offset.left;
+			t.pos.y = val + _offset.top;
+			v.push_back(t);
+
+			t.pos.x = val + _offset.left;//center
+			t.pos.y = val + _offset.top;
+			v.push_back(t);
+			t.pos.x = - val + _offset.right;
+			t.pos.y = val + _offset.top;
+			v.push_back(t);
+			t.pos.x = val + _offset.left;
+			t.pos.y = - val + _offset.bottom;
+			v.push_back(t);
+			t.pos.x = - val + _offset.right;
+			t.pos.y = - val + _offset.bottom;
+			v.push_back(t);
 		}
 		else
 		{
@@ -116,10 +117,10 @@ namespace DEN
 				v[2].pos.y = v[3].pos.y = v[0].pos.y;
 		}
 	}
-	void WidgetBlock::_Update(map<string, string> &inherit)
+	void WidgetBlock::_Update()
 	{
-		_UpdatePosition(inherit);
-		_UpdateBorders(inherit);
-		_UpdateBackground(inherit);
+		_UpdatePosition();
+		_UpdateBorders();
+		_UpdateBackground();
 	}
 };

@@ -9,7 +9,11 @@ namespace DEN
 	WidgetImage::WidgetImage(GUI *gui): WidgetBlock(gui)
 	{
 		_img = nullptr;
-		_prop["display"] = "inline";
+		_atlas = nullptr;
+	}
+	WidgetImage::~WidgetImage()
+	{
+		delete _atlas;
 	}
 	void WidgetImage::_Render(Pass *pass)
 	{
@@ -20,7 +24,7 @@ namespace DEN
 		render->ExecuteMesh(_buffer);
 		pass->SetTexture(0, tex);
 	}
-	void WidgetImage::_UpdateAtlas(map<string, string> &inherit)
+	void WidgetImage::_UpdateAtlas()
 	{
 		if(!_img)
 			return;
@@ -28,47 +32,39 @@ namespace DEN
 		uint height = _img->GetHeight();
 		if(!width || !height)
 			return;
-		string style = GetProperty("atlas");
-		if(style == "")
+		if(!_atlas)
 			return;
-		vector<string> vars = explode(style, ' ', true);
-		if(vars.size() >= 2)
-		{
-			float posX = (float)atof(vars[0].c_str());
-			float posY = (float)atof(vars[1].c_str());
-			float sizX, sizY;
-			if(vars.size() >= 4)
-			{
-				sizX = (float)atof(vars[2].c_str());
-				sizY = (float)atof(vars[3].c_str());
-				_size.x = sizX;
-				_size.y = sizY;
-			}
-			else
-			{
-				sizX = _rect.right;
-				sizY = _rect.bottom;
-			}
-			_uv.minX = posX/(float)width;
-			_uv.maxY = 1.0f - posY/(float)height;
-			_uv.maxX = _uv.minX + sizX/(float)width;
-			_uv.minY = 1.0f - (_uv.minY + sizY/(float)height);
-		}
+		_size.x = _atlas->maxX;
+		_size.y = _atlas->maxY;
+		_uv.minX = _atlas->minX/(float)width;
+		_uv.maxY = 1.0f - _atlas->minY/(float)height;
+		_uv.maxX = _uv.minX + _atlas->maxX/(float)width;
+		_uv.minY = 1.0f - (_uv.minY + _atlas->maxY/(float)height);
 		if(_parent)
 		{
 			Vector2 size = _parent->GetSize();
-
 		}
 	}
-	void WidgetImage::_Update(map<string, string> &inherit)
+	void WidgetImage::_Update()
 	{
-		_UpdateAtlas(inherit);
-		WidgetBlock::_Update(inherit);
+		_UpdateAtlas();
+		WidgetBlock::_Update();
 	}
 	void WidgetImage::SetImage(Texture *img)
 	{
 		_img = img;
 		_size.x = (float)_img->GetWidth();
 		_size.y = (float)_img->GetHeight();
+	}
+	void WidgetImage::SetAtlas(const Square &rect)
+	{
+		if(!_atlas)
+			_atlas = new Square(rect);
+		else
+			*_atlas = rect;
+	}
+	Square *WidgetImage::GetAtlas()
+	{
+		return _atlas;
 	}
 };

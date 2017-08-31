@@ -13,6 +13,10 @@ namespace DEN
 			b = blue;
 			a = alpha;
 		}
+		Color::Color(const string &val)
+		{
+			FromHex(val);
+		}
 		Color::Color(int red, int green, int blue, int alpha = 255)
 		{
 			r = (float)red / 255.0f;

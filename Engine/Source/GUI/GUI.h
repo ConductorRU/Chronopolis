@@ -40,7 +40,7 @@ namespace DEN
 	struct Selector
 	{
 		string name;
-		SelectorDesc desc;
+		vector<SelectorDesc> desc;
 		map<string, string> props;
 	};
 	class GUI

@@ -1061,12 +1061,52 @@ namespace DEN
 		_visible = true;
 		_indexes = nullptr;
 		_uv = Square(0.0f, 0.0f, 1.0f, 1.0f);
-		memset(_rectEnable, 0, sizeof(_rectEnable));
+		_align = WIDGET_TOP_LEFT;
 	}
 	Widget::~Widget()
 	{
 		if(_indexes)
 			delete _indexes;
+	}
+	void Widget::SetAlign(WIDGET_ALIGN align)
+	{
+		_align = align;
+	}
+	WIDGET_ALIGN Widget::GetAlign()
+	{
+		return _align;
+	}
+	void Widget::SetWidth(float value, bool isPercent)
+	{
+		_size.x = value;
+	}
+	void Widget::SetHeight(float value, bool isPercent)
+	{
+		_size.y = value;
+	}
+	void Widget::SetTop(float value, bool isPercent)
+	{
+		_rect.top = value;
+	}
+	void Widget::SetLeft(float value, bool isPercent)
+	{
+		_rect.left = value;
+	}
+	void Widget::SetRight(float value, bool isPercent)
+	{
+		_rect.right = value;
+	}
+	void Widget::SetBottom(float value, bool isPercent)
+	{
+		_rect.bottom = value;
+	}
+	void Widget::SetBackgroundColor(const Color &color)
+	{
+		_background = color;
+	}
+	Color Widget::GetBackgroundColor()
+	{
+		return _background;
 	}
 	float Widget::PercentWidth(const string &val)
 	{
@@ -1192,48 +1232,6 @@ namespace DEN
 					return true;
 		return pick;
 	}
-	void Widget::SetStyle(const string &style, const string &eve)
-	{
-		map<string, string> props = GUI::ParseStyles(style);
-		for(auto iter: props)
-			SetProperty(iter.first, iter.second);
-	}
-	bool Widget::SetProperty(const string& name, const string& value)
-	{
-		_prop[name] = value;
-		_update = true;
-		return true;
-	}
-	string Widget::GetProperty(const string& name)
-	{
-		auto iter = _prop.find(name);
-		if (iter == _prop.end())
-			return "";
-		return iter->second;
-	}
-	void Widget::SetAttribute(const string& name, const string& value)
-	{
-		_attr[name] = value;
-		if(name == "class")
-			_update = true;
-	}
-	string Widget::GetAttribute(const string& name)
-	{
-		auto iter = _attr.find(name);
-		if (iter == _attr.end())
-			return "";
-		return iter->second;
-	}
-	string Widget::GetStyle(const string& name, const map<string, string> &inherit)
-	{
-		auto iter = _prop.find(name);
-		if(iter != _prop.end())
-			return iter->second;
-		auto iter1 = inherit.find(name);
-		if(iter1 != inherit.end())
-			return iter1->second;
-		return "";
-	}
 	void Widget::SetParent(Widget *parent)
 	{
 		if(_parent)
@@ -1260,87 +1258,49 @@ namespace DEN
 		_buffer->Copy(SHADER_VS, 0, &f, sizeof(f), 0u);
 		_buffer->Copy(SHADER_PS, 0, &f, sizeof(f), 0u);
 	}
-	void Widget::_UpdatePosition(map<string, string> &inherit)
+	void Widget::_UpdatePosition()
 	{
-		string prop = GetStyle("display", inherit);
-		if(prop == "block")
-		{
-		}
-		prop = GetStyle("width", inherit);
-		if (prop != "")
-			_size.x = GetPixel("width", prop);
-		prop = GetStyle("height", inherit);
-		if (prop != "")
-			_size.y = GetPixel("height", prop);
-
-		prop = GetStyle("left", inherit);
-		if (prop != "")
-		{
-			_rectEnable[3] = true;
-			_rect.left = GetPixel("left", prop);
-		}
-		prop = GetStyle("right", inherit);
-		if (prop != "")
-		{
-			_rectEnable[1] = true;
-			_rect.right = GetPixel("right", prop);
-		}
-		prop = GetStyle("top", inherit);
-		if (prop != "")
-		{
-			_rectEnable[0] = true;
-			_rect.top = GetPixel("top", prop);
-		}
-		prop = GetStyle("bottom", inherit);
-		if (prop != "")
-		{
-			_rectEnable[2] = true;
-			_rect.bottom = GetPixel("bottom", prop);
-		}
-
-		prop = GetStyle("position", inherit);
 		_offset = {0.0f, 0.0f, 0.0f, 0.0f};
 		_offset.right = _size.x;
 		_offset.bottom = _size.y;
-		if(prop == "relative")
+		Square par;
+		_offset.top = par.minX;
+		_offset.left = par.minY;
+		if(_parent)
+			par = _parent->GetOffset();
+		else
 		{
-			_offset = _rect;
-			_offset.right = _size.x - _rect.right;
-			_offset.bottom = _size.y - _rect.bottom;
+			par.maxX =	(float)Render::Get()->GetWidth();
+			par.maxY =	(float)Render::Get()->GetHeight();
 		}
-		else if(prop == "absolute")
+		if(_align == WIDGET_TOP_LEFT || _align == WIDGET_MIDDLE_LEFT || _align == WIDGET_BOTTOM_LEFT)
+			_offset.minX = par.minX + _rect.minX;
+		if(_align == WIDGET_TOP_CENTER || _align == WIDGET_CENTER || _align == WIDGET_BOTTOM_CENTER)
+			_offset.minX = par.minX + _rect.minX - _rect.maxX + (par.maxX - _size.x)*0.5;
+		if(_align == WIDGET_TOP_RIGHT || _align == WIDGET_MIDDLE_RIGHT || _align == WIDGET_BOTTOM_RIGHT)
+			_offset.minX = par.maxX - _rect.maxX - _size.x;
+		if(_align == WIDGET_TOP_LEFT || _align == WIDGET_TOP_CENTER || _align == WIDGET_TOP_RIGHT)
+			_offset.minY = par.minY + _rect.minY;
+		if(_align == WIDGET_MIDDLE_LEFT || _align == WIDGET_CENTER || _align == WIDGET_MIDDLE_RIGHT)
+			_offset.minY = par.minY + _rect.minY - _rect.maxY + (par.maxY - _size.y)*0.5;
+		if(_align == WIDGET_BOTTOM_LEFT || _align == WIDGET_BOTTOM_CENTER || _align == WIDGET_BOTTOM_RIGHT)
+			_offset.minY = par.maxY - _rect.maxY - _size.y;
+		_offset.maxX = _offset.minX + _size.x;
+		_offset.maxY = _offset.minY + _size.y;
+		switch(_align)
 		{
-			if(_rectEnable[0] && _rectEnable[2])
-			{
-				_offset.top = _rect.top;
-				_offset.bottom = _parent->GetSquare().maxY - _rect.bottom;
-			}
-			else if(_rectEnable[0])
-			{
-				_offset.top = _rect.top;
-				_offset.bottom = _rect.top + _size.y;
-			}
-			else if(_rectEnable[2])
-			{
-				_offset.top = _parent->GetSize().y - _size.y - _rect.bottom;
-				_offset.bottom = _offset.top + _size.y;
-			}
-
-			if(_rectEnable[1] && _rectEnable[3])
-			{
-				_offset.left = _rect.left;
-				_offset.right = _parent->GetSquare().maxX - _rect.right;
-			}
-			else if(_rectEnable[1])
-			{
-				_offset.left = _parent->GetSize().x - _size.x - _rect.right;
-				_offset.right = _offset.left + _size.x;
-			}
-			else if(_rectEnable[3])
-			{
-				_offset.left = _rect.left;
-				_offset.right = _rect.left + _size.x;				
-			}
+		case WIDGET_TOP_STRETCH:
+			_offset.minX = par.minX + _rect.minX;
+			_offset.minY = _rect.minY;
+			_offset.maxX = _offset.minX + par.maxX - _rect.maxX;
+			_offset.maxY = _offset.minY + _size.y;
+			break;
+		case WIDGET_STRETCH:
+			_offset.minX = par.minX + _rect.minX;
+			_offset.minY = par.minY + _rect.minY;
+			_offset.maxX = _offset.minX + par.maxX - _rect.maxX;
+			_offset.maxY = _offset.minY + par.maxY - _rect.maxY;
+			break;
 		}
 	}
 	void Widget::_UpdateTransform()
@@ -1352,67 +1312,36 @@ namespace DEN
 			parPos.x += _parent->_offset.left;
 			parPos.y += _parent->_offset.top;
 		}
-		_rTransform.SetTranslationX(parPos.x + _align.x);
-		_rTransform.SetTranslationY(parPos.y + _align.y);
+		_rTransform.SetTranslationX(parPos.x/* + _align.x*/);
+		_rTransform.SetTranslationY(parPos.y/* + _align.y*/);
 	}
-	void Widget::_UpdateBackground(map<string, string> &inherit)
+	void Widget::_UpdateBackground()
 	{
-		string prop = GetStyle("background-color", inherit);
-		if(prop != "")
-		{
-			Color col = GetColor(prop);
-			for (Vertex2D &v1 : v)
-				v1.col = col;
-		}
+		for (Vertex2D &v1 : v)
+			v1.col = _background;
 	}
-	void Widget::_Align(const Vector2 &align)
+	void Widget::_UpdateAlign()
 	{
-		_align = Vector2((float)(int)align.x, (float)(int)align.y);
-	}
-	void Widget::_UpdateAlign(map<string, string> &inherit)
-	{
-		string p = GetStyle("align", inherit);
-		vector<string> props = explode(p, ' ');
 		vector<Widget*> temp;
 		Vector2 align, length;
 		bool isUpd = false;
 		for(Widget *el : z_childs)
 		{
-			string display = el->GetStyle("display", inherit);
-			for(string &prop: props)
+			if(_align == WIDGET_TOP_CENTER || _align == WIDGET_CENTER || _align == WIDGET_BOTTOM_CENTER)
 			{
-				if(prop == "center")
-				{
-					if(display == "inline")
-					{
-						temp.push_back(el);
-						length.x += el->_offset.right - el->_offset.left;
-					}
-					else
-					{
-						align.x = (_size.x - length.x)*0.5f;
-						isUpd = true;
-					}
-				}
-				else if(prop == "middle")
-				{
-					if(display == "inline")
-					{
-						temp.push_back(el);
-						length.y += el->_offset.bottom - el->_offset.top;
-					}
-					else
-					{
-						align.y = (_size.y - length.y)*0.5f;
-						isUpd = true;
-					}
-				}
+				temp.push_back(el);
+				length.x += el->_offset.right - el->_offset.left;
+			}
+			else if(_align == WIDGET_MIDDLE_LEFT || _align == WIDGET_CENTER || _align == WIDGET_MIDDLE_RIGHT)
+			{
+				temp.push_back(el);
+				length.y += el->_offset.bottom - el->_offset.top;
 			}
 			if(isUpd)
 			{
 				isUpd = false;
-				for(Widget *em : temp)
-					em->_Align(align);
+				//for(Widget *em : temp)
+				//	em->_Align(align);
 				temp.clear();
 				length.x = 0.0f;
 				length.y = 0.0f;
@@ -1420,20 +1349,20 @@ namespace DEN
 		}
 		align.x = (_size.x - length.x)*0.5f;
 		align.y = (_size.y - length.y)*0.5f;
-		for(Widget *em : temp)
-			em->_Align(align);
+		//for(Widget *em : temp)
+		//	em->_Align(align);
 	}
-	void Widget::_Update(map<string, string> &inherit)
+	void Widget::_Update()
 	{
-		_UpdatePosition(inherit);
-		_UpdateBackground(inherit);
+		_UpdatePosition();
+		_UpdateBackground();
 	}
-	bool Widget::Update(map<string, string> inherit)
+	bool Widget::Update()
 	{
 		if(!_update)
 			return false;
 		_update = false;
-		_Update(inherit);
+		_Update();
 		return true;
 	}
 	void Widget::Bake()
@@ -1451,7 +1380,7 @@ namespace DEN
 	{
 		if(_gui->GetRoot() == this)
 		{
-			Update(inherit);
+			Update();
 			Bake();
 		}
 		if(z_childs.size())
@@ -1460,10 +1389,10 @@ namespace DEN
 			_gui->SetPrevChild(nullptr);
 			for(Widget *el : z_childs)
 			{
-				el->Update(inherit);
+				el->Update();
 				_gui->SetPrevChild(el);
 			}
-			_UpdateAlign(inherit);
+			_UpdateAlign();
 			for(Widget *el : z_childs)
 				el->Bake();
 			for(Widget *el : z_childs)

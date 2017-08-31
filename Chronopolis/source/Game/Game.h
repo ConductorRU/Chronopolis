@@ -80,5 +80,6 @@ public:
 	Game();
 	~Game();
 	void Init();
+	void Init2();
 	void Update();
 };
