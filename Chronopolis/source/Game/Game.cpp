@@ -396,19 +396,20 @@ void Game::Init()
 	bblock->SetParent(sc->GetGUI()->GetRoot());
 	bblock->SetLeft(50.0f);
 	bblock->SetTop(40.0f);
-	bblock->SetWidth(200.0f);
+	bblock->SetWidth(400.0f);
 	bblock->SetHeight(40.0f);
 	bblock->SetBackgroundColor(Color("#3498db"));
-	bblock->SetBorderRadius(Square(40.0f, 40.0f, 40.0f, 40.0f));
+	bblock->SetBorderRadius(Square(5.0f, 5.0f, 15.0f, 15.0f));
+	bblock->SetBorderWidth(5.0f);
 	
 	
 	WidgetText *iText = new WidgetText(sc->GetGUI());
 	iText->SetParent(bblock);
 	iText->SetTextColor(Color::C_WHITE);
 	iText->SetFamily("arial");
-	iText->SetFontSize(12);
-	iText->SetBold(true);
-	iText->SetText("Hello!");
+	iText->SetFontSize(24);
+	iText->SetBold(false);
+	iText->SetText("Hello, трава!");
 	iText->SetAlign(WIDGET_STRETCH);
 
 

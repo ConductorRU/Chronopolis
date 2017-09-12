@@ -1068,6 +1068,12 @@ namespace DEN
 		if(_indexes)
 			delete _indexes;
 	}
+	void Widget::AddTriangle(uint i0, uint i1, uint i2)
+	{
+		_indexes->push_back(i0);
+		_indexes->push_back(i1);
+		_indexes->push_back(i2);
+	}
 	void Widget::SetAlign(WIDGET_ALIGN align)
 	{
 		_align = align;
@@ -1317,8 +1323,7 @@ namespace DEN
 	}
 	void Widget::_UpdateBackground()
 	{
-		for (Vertex2D &v1 : v)
-			v1.col = _background;
+		
 	}
 	void Widget::_UpdateAlign()
 	{

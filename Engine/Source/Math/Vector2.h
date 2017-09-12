@@ -82,10 +82,13 @@ namespace DEN
 		{
 			return x*vec.x + y*vec.y;
 		}
-		inline Vector2 Cross() const
+		inline Vector2 Normal() const
 		{
-			return Vector2(-y, x);
+			Vector2 n = Vector2(-y, x);
+			n.Normalize();
+			return n;
 		}
+
 		inline float AngleBetween(const Vector2& p) const
 		{
 			float lenProduct = Length() * p.Length();

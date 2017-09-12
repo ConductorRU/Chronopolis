@@ -73,7 +73,7 @@ namespace DEN
 	public:
 		DepthStencil();
 		~DepthStencil();
-		HRESULT Create(uint width = 0, uint height = 0);
+		HRESULT Create(uint width = 0, uint height = 0, uint multisample = 1);
 		void Restart();
 		void Release();
 		void Resize(uint width, uint height);
@@ -89,7 +89,7 @@ namespace DEN
 	public:
 		RenderTarget();
 		~RenderTarget();
-		HRESULT Create();
+		HRESULT Create(uint multisample = 1);
 		HRESULT Create(RenderTexture *tex);
 		void Restart();
 		void Release();
@@ -102,8 +102,8 @@ namespace DEN
 		DepthStencil *depth;
 		Target(RenderTarget *r, DepthStencil *d);
 		~Target();
-		void Create();
-		void Create(RenderTexture *tex);
+		void Create(uint multisample = 1);
+		void Create(RenderTexture *tex, uint multisample = 1);
 		void Restart();
 		void Release();
 		void Resize(uint width, uint height);
@@ -162,6 +162,7 @@ namespace DEN
 		UINT GetHeight();
 		Target *CreateRenderTarget();
 		void SetVSync(bool enable);
+		uint GetMaxMSAASupport();
 		bool Initialize(HWND &hWind, UINT sizeX, UINT sizeY, bool fullscreen);
 		void Reset();
 		void SetViewport(const Viewport &port);

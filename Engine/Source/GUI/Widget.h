@@ -153,6 +153,7 @@ namespace DEN
 		static Color GetColor(const string &val);
 		Widget(GUI *gui);
 		~Widget();
+		void AddTriangle(uint i0, uint i1, uint i2);
 		void SetAlign(WIDGET_ALIGN align);
 		WIDGET_ALIGN GetAlign();
 		void SetWidth(float value, bool isPercent = false);

@@ -26,7 +26,7 @@ namespace DEN
 			delete renderTexture;
 	}
 
-	HRESULT RenderTarget::Create()
+	HRESULT RenderTarget::Create(uint multisample)
 	{
 		HRESULT hr;
 		renderTexture = new RenderTexture();
@@ -95,7 +95,7 @@ namespace DEN
 		Release();
 	}
 
-	HRESULT DepthStencil::Create(uint width, uint height)
+	HRESULT DepthStencil::Create(uint width, uint height, uint multisample)
 	{
 		HRESULT hr;
 		if (width && height)
@@ -111,7 +111,7 @@ namespace DEN
 		depthTexDesc.MipLevels = 1;
 		depthTexDesc.ArraySize = 1;
 		depthTexDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-		depthTexDesc.SampleDesc.Count = 1;
+		depthTexDesc.SampleDesc.Count = multisample;
 		depthTexDesc.SampleDesc.Quality = 0;
 		depthTexDesc.Usage = D3D11_USAGE_DEFAULT;
 		depthTexDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
@@ -119,7 +119,10 @@ namespace DEN
 		depthTexDesc.MiscFlags = 0;
 		hr = Render::Get()->_device->CreateTexture2D(&depthTexDesc, NULL, &depthTexture);
 		depthDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-		depthDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		if(multisample == 1)
+			depthDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		else
+			depthDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
 		depthDesc.Texture2D.MipSlice = 0;
 		hr = Render::Get()->_device->CreateDepthStencilView(depthTexture, &depthDesc, &depthStencil);
 		return hr;
@@ -164,15 +167,15 @@ namespace DEN
 		delete render;
 		delete depth;
 	}
-	void Target::Create()
+	void Target::Create(uint multisample)
 	{
-		render->Create();
-		depth->Create();
+		render->Create(multisample);
+		depth->Create(0, 0, multisample);
 	}
-	void Target::Create(RenderTexture *tex)
+	void Target::Create(RenderTexture *tex, uint multisample)
 	{
 		render->Create(tex);
-		depth->Create(tex->GetTextureDesc().Width, tex->GetTextureDesc().Height);
+		depth->Create(tex->GetTextureDesc().Width, tex->GetTextureDesc().Height, multisample);
 	}
 
 	void Target::Restart()
@@ -383,8 +386,16 @@ namespace DEN
 	{
 		_vSync = int(enable);
 	}
+	uint Render::GetMaxMSAASupport()
+	{
+		UINT maxQualityLevel = 0;
+		for(UINT sampleCount = D3D11_MAX_MULTISAMPLE_SAMPLE_COUNT; sampleCount > 0; sampleCount /= 2)
+			if(SUCCEEDED(_device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, sampleCount, &maxQualityLevel) && maxQualityLevel <= 0))
+				return sampleCount;
+	}
 	bool Render::Initialize(HWND &hWind, UINT sizeX, UINT sizeY, bool fullscreen)
 	{
+		uint multiSample = 4;
 		ZeroMemory(&_swapDesc, sizeof(_swapDesc));
 		_swapDesc.BufferCount = 1;
 		_swapDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -394,7 +405,7 @@ namespace DEN
 		_swapDesc.BufferDesc.Height = sizeY;
 		_swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		_swapDesc.OutputWindow = hWind;
-		_swapDesc.SampleDesc.Count = 1;
+		_swapDesc.SampleDesc.Count = multiSample;
 		_swapDesc.SampleDesc.Quality = 0;
 		_swapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		_swapDesc.Windowed = !fullscreen;
@@ -431,7 +442,7 @@ namespace DEN
 		_window = _screen;
 		_window.Width = sizeX;
 		_window.Height = sizeY;
-		_defaultTarget->Create();
+		_defaultTarget->Create(multiSample);
 		SetDefaultRenderTarget();
 
 		_rasterDesc.AntialiasedLineEnable = false;
@@ -441,7 +452,7 @@ namespace DEN
 		_rasterDesc.DepthClipEnable = true;
 		_rasterDesc.FillMode = D3D11_FILL_SOLID;
 		_rasterDesc.FrontCounterClockwise = false;
-		_rasterDesc.MultisampleEnable = false;
+		_rasterDesc.MultisampleEnable = true;
 		_rasterDesc.ScissorEnable = false;
 		_rasterDesc.SlopeScaledDepthBias = 0.0f;
 		HRESULT hr = _device->CreateRasterizerState(&_rasterDesc, &_rasterState);
