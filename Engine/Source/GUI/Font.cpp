@@ -54,6 +54,7 @@ namespace DEN
 	void Font::LoadFont(const string &family, int height, bool isBold, bool isItalic)
 	{
 		HWND hwnd = GetActiveWindow();
+		//CPaintDC();
 		InitChooseFont();
 		if(hFont)// create an HFONT:
 		{

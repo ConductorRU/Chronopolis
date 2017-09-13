@@ -1068,6 +1068,14 @@ namespace DEN
 		if(_indexes)
 			delete _indexes;
 	}
+	GUIListener *Widget::CreateListener()
+	{
+		if(_listener)
+			return _listener;
+		_listener = new GUIListener(this);
+		Engine::Get()->GetInput()->AddListener(_listener);
+		return _listener;
+	}
 	void Widget::AddTriangle(uint i0, uint i1, uint i2)
 	{
 		_indexes->push_back(i0);
@@ -1356,6 +1364,13 @@ namespace DEN
 		align.y = (_size.y - length.y)*0.5f;
 		//for(Widget *em : temp)
 		//	em->_Align(align);
+	}
+	void Widget::SetStrip(bool isStrip)
+	{
+		if(isStrip)
+			_buffer->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		else
+			_buffer->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 	void Widget::_Update()
 	{

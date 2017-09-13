@@ -117,6 +117,7 @@ namespace DEN
 		Widget *_parent;
 		RenderMesh *_buffer;
 		Pass *_pass;
+		GUIListener *_listener;
 		vector<Widget*> z_childs;
 		vector<Vertex2D> v;
 		vector<uint> *_indexes;
@@ -134,10 +135,12 @@ namespace DEN
 		void _UpdateTransform();
 		void _UpdateBackground();
 		void _UpdateAlign();
+		void SetStrip(bool isStrip);
 		virtual void _Update();
 		virtual void _Render(Pass *pass);
 	public:
 		Widget *GetParent() { return _parent; };
+		GUIListener *GetListener() { return _listener; };
 		Matrix2D &GetAbsoluteTransform() { return _aTransform; };
 		Matrix2D &GetRelativeTransform() { return _rTransform; };
 		GUI *GetGUI() { return _gui; };
@@ -153,6 +156,7 @@ namespace DEN
 		static Color GetColor(const string &val);
 		Widget(GUI *gui);
 		~Widget();
+		GUIListener *CreateListener();
 		void AddTriangle(uint i0, uint i1, uint i2);
 		void SetAlign(WIDGET_ALIGN align);
 		WIDGET_ALIGN GetAlign();

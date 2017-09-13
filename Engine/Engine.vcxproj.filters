@@ -59,6 +59,9 @@
     <Filter Include="Source\Common">
       <UniqueIdentifier>{95012e0d-7f8b-4aeb-89b3-3fb97cb9d948}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Blueprint">
+      <UniqueIdentifier>{85d18910-c699-4d06-a13b-a4cd023fe53e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -252,6 +255,12 @@
     </ClCompile>
     <ClCompile Include="Source\Common\String.cpp">
       <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Blueprint\Blueprint.cpp">
+      <Filter>Source\Blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Blueprint\BlueprintTool.cpp">
+      <Filter>Source\Blueprint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -500,6 +509,15 @@
     </ClInclude>
     <ClInclude Include="Source\Common\Class.h">
       <Filter>Source\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Blueprint\Blueprint.h">
+      <Filter>Source\Blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Blueprint\Class.h">
+      <Filter>Source\Blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Blueprint\BlueprintTool.h">
+      <Filter>Source\Blueprint</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

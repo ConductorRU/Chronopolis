@@ -395,12 +395,13 @@ void Game::Init()
 	WidgetBlock *bblock = new WidgetBlock(sc->GetGUI());
 	bblock->SetParent(sc->GetGUI()->GetRoot());
 	bblock->SetLeft(50.0f);
-	bblock->SetTop(40.0f);
-	bblock->SetWidth(400.0f);
-	bblock->SetHeight(40.0f);
-	bblock->SetBackgroundColor(Color("#3498db"));
-	bblock->SetBorderRadius(Square(5.0f, 5.0f, 15.0f, 15.0f));
-	bblock->SetBorderWidth(5.0f);
+	bblock->SetTop(60.0f);
+	bblock->SetWidth(200.0f);
+	bblock->SetHeight(500.0f);
+	bblock->SetBackgroundColor(Color("#1C1E1C"));
+	bblock->SetBorderRadius(Square(5.0f, 5.0f, 5.0f, 5.0f));
+	bblock->SetBorderWidth(1.0f);
+	bblock->SetBorderColor(Color("#0C0D0C"));
 	
 	
 	WidgetText *iText = new WidgetText(sc->GetGUI());

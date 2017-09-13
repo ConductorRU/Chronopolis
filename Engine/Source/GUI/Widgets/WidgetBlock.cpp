@@ -26,9 +26,12 @@ namespace DEN
 		b.col = _borderColor;
 		t.col = _background;
 		float val = _borderRadius.minX;
+		float d = 0;
 		uint i2 = 0, i3 = 0, i4 = 0;
-		if (val > 0)
+		uint b0 = 0, b1 = 0, b2 = 0, b3 = 0;
+		if (_borderWidth > 0.0f && (_borderRadius.left_top > 0 || _borderRadius.right_top > 0 || _borderRadius.left_bottom > 0 || _borderRadius.right_bottom > 0))
 		{
+			SetStrip(false);
 			if(_indexes)
 				_indexes->clear();
 			else
@@ -41,10 +44,19 @@ namespace DEN
 			t.pos.x = val + _offset.left;
 			t.pos.y = val + _offset.top;
 			v.push_back(t);
-			for (float f = 0.0f; f <= val; f += 1.0f)//left top
+			d = val + _borderWidth - 1;
+			for(float f = 0.0f; f <= val; f += 1.0f)//left top
 			{
-				t.pos.x = val + cos(-PI - (f / val)*PI_HALF)*val + _offset.left;
-				t.pos.y = val - sin((f / val)*PI_HALF)*val + _offset.top;
+				if(val)
+				{
+					t.pos.x = val + cos(-PI - (f / val)*PI_HALF)*val + _offset.left;
+					t.pos.y = val - sin((f / val)*PI_HALF)*val + _offset.top;
+				}
+				else
+				{
+					t.pos.x = val + _offset.left;
+					t.pos.y = val + _offset.top;
+				}
 				v.push_back(t);
 				if(i > 0)
 					AddTriangle(id, id + i, id + i + 1);
@@ -55,6 +67,7 @@ namespace DEN
 				}
 				++i;
 			}
+			b0 = bord.size() - 1;
 			val = _borderRadius.right_top;
 			val = min(val, min(_size.x, _size.y));
 			t.pos.x = -val + _offset.right;
@@ -68,10 +81,19 @@ namespace DEN
 			id += i + 2;
 			i2 = id;
 			i = 0;
+			d = val + _borderWidth - 1;
 			for (float f = val; f >= 0.0f; f -= 1.0f)//right top
 			{
-				t.pos.x = -(val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.right;
-				t.pos.y = val + sin(PI + (f / val)*PI_HALF)*val + _offset.top;
+				if(val)
+				{
+					t.pos.x = -(val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.right;
+					t.pos.y = val + sin(PI + (f / val)*PI_HALF)*val + _offset.top;
+				}
+				else
+				{
+					t.pos.x = -val + _offset.right;
+					t.pos.y = val + _offset.top;
+				}
 				v.push_back(t);
 				if(i > 0)
 					AddTriangle(id, id + i, id + i + 1);
@@ -82,6 +104,7 @@ namespace DEN
 				}
 				++i;
 			}
+			b1 = bord.size() - 1;
 			val = _borderRadius.right_bottom;
 			val = min(val, min(_size.x, _size.y));
 			t.pos.x = _offset.right;
@@ -95,10 +118,19 @@ namespace DEN
 			id += i + 2;
 			i3 = id;
 			i = 0;
+			d = val + _borderWidth - 1;
 			for (float f = 0.0f; f <= val; f += 1.0f)//right bottom
 			{
-				t.pos.x = - (val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.right;
-				t.pos.y = - val + sin((f / val)*PI_HALF)*val + _offset.bottom;
+				if(val)
+				{
+					t.pos.x = - (val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.right;
+					t.pos.y = - val + sin((f / val)*PI_HALF)*val + _offset.bottom;
+				}
+				else
+				{
+					t.pos.x = -val + _offset.right;
+					t.pos.y = -val + _offset.bottom;
+				}
 				v.push_back(t);
 				if(i > 0)
 					AddTriangle(id, id + i, id + i + 1);
@@ -109,6 +141,7 @@ namespace DEN
 				}
 				++i;
 			}
+			b2 = bord.size() - 1;
 			val = _borderRadius.left_bottom;
 			val = min(val, min(_size.x, _size.y));
 			t.pos.x = val + _offset.left;
@@ -122,10 +155,19 @@ namespace DEN
 			id += i + 2;
 			i4 = id;
 			i = 0;
+			d = val + _borderWidth - 1;
 			for (float f = val; f >= 0.0f; f -= 1.0f)//left bottom
 			{
-				t.pos.x = (val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.left;
-				t.pos.y = - val - sin(PI + (f / val)*PI_HALF)*val + _offset.bottom;
+				if(val)
+				{
+					t.pos.x = (val + cos(-PI - (f / val)*PI_HALF)*val) + _offset.left;
+					t.pos.y = - val - sin(PI + (f / val)*PI_HALF)*val + _offset.bottom;
+				}
+				else
+				{
+					t.pos.x = val + _offset.left;
+					t.pos.y = -val + _offset.bottom;
+				}
 				v.push_back(t);
 				if(i > 0)
 					AddTriangle(id, id + i, id + i + 1);
@@ -136,6 +178,7 @@ namespace DEN
 				}
 				++i;
 			}
+			b3 = bord.size() - 1;
 			val = _borderRadius.left_top;
 			val = min(val, min(_size.x, _size.y));
 			t.pos.x = val + _offset.left;
@@ -168,6 +211,11 @@ namespace DEN
 		}
 		if(_borderWidth > 0.0f)
 		{
+			Square q;
+			q.left_top = max(0.0f, _borderWidth - _borderRadius.left_top);
+			q.right_top = max(0.0f, _borderWidth - _borderRadius.right_top);
+			q.left_bottom = max(0.0f, _borderWidth - _borderRadius.left_bottom);
+			q.right_bottom = max(0.0f, _borderWidth - _borderRadius.right_bottom);
 			Vector2 n, n1, n2;
 			uint i0, i2;
 			sint count = bord.size();
@@ -186,9 +234,36 @@ namespace DEN
 				n1.Normalize();
 				n2.Normalize();
 				n = n1 + n2;
-				n.Normalize();
+				if(abs(n.x) != 1.0f && abs(n.y) != 1.0f)
+				if(i != b0 && i != b1 && i != b2 && i != b3)
+					n.Normalize();
+				else
+				{
+					n = n2;
+					n = n.Normal();
+					if(i - 1 == b0 || i - 1 == b1 || i - 1 == b2 || i - 1 == b3)
+					{
+						n = n2 + n1;
+						//n = n.Normal();
+					}
+				}
 				n = -n;
 				b.pos = bord[i].pos + n*_borderWidth;
+				Vector2 nx;
+				if(n.x)
+					nx.y = n.x*q.left_top;
+				//b.pos += nx;
+				//if(n.x > 0 && n.y < 0)
+				//	b.pos.x += q.left_top;
+				//if(n.x < 0 && n.y > 0)
+				//	b.pos.x -= q.right_top;
+				//if(n.x < 0 && n.y < 0)
+				//	b.pos.x += q.right_top;
+
+				/*if(i == b0 + 1)
+					b.pos.x += q.left_top;
+				if(i == b1)
+					b.pos.y -= q.right_top;*/
 				bord.push_back(b);
 			}
 

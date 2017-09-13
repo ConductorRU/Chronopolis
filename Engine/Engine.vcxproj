@@ -198,6 +198,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Actor\Actor.cpp" />
+    <ClCompile Include="Source\Blueprint\Blueprint.cpp" />
+    <ClCompile Include="Source\Blueprint\BlueprintTool.cpp" />
     <ClCompile Include="Source\Common\String.cpp" />
     <ClCompile Include="Source\Compiler\Coder.cpp" />
     <ClCompile Include="Source\Compiler\Compiler.cpp" />
@@ -268,6 +270,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor\Actor.h" />
+    <ClInclude Include="Source\Blueprint\Blueprint.h" />
+    <ClInclude Include="Source\Blueprint\BlueprintTool.h" />
+    <ClInclude Include="Source\Blueprint\Class.h" />
     <ClInclude Include="Source\Common\Class.h" />
     <ClInclude Include="Source\Common\String.h" />
     <ClInclude Include="Source\Compiler\Class.h" />

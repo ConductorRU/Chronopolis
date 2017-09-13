@@ -16,4 +16,5 @@
 #include "Modifier2D/Class.h"
 #include "Format/Class.h"
 #include "Compiler/Class.h"
+#include "Blueprint/Class.h"
 using namespace DEN;
