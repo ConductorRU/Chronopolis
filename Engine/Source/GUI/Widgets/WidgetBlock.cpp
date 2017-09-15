@@ -29,7 +29,7 @@ namespace DEN
 		float d = 0;
 		uint i2 = 0, i3 = 0, i4 = 0;
 		uint b0 = 0, b1 = 0, b2 = 0, b3 = 0;
-		if (_borderWidth > 0.0f && (_borderRadius.left_top > 0 || _borderRadius.right_top > 0 || _borderRadius.left_bottom > 0 || _borderRadius.right_bottom > 0))
+		if ((_borderRadius.left_top > 0 || _borderRadius.right_top > 0 || _borderRadius.left_bottom > 0 || _borderRadius.right_bottom > 0))
 		{
 			SetStrip(false);
 			if(_indexes)

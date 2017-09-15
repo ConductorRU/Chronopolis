@@ -17,13 +17,24 @@ namespace DEN
 	}
 	RenderMesh::~RenderMesh()
 	{
+		ClearMesh();
+	}
+	void RenderMesh::ClearMesh()
+	{
 		if(_vertexBuffer)
 			_vertexBuffer->Release();
 		if(_indexBuffer)
 			_indexBuffer->Release();
+		_vertexBuffer = nullptr;
+		_indexBuffer = nullptr;
+		_vCount = 0;
+		_iCount = 0;
 	}
 	void RenderMesh::Bake(void *vertices, UINT count, UINT elementSize)
 	{
+		if(_vertexBuffer)
+			_vertexBuffer->Release();
+		_vertexBuffer = nullptr;
 		_vCount = count;
 		const UINT vertexBufferSize = count*elementSize;
 		_vertexDesc.ByteWidth = vertexBufferSize;
@@ -42,6 +53,9 @@ namespace DEN
 	}
 	void RenderMesh::BakeIndex(void *indices, UINT count)
 	{
+		if(_indexBuffer)
+			_indexBuffer->Release();
+		_indexBuffer = nullptr;
 		_iCount = count;
 		const UINT indexBufferSize = count * 4;
 		_indexDesc.ByteWidth = indexBufferSize;

@@ -7,4 +7,5 @@
 #include "Widgets/WidgetBlock.h"
 #include "Widgets/WidgetImage.h"
 #include "Widgets/WidgetText.h"
+#include "Widgets/WidgetGrid.h"
 #include "GUI.h"

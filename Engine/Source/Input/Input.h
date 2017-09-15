@@ -6,8 +6,8 @@ namespace DEN
 	enum MOUSE_TYPE
 	{
 		MOUSE_LEFT = 0,
-		MOUSE_MIDDLE,
 		MOUSE_RIGHT,
+		MOUSE_MIDDLE,
 		MOUSE_MAX
 	};
 	enum KEY_TYPE

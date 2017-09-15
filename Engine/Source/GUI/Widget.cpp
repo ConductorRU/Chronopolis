@@ -1053,6 +1053,7 @@ namespace DEN
 		_gui = gui;
 		_parent = nullptr;
 		_pass = nullptr;
+		_listener = nullptr;
 		_buffer = new RenderMesh(_gui->GetInputLayout());
 		_buffer->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		_buffer->Init(gui->GetVS());
@@ -1081,6 +1082,11 @@ namespace DEN
 		_indexes->push_back(i0);
 		_indexes->push_back(i1);
 		_indexes->push_back(i2);
+	}
+	void Widget::AddLine(uint i0, uint i1)
+	{
+		_indexes->push_back(i0);
+		_indexes->push_back(i1);
 	}
 	void Widget::SetAlign(WIDGET_ALIGN align)
 	{
@@ -1122,6 +1128,10 @@ namespace DEN
 	{
 		return _background;
 	}
+	Vector2 Widget::GetRealSize()
+	{
+		return _size - Vector2(_rect.left + _rect.right, _rect.top + _rect.bottom);
+	}
 	float Widget::PercentWidth(const string &val)
 	{
 		float p = ((float)atof(val.c_str()))*0.01f;
@@ -1129,7 +1139,7 @@ namespace DEN
 		{
 			//Square b = parent->GetProperty().GetBorder();
 			//Square pd = parent->GetProperty().GetPadding();
-			return (_parent->GetSize().x/* - b.maxX - b.minX - pd.maxX - pd.minX*/)*p;
+			return (_parent->GetRealSize().x/* - b.maxX - b.minX - pd.maxX - pd.minX*/)*p;
 		}
 		return float(Render::Get()->GetWidth())*p;
 	}
@@ -1140,7 +1150,7 @@ namespace DEN
 		{
 			//Square b = parent->GetProperty().GetBorder();
 			//Square pd = parent->GetProperty().GetPadding();
-			return (_parent->GetSize().y/* - b.maxY - b.minY - pd.maxY - pd.minY*/)*p;
+			return (_parent->GetRealSize().y/* - b.maxY - b.minY - pd.maxY - pd.minY*/)*p;
 		}
 		return float(Render::Get()->GetHeight())*p;
 	}
@@ -1268,7 +1278,7 @@ namespace DEN
 			_aTransform = _parent->_aTransform*_rTransform;
 		else
 			_aTransform = _rTransform;
-		memcpy(&f[4], &_aTransform.ToMatrix(), sizeof(float)*4*4);
+		memcpy(&f[4], &(_aTransform*_wTransform).ToMatrix(), sizeof(float)*4*4);
 		_buffer->Copy(SHADER_VS, 0, &f, sizeof(f), 0u);
 		_buffer->Copy(SHADER_PS, 0, &f, sizeof(f), 0u);
 	}
@@ -1299,19 +1309,19 @@ namespace DEN
 			_offset.minY = par.minY + _rect.minY - _rect.maxY + (par.maxY - _size.y)*0.5;
 		if(_align == WIDGET_BOTTOM_LEFT || _align == WIDGET_BOTTOM_CENTER || _align == WIDGET_BOTTOM_RIGHT)
 			_offset.minY = par.maxY - _rect.maxY - _size.y;
-		_offset.maxX = _offset.minX + _size.x;
-		_offset.maxY = _offset.minY + _size.y;
+		_offset.maxX = _offset.minX + _size.x - _rect.left - _rect.right;
+		_offset.maxY = _offset.minY + _size.y - _rect.top - _rect.bottom;
 		switch(_align)
 		{
 		case WIDGET_TOP_STRETCH:
-			_offset.minX = par.minX + _rect.minX;
+			_offset.minX = _rect.minX;
 			_offset.minY = _rect.minY;
 			_offset.maxX = _offset.minX + par.maxX - _rect.maxX;
 			_offset.maxY = _offset.minY + _size.y;
 			break;
 		case WIDGET_STRETCH:
-			_offset.minX = par.minX + _rect.minX;
-			_offset.minY = par.minY + _rect.minY;
+			_offset.minX = _rect.minX;
+			_offset.minY = _rect.minY;
 			_offset.maxX = _offset.minX + par.maxX - _rect.maxX;
 			_offset.maxY = _offset.minY + par.maxY - _rect.maxY;
 			break;
@@ -1322,12 +1332,11 @@ namespace DEN
 		Vector2 parPos;
 		if(_parent)
 		{
-			parPos = _parent->_aTransform.GetTranslation();
 			parPos.x += _parent->_offset.left;
 			parPos.y += _parent->_offset.top;
 		}
-		_rTransform.SetTranslationX(parPos.x/* + _align.x*/);
-		_rTransform.SetTranslationY(parPos.y/* + _align.y*/);
+		_wTransform.SetTranslationX(parPos.x);
+		_wTransform.SetTranslationY(parPos.y);
 	}
 	void Widget::_UpdateBackground()
 	{

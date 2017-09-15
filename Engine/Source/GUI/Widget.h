@@ -123,6 +123,7 @@ namespace DEN
 		vector<uint> *_indexes;
 		Matrix2D _aTransform;
 		Matrix2D _rTransform;
+		Matrix2D _wTransform;
 		Square _rect;//top, left, right, bottom
 		Vector2 _size;//width, height
 		WIDGET_ALIGN _align;
@@ -141,14 +142,15 @@ namespace DEN
 	public:
 		Widget *GetParent() { return _parent; };
 		GUIListener *GetListener() { return _listener; };
-		Matrix2D &GetAbsoluteTransform() { return _aTransform; };
-		Matrix2D &GetRelativeTransform() { return _rTransform; };
+		Matrix2D &GetAbsolute() { return _aTransform; };
+		Matrix2D &GetRelative() { return _rTransform; };
 		GUI *GetGUI() { return _gui; };
 		Square &GetOffset() { return _offset; };
 		Widget *GetChild(uint num) { if (num < GetChildCount()) return z_childs[num]; return nullptr; };
 		uint GetChildCount() { return (uint)z_childs.size(); };
 		Square &GetSquare() { return _rect;}
 		Vector2 &GetSize() { return _size;}
+		Vector2 GetRealSize();
 
 		float PercentWidth(const string &val);
 		float PercentHeight(const string &val);
@@ -158,6 +160,7 @@ namespace DEN
 		~Widget();
 		GUIListener *CreateListener();
 		void AddTriangle(uint i0, uint i1, uint i2);
+		void AddLine(uint i0, uint i1);
 		void SetAlign(WIDGET_ALIGN align);
 		WIDGET_ALIGN GetAlign();
 		void SetWidth(float value, bool isPercent = false);

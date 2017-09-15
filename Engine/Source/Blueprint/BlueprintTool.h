@@ -6,6 +6,9 @@ namespace DEN
 	{
 	private:
 		GUI *_gui;
+		uint _isMove;
+		uint _posId;
+		Point2 _pos;
 	public:
 		BlueprintTool(GUI *gui);
 		~BlueprintTool();

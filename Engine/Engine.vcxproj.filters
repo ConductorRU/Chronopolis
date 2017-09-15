@@ -262,6 +262,9 @@
     <ClCompile Include="Source\Blueprint\BlueprintTool.cpp">
       <Filter>Source\Blueprint</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GUI\Widgets\WidgetGrid.cpp">
+      <Filter>Source\GUI\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h">
@@ -518,6 +521,9 @@
     </ClInclude>
     <ClInclude Include="Source\Blueprint\BlueprintTool.h">
       <Filter>Source\Blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\Widgets\WidgetGrid.h">
+      <Filter>Source\GUI\Widgets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -71,6 +71,7 @@ namespace DEN
 			return r;
 		}
 		void SetTranslation(const Vector2 &p);
+		void SetTranslation(float x, float y);
 		void SetTranslationX(float x);
 		void SetTranslationY(float y);
 		void SetScale(const Vector2 &p);

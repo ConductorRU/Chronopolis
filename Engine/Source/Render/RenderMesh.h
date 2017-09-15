@@ -26,6 +26,7 @@ namespace DEN
 		const D3D11_BUFFER_DESC &GetIndexView() { return _indexDesc; };
 		void Bake(void *vertices, UINT count, UINT elementSize);
 		void BakeIndex(void *indices, UINT count);
+		void ClearMesh();
 		void Update();
 	};
 }

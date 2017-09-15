@@ -225,6 +225,7 @@
     <ClCompile Include="Source\GUI\Widget.cpp" />
     <ClCompile Include="Source\GUI\Widgets\WidgetBlock.cpp" />
     <ClCompile Include="Source\GUI\Widgets\WidgetDivider.cpp" />
+    <ClCompile Include="Source\GUI\Widgets\WidgetGrid.cpp" />
     <ClCompile Include="Source\GUI\Widgets\WidgetImage.cpp" />
     <ClCompile Include="Source\GUI\Widgets\WidgetText.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
@@ -305,6 +306,7 @@
     <ClInclude Include="Source\GUI\Widget.h" />
     <ClInclude Include="Source\GUI\Widgets\WidgetBlock.h" />
     <ClInclude Include="Source\GUI\Widgets\WidgetDivider.h" />
+    <ClInclude Include="Source\GUI\Widgets\WidgetGrid.h" />
     <ClInclude Include="Source\GUI\Widgets\WidgetImage.h" />
     <ClInclude Include="Source\GUI\Widgets\WidgetText.h" />
     <ClInclude Include="Source\Input\Input.h" />

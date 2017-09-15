@@ -370,8 +370,9 @@ void Game::Init()
 	Scene *mScene = _engine->CreateScene();
 	Scene *sc = _engine->CreateScene();
 
+	BlueprintTool *tool = new BlueprintTool(sc->GetGUI());
+	tool->Initialize();
 
-	sc->GetGUI()->AddSelector(".button", "background-color:#a00;");
 	Widget *block = new WidgetBlock(sc->GetGUI());
 	block->SetParent(sc->GetGUI()->GetRoot());
 	block->SetAlign(WIDGET_TOP_STRETCH);
@@ -392,26 +393,6 @@ void Game::Init()
 	iblock->SetBackgroundColor(Color::C_WHITE);
 	iblock->SetAtlas(Square(0, 0, 10, 10));
 
-	WidgetBlock *bblock = new WidgetBlock(sc->GetGUI());
-	bblock->SetParent(sc->GetGUI()->GetRoot());
-	bblock->SetLeft(50.0f);
-	bblock->SetTop(60.0f);
-	bblock->SetWidth(200.0f);
-	bblock->SetHeight(500.0f);
-	bblock->SetBackgroundColor(Color("#1C1E1C"));
-	bblock->SetBorderRadius(Square(5.0f, 5.0f, 5.0f, 5.0f));
-	bblock->SetBorderWidth(1.0f);
-	bblock->SetBorderColor(Color("#0C0D0C"));
-	
-	
-	WidgetText *iText = new WidgetText(sc->GetGUI());
-	iText->SetParent(bblock);
-	iText->SetTextColor(Color::C_WHITE);
-	iText->SetFamily("arial");
-	iText->SetFontSize(24);
-	iText->SetBold(false);
-	iText->SetText("Hello, трава!");
-	iText->SetAlign(WIDGET_STRETCH);
 
 
 	Texture *bTex = Manager::Get()->LoadTexture("..\\..\\menu.tga", true);

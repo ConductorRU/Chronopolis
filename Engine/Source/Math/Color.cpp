@@ -16,7 +16,7 @@ namespace DEN
 	bool Color::FromHex(const string &hex)
 	{
 		size_t s = hex.size();
-		if((s != 4 && s != 5 && s != 7 && s != 8) || hex[0] != '#')
+		if((s != 4 && s != 5 && s != 7 && s != 9) || hex[0] != '#')
 			return false;
 		string st = "0x";
 		for(size_t i = 1; i < s; ++i)
