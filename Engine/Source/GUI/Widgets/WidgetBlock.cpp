@@ -29,6 +29,7 @@ namespace DEN
 		float d = 0;
 		uint i2 = 0, i3 = 0, i4 = 0;
 		uint b0 = 0, b1 = 0, b2 = 0, b3 = 0;
+		Vector2 size = Vector2(_offset.right - _offset.left, _offset.bottom - _offset.top);
 		if ((_borderRadius.left_top > 0 || _borderRadius.right_top > 0 || _borderRadius.left_bottom > 0 || _borderRadius.right_bottom > 0))
 		{
 			SetStrip(false);
@@ -38,7 +39,7 @@ namespace DEN
 				_indexes = new vector<uint>;
 			v.clear();
 			val = _borderRadius.left_top;
-			val = min(val, min(_size.x, _size.y));
+			val = min(val, min(size.x, size.y));
 			uint id = 0;
 			uint i = 0;
 			t.pos.x = val + _offset.left;
@@ -69,7 +70,7 @@ namespace DEN
 			}
 			b0 = bord.size() - 1;
 			val = _borderRadius.right_top;
-			val = min(val, min(_size.x, _size.y));
+			val = min(val, min(size.x, size.y));
 			t.pos.x = -val + _offset.right;
 			t.pos.y = _offset.top;
 			v.push_back(t);
@@ -106,7 +107,7 @@ namespace DEN
 			}
 			b1 = bord.size() - 1;
 			val = _borderRadius.right_bottom;
-			val = min(val, min(_size.x, _size.y));
+			val = min(val, min(size.x, size.y));
 			t.pos.x = _offset.right;
 			t.pos.y = - val + _offset.bottom;
 			v.push_back(t);
@@ -143,7 +144,7 @@ namespace DEN
 			}
 			b2 = bord.size() - 1;
 			val = _borderRadius.left_bottom;
-			val = min(val, min(_size.x, _size.y));
+			val = min(val, min(size.x, size.y));
 			t.pos.x = val + _offset.left;
 			t.pos.y = _offset.bottom;
 			v.push_back(t);
@@ -180,7 +181,7 @@ namespace DEN
 			}
 			b3 = bord.size() - 1;
 			val = _borderRadius.left_top;
-			val = min(val, min(_size.x, _size.y));
+			val = min(val, min(size.x, size.y));
 			t.pos.x = val + _offset.left;
 			t.pos.y = val + _offset.top;
 			v.push_back(t);

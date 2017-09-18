@@ -1275,10 +1275,10 @@ namespace DEN
 		f[0] = 1.0f / (float)Render::Get()->GetWidth();
 		f[1] = 1.0f / (float)Render::Get()->GetHeight();
 		if(_parent)
-			_aTransform = _parent->_aTransform*_rTransform;
+			_aTransform = _wTransform*_parent->_aTransform*_rTransform;
 		else
-			_aTransform = _rTransform;
-		memcpy(&f[4], &(_aTransform*_wTransform).ToMatrix(), sizeof(float)*4*4);
+			_aTransform = _wTransform*_rTransform;
+		memcpy(&f[4], &(_aTransform).ToMatrix(), sizeof(float)*4*4);
 		_buffer->Copy(SHADER_VS, 0, &f, sizeof(f), 0u);
 		_buffer->Copy(SHADER_PS, 0, &f, sizeof(f), 0u);
 	}
@@ -1316,16 +1316,17 @@ namespace DEN
 		case WIDGET_TOP_STRETCH:
 			_offset.minX = _rect.minX;
 			_offset.minY = _rect.minY;
-			_offset.maxX = _offset.minX + par.maxX - _rect.maxX;
+			_offset.maxX = _offset.minX + par.maxX - par.minX - _rect.maxX;
 			_offset.maxY = _offset.minY + _size.y;
 			break;
 		case WIDGET_STRETCH:
 			_offset.minX = _rect.minX;
 			_offset.minY = _rect.minY;
-			_offset.maxX = _offset.minX + par.maxX - _rect.maxX;
-			_offset.maxY = _offset.minY + par.maxY - _rect.maxY;
+			_offset.maxX = _offset.minX + par.maxX - par.minX - _rect.maxX;
+			_offset.maxY = _offset.minY + par.maxY - par.minY - _rect.maxY;
 			break;
 		}
+		
 	}
 	void Widget::_UpdateTransform()
 	{

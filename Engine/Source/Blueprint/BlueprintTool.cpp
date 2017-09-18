@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GUI/Class.h"
 #include "BlueprintTool.h"
+#include "Blueprint.h"
 #include "../Core/Engine.h"
 #include "../Math/Vector.h"
 namespace DEN
@@ -68,37 +69,12 @@ namespace DEN
 			grid->GetRelative().SetScale(scale);
 			return true;
 		};
-		WidgetBlock *bblock = new WidgetBlock(_gui);
-		bblock->SetParent(grid);
-		bblock->SetLeft(50.0f);
-		bblock->SetTop(60.0f);
-		bblock->SetWidth(200.0f);
-		bblock->SetHeight(500.0f);
-		bblock->SetBackgroundColor(Color("#1C1E1CFA"));
-		bblock->SetBorderRadius(Square(5.0f, 5.0f, 5.0f, 5.0f));
-		bblock->SetBorderWidth(1.0f);
-		bblock->SetBorderColor(Color("#0C0D0C"));
-
-		WidgetBlock *b1 = new WidgetBlock(_gui);
-		b1->SetParent(bblock);
-		b1->SetAlign(WIDGET_TOP_STRETCH);
-		b1->SetTop(0.0f);
-		b1->SetLeft(0.0f);
-		b1->SetRight(0.0f);
-		b1->SetHeight(50.0f);
-		b1->SetBackgroundColor(Color("#aaa"));
-		b1->SetBorderRadius(Square(5.0f, 5.0f, 0.0f, 0.0f));
-		//b1->SetBorderWidth(1.0f);
-		b1->SetBorderColor(Color("#0C0D0C"));
-	
-	
-		WidgetText *iText = new WidgetText(_gui);
-		iText->SetParent(bblock);
-		iText->SetTextColor(Color::C_WHITE);
-		iText->SetFamily("arial");
-		iText->SetFontSize(24);
-		iText->SetBold(false);
-		iText->SetText("Hello, трава!");
-		iText->SetAlign(WIDGET_STRETCH);
+		Blueprint *blue = CreateBlueprint();
+		blue->AddNode(grid, Vector2());
+	}
+	Blueprint *BlueprintTool::CreateBlueprint()
+	{
+		_blue = new Blueprint();
+		return _blue;
 	}
 };
