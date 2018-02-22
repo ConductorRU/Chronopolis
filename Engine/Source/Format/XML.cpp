@@ -31,8 +31,8 @@ namespace DEN
 		string aProp = "";
 		while(getline(myfile, lines))
 		{
-			uint cnt = lines.size();
-			for(uint i = 0; i < cnt; ++i)
+			sint cnt = lines.size();
+			for(sint i = 0; i < cnt; ++i)
 			{
 				char c = lines[i];
 				if(isName)//если имя тега

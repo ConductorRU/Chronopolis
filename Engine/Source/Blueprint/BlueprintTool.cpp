@@ -4,6 +4,8 @@
 #include "Blueprint.h"
 #include "../Core/Engine.h"
 #include "../Math/Vector.h"
+#include "../Scene/Scene.h"
+#include "../Scene/Camera.h"
 namespace DEN
 {
 	BlueprintTool::BlueprintTool(GUI *gui)
@@ -45,7 +47,7 @@ namespace DEN
 			if(_isMove)
 			{
 				Point2 pos = this->_pos - Point2(eve.x, eve.y);
-				Vector2 trans = grid->GetRelative().GetTranslation() + Vector2(pos.x, pos.y)*Engine::Get()->GetTime().spf*4.0f;
+				Vector2 trans = grid->GetRelative().GetTranslation() + Vector2((float)pos.x, (float)pos.y)*Engine::Get()->GetTime().spf*4.0f;
 				grid->GetRelative().SetTranslation(trans);
 			}
 			return true;
@@ -65,8 +67,17 @@ namespace DEN
 			else if(_posId > 0)
 				--_posId;
 			_posId = min(_posId, 11);
+			float d = w[_posId] - 1.0f;
 			scale.x = scale.y = w[_posId];
+
+			Vector curPos = Engine::Get()->GetScene()->GetCamera()->ToSpaceCoord(0.0f);
+			Point2 cPos = Engine::Get()->GetInput()->GetCursorPos();
 			grid->GetRelative().SetScale(scale);
+
+			Vector2 trans = grid->GetRelative().GetTranslation();
+			//trans.x = cPos.x;
+			//trans.y = cPos.x;
+			grid->GetRelative().SetTranslation(trans + Vector2(curPos.x*d, curPos.y*d));
 			return true;
 		};
 		Blueprint *blue = CreateBlueprint();

@@ -12,7 +12,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPreviousInst, LPSTR lpCommandLine
 
 	string code = "int i = 5, v = 6 + 2; i = 8;";
 
-	game.Init();
+	game.Init2();
 	game.Update();
 	_CrtMemDumpAllObjectsSince(&_ms);
 	return 0;

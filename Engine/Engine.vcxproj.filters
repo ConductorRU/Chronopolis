@@ -62,6 +62,9 @@
     <Filter Include="Source\Blueprint">
       <UniqueIdentifier>{85d18910-c699-4d06-a13b-a4cd023fe53e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Physics">
+      <UniqueIdentifier>{80015371-72de-447d-a9dd-8187a9ada01b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

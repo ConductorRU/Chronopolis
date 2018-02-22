@@ -592,21 +592,88 @@ void Game::Init()
 }
 void Game::Init2()
 {
+	_engine->Create(1024, 768, false);
+	Manager *man = _engine->GetManager();
+	Font *font = man->LoadFont("Verdana", 22);
+	Scene *sc = _engine->CreateScene();
 
+	sc->SetBackground(Color(64, 64, 64));
+	ia = man->CreateInputLayout();
+	ia->Add("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+	ia->Add("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
+	ia->Add("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
+	ia->Add("UV", DXGI_FORMAT_R32G32_FLOAT);
+	Light *li = sc->CreateLight();
+	li->SetRange(1000.0f);
+	li->GetNode()->SetPosition(Vector(5.0f, 5.0f, -2.0f));
+
+	sc->GetCamera()->SetPosition(Vector(0.0f, 5.0f, 0.0f));
+	sc->GetCamera()->SetRotation(Quaternion(90.0_deg, Vector(1.0f, 0.0f, 0.0f)));
+	sc->GetCamera()->SetTargetEnable(true);
+	sc->GetCamera()->GetTarget()->Rotate(Quaternion(-45.0_deg, Vector(0.0f, 1.0f, 0.0f))*Quaternion(-45.0_deg, Vector(1.0f, 0.0f, 0.0f)));
+	sc->GetCamera()->Update();
+	sc->GetCamera()->CreateListener();
+
+	ActorScript *script = new ActorScript;
+	script->func["onCreate"] = [this](char **)
+	{
+		Manager *man = Engine::Get()->GetManager();
+		Pass *pass = man->CreatePass();
+		VertexShader *vs = man->CreateVS();
+		vs->CompileFile(L"vs.txt", "mainVS");
+		pass->SetVS(vs);
+		PixelShader *ps = man->CreatePS();
+		ps->CompileFile(L"vs.txt", "difPS");
+		pass->SetPS(ps);
+
+		Actor *act = new Actor();
+		act->AddVariable("width", new float(1.0_m));
+		act->AddVariable("height", new float(1.0_m));
+		act->AddVariable("length", new float(1.0_m));
+		act->AddVariable("input", new InputListener);
+
+		float width = *(float*)act->GetVariable("width");
+		float length = *(float*)act->GetVariable("length");
+		float height = *(float*)act->GetVariable("height");
+		Paramesh *pm = new Paramesh();
+		pm->Begin(Game::Get()->GetInputLayout());
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
+		pm->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
+
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
+		pm->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
+
+		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
+		pm->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
+
+		pm->SetColor(ColorRGB(241, 179, 142).ToColor());
+		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
+		pm->End();
+		pm->GetMesh()->SetMaterial(pass);
+		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
+		//Mesh *gm = pm->Generate(Game::Get()->GetEngine()->GetScene(), Game::Get()->GetInputLayout(), 0);
+		//AddComponent("mesh", pm);
+		//AddComponent("node", pm->GetMesh()->GetNode());
+		pm->GetMesh()->GetNode()->SetPosition(Vector::ONE_X);
+
+		return act;
+	};
+	script->Create();
+
+	InputListener *lis = new InputListener();
+	GetEngine()->GetInput()->AddListener(lis);
+	lis->onKeyHit = [this](KeyEvent key)
+	{
+		GetEngine()->Exit();
+		return false;
+	};
 }
 
 void Game::Update()
 {
 	while(_engine->Update())
 	{
-		//Actor *act = _scripts[0]->Create();
-		//Paramesh *pm = (Paramesh*)act->GetComponent("mesh");
-		//char *c[2] = {(char *)_actors[0], (char *)pm};
-		//_scripts[1]->func["onAdd"](c);
 		WidgetX *v1 = _engine->GetScene()->GetGUI()->GetElementById("v1");
-		//gm->GetNode()->Rotate(Quaternion(s*0.8f, Vector::ONE_Y)*Quaternion(s*0.3f, Vector::ONE_X)*Quaternion(s*0.4f, Vector::ONE_Z));
-		//_world->Update();
-		//_player->Update();
 		float s = _engine->GetTime().spf;
 		_clock->Update(s);
 		//Scene::Stats stats = _engine->GetScene()->stats;

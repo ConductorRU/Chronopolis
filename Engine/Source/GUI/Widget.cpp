@@ -1300,13 +1300,13 @@ namespace DEN
 		if(_align == WIDGET_TOP_LEFT || _align == WIDGET_MIDDLE_LEFT || _align == WIDGET_BOTTOM_LEFT)
 			_offset.minX = par.minX + _rect.minX;
 		if(_align == WIDGET_TOP_CENTER || _align == WIDGET_CENTER || _align == WIDGET_BOTTOM_CENTER)
-			_offset.minX = par.minX + _rect.minX - _rect.maxX + (par.maxX - _size.x)*0.5;
+			_offset.minX = par.minX + _rect.minX - _rect.maxX + (par.maxX - _size.x)*0.5f;
 		if(_align == WIDGET_TOP_RIGHT || _align == WIDGET_MIDDLE_RIGHT || _align == WIDGET_BOTTOM_RIGHT)
 			_offset.minX = par.maxX - _rect.maxX - _size.x;
 		if(_align == WIDGET_TOP_LEFT || _align == WIDGET_TOP_CENTER || _align == WIDGET_TOP_RIGHT)
 			_offset.minY = par.minY + _rect.minY;
 		if(_align == WIDGET_MIDDLE_LEFT || _align == WIDGET_CENTER || _align == WIDGET_MIDDLE_RIGHT)
-			_offset.minY = par.minY + _rect.minY - _rect.maxY + (par.maxY - _size.y)*0.5;
+			_offset.minY = par.minY + _rect.minY - _rect.maxY + (par.maxY - _size.y)*0.5f;
 		if(_align == WIDGET_BOTTOM_LEFT || _align == WIDGET_BOTTOM_CENTER || _align == WIDGET_BOTTOM_RIGHT)
 			_offset.minY = par.maxY - _rect.maxY - _size.y;
 		_offset.maxX = _offset.minX + _size.x - _rect.left - _rect.right;

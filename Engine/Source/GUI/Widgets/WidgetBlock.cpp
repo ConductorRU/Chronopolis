@@ -28,7 +28,7 @@ namespace DEN
 		float val = _borderRadius.minX;
 		float d = 0;
 		uint i2 = 0, i3 = 0, i4 = 0;
-		uint b0 = 0, b1 = 0, b2 = 0, b3 = 0;
+		sint b0 = 0, b1 = 0, b2 = 0, b3 = 0;
 		Vector2 size = Vector2(_offset.right - _offset.left, _offset.bottom - _offset.top);
 		if ((_borderRadius.left_top > 0 || _borderRadius.right_top > 0 || _borderRadius.left_bottom > 0 || _borderRadius.right_bottom > 0))
 		{
@@ -223,13 +223,13 @@ namespace DEN
 			for(sint i = 0; i < count; ++i)
 			{
 				if(i == 0)
-					i0 = count - 1u;
+					i0 = (uint)count - 1u;
 				else
-					i0 = i - 1u;
-				if(i == count - 1u)
+					i0 = (uint)i - 1u;
+				if(i == (uint)count - 1u)
 					i2 = 0;
 				else
-					i2 = i + 1;
+					i2 = (uint)i + 1;
 				n1 = (bord[i0].pos - bord[i].pos);
 				n2 = (bord[i2].pos - bord[i].pos);
 				n1.Normalize();
@@ -276,13 +276,13 @@ namespace DEN
 				v.push_back(bord[count + i]);
 				if(i != 0)
 				{
-					AddTriangle(vCount + i*2 - 2, vCount + i*2 - 1, vCount + i*2);
-					AddTriangle(vCount + i*2, vCount + i*2 - 1, vCount + i*2 + 1);
+					AddTriangle((uint)(vCount + i*2 - 2), (uint)(vCount + i*2 - 1), (uint)(vCount + i*2));
+					AddTriangle((uint)(vCount + i*2), (uint)(vCount + i*2 - 1), (uint)(vCount + i*2 + 1));
 				}
 				if(i + 1 == count)
 				{
-					AddTriangle(vCount + i*2, vCount + i*2 - 1, vCount);
-					AddTriangle(vCount, vCount + i*2 - 1, vCount + 1);
+					AddTriangle((uint)(vCount + i*2), (uint)(vCount + i*2 - 1), (uint)(vCount));
+					AddTriangle((uint)(vCount), (uint)(vCount + i*2 - 1), (uint)(vCount + 1));
 				}
 			}
 		}

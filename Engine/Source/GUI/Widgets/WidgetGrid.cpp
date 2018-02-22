@@ -15,7 +15,7 @@ namespace DEN
 	}
 	void WidgetGrid::AddLine(const Vector2 &v0, const Vector2 &v1, const Color &color)
 	{
-		Widget::AddLine(v.size(), v.size() + 1);
+		Widget::AddLine((uint)(v.size()), (uint)(v.size() + 1));
 		Vertex2D p;
 		p.col = color;
 		p.pos = v0;
