@@ -9,12 +9,12 @@ Player::~Player()
 {
 
 }
-void Player::Initialize()
+void Player::Initialize(const Color &color)
 {
 	_basicStats.speed = 1.0f;
 	_curStats = _maxStats = _basicStats;
 	_script = new ActorScript;
-	_script->func["onCreate"] = [this](char **)
+	_script->func["onCreate"] = [this, color](char **)
 	{
 		Manager *man = Engine::Get()->GetManager();
 		Pass *pass = man->CreatePass();
@@ -45,7 +45,7 @@ void Player::Initialize()
 		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
 		pm->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
 
-		pm->SetColor(ColorRGB(241, 179, 142).ToColor());
+		pm->SetColor(color);
 		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
 		pm->End();
 		pm->GetMesh()->SetMaterial(pass);

@@ -10,6 +10,10 @@ namespace DEN
 		z_buffer = new RenderMesh(layout);
 		_pass = nullptr;
 		_isPickable = false;
+		_oPos = layout->GetOffset("POSITION");
+		_oCol = layout->GetOffset("COLOR");
+		_oNor = layout->GetOffset("NORMAL");
+		_oUV = layout->GetOffset("UV");
 	}
 	Mesh::~Mesh()
 	{
@@ -297,6 +301,71 @@ namespace DEN
 		z_index.push_back(v2);
 		z_index.push_back(v3);
 		z_index.push_back(v0);
+	}
+	uint Mesh::AddVertex(const Vector &pos)
+	{
+		*((Vector*)(&CreateVertex()[_oPos])) = pos;
+		return GetVertexCount();
+	}
+	uint Mesh::AddTriangle(const Vector &v0, const Vector &v1, const Vector &v2)
+	{
+		uint s = GetVertexCount();
+		*((Vector*)(&CreateVertex()[_oPos])) = v0;
+		*((Vector*)(&CreateVertex()[_oPos])) = v1;
+		*((Vector*)(&CreateVertex()[_oPos])) = v2;
+		AddTriangle(s, s + 1, s + 2);
+		return GetVertexCount();
+	}
+	uint Mesh::AddQuad(const Vector &v0, const Vector &v1, const Vector &v2, const Vector &v3)
+	{
+		uint s = GetVertexCount();
+		*((Vector*)(&CreateVertex()[_oPos])) = v0;
+		*((Vector*)(&CreateVertex()[_oPos])) = v1;
+		*((Vector*)(&CreateVertex()[_oPos])) = v2;
+		*((Vector*)(&CreateVertex()[_oPos])) = v3;
+		if(_oNor)
+		{
+			Vector a, b, n;
+			a = v0 - v1;
+			b = v0 - v2;
+			n = a.Cross(b);
+			SetNormal(s, n);
+			SetNormal(s + 1, n);
+			SetNormal(s + 2, n);
+			SetNormal(s + 3, n);
+		}
+		if(_oUV)
+		{
+			SetUV(s, Vector2(0.0f, 0.0f));
+			SetUV(s + 1, Vector2(1.0f, 0.0f));
+			SetUV(s + 2, Vector2(1.0f, 1.0f));
+			SetUV(s + 3, Vector2(0.0f, 1.0f));
+		}
+		AddTriangle(s, s + 1, s + 2);
+		AddTriangle(s + 2, s + 3, s);
+		return GetVertexCount();
+	}
+	void Mesh::SetPosition(uint num, const Vector &pos)
+	{
+		*((Vector*)(&GetVertex(num)[_oPos])) = pos;
+	}
+	void Mesh::SetColor(uint num, const Color &col)
+	{
+		*((Color*)(&GetVertex(num)[_oCol])) = col;
+	}
+	void Mesh::SetVertexColor(const Color &col)
+	{
+		uint s = GetVertexCount();
+		for(uint i = 0; i < s; ++i)
+			SetColor(i, col);
+	}
+	void Mesh::SetNormal(uint num, const Vector &nor)
+	{
+		*((Vector*)(&GetVertex(num)[_oNor])) = nor;
+	}
+	void Mesh::SetUV(uint num, const Vector2 &uv)
+	{
+		*((Vector2*)(&GetVertex(num)[_oUV])) = uv;
 	}
 	void Mesh::Bake()
 	{

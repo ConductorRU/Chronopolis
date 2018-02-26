@@ -613,6 +613,9 @@ void Game::Init2()
 	sc->GetCamera()->GetTarget()->Rotate(Quaternion(-45.0_deg, Vector(0.0f, 1.0f, 0.0f))*Quaternion(-45.0_deg, Vector(1.0f, 0.0f, 0.0f)));
 	sc->GetCamera()->Update();
 	sc->GetCamera()->CreateListener();
+	_player = new Player();
+	_player->Initialize(ColorRGB(41, 128, 185).ToColor());
+
 
 	ActorScript *script = new ActorScript;
 	script->func["onCreate"] = [this](char **)
@@ -625,6 +628,8 @@ void Game::Init2()
 		PixelShader *ps = man->CreatePS();
 		ps->CompileFile(L"vs.txt", "difPS");
 		pass->SetPS(ps);
+
+
 
 		Actor *act = new Actor();
 		act->AddVariable("width", new float(1.0_m));
@@ -676,6 +681,7 @@ void Game::Update()
 		WidgetX *v1 = _engine->GetScene()->GetGUI()->GetElementById("v1");
 		float s = _engine->GetTime().spf;
 		_clock->Update(s);
+		_player->Update();
 		//Scene::Stats stats = _engine->GetScene()->stats;
 		//v1->GetProperty().SetInnerText("FPS: " + to_string((int)_engine->GetTime().fps) + " " + to_string(stats.vertexCount) + " " + _clock->GetText(false));
 		_engine->Draw();

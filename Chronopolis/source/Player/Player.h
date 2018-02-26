@@ -14,6 +14,6 @@ private:
 public:
 	Player();
 	~Player();
-	void Initialize();
+	void Initialize(const Color &color);
 	void Update();
 };

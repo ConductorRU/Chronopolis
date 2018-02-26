@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{3008EA85-8660-492E-8E69-84D4B64B1C68}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -12,8 +12,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chronopolis", "Chronopolis\
 	ProjectSection(ProjectDependencies) = postProject
 		{3008EA85-8660-492E-8E69-84D4B64B1C68} = {3008EA85-8660-492E-8E69-84D4B64B1C68}
 	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "chronopolis.ru", "chronopolis.ru\chronopolis.ru.vcxproj", "{7AC6737E-6248-436F-A981-B0F4745B9E15}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "Compiler\Compiler.vcxproj", "{F580F758-7A26-408A-909E-339140EB747F}"
 EndProject
@@ -47,24 +45,6 @@ Global
 		{3FE70175-E9C1-47E6-BDDD-14F1A610EA05}.Release|x64.Build.0 = Release|x64
 		{3FE70175-E9C1-47E6-BDDD-14F1A610EA05}.Release|x86.ActiveCfg = Release|Win32
 		{3FE70175-E9C1-47E6-BDDD-14F1A610EA05}.Release|x86.Build.0 = Release|Win32
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Debug|ARM.ActiveCfg = Debug|ARM
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Debug|ARM.Build.0 = Debug|ARM
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Debug|ARM.Deploy.0 = Debug|ARM
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Debug|x64.ActiveCfg = Debug|x64
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Debug|x64.Build.0 = Debug|x64
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Debug|x64.Deploy.0 = Debug|x64
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Debug|x86.ActiveCfg = Debug|Win32
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Debug|x86.Build.0 = Debug|Win32
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Debug|x86.Deploy.0 = Debug|Win32
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Release|ARM.ActiveCfg = Release|ARM
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Release|ARM.Build.0 = Release|ARM
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Release|ARM.Deploy.0 = Release|ARM
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Release|x64.ActiveCfg = Release|x64
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Release|x64.Build.0 = Release|x64
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Release|x64.Deploy.0 = Release|x64
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Release|x86.ActiveCfg = Release|Win32
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Release|x86.Build.0 = Release|Win32
-		{7AC6737E-6248-436F-A981-B0F4745B9E15}.Release|x86.Deploy.0 = Release|Win32
 		{F580F758-7A26-408A-909E-339140EB747F}.Debug|ARM.ActiveCfg = Debug|Win32
 		{F580F758-7A26-408A-909E-339140EB747F}.Debug|x64.ActiveCfg = Debug|x64
 		{F580F758-7A26-408A-909E-339140EB747F}.Debug|x64.Build.0 = Debug|x64
@@ -78,5 +58,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D6A144B-AEDF-4AB9-94C3-449D8876CD2E}
 	EndGlobalSection
 EndGlobal

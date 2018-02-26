@@ -392,6 +392,7 @@ namespace DEN
 		for(UINT sampleCount = D3D11_MAX_MULTISAMPLE_SAMPLE_COUNT; sampleCount > 0; sampleCount /= 2)
 			if(SUCCEEDED(_device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, sampleCount, &maxQualityLevel) && maxQualityLevel <= 0))
 				return sampleCount;
+		return 1;
 	}
 	bool Render::Initialize(HWND &hWind, UINT sizeX, UINT sizeY, bool fullscreen)
 	{

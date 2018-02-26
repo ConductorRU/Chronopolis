@@ -36,10 +36,6 @@ namespace DEN
 		map<string, uint> _connectors;
 		map<string, string> _connects;
 		vector<Paramesh*> _templates;
-		uint _oPos;
-		uint _oCol;
-		uint _oNor;
-		uint _oUV;
 	public:
 		Paramesh();
 		void Connect(Paramesh *temp, const Matrix &m);
@@ -51,15 +47,6 @@ namespace DEN
 		void End();
 		void GenerateNormals();
 		void GenerateUV();
-		uint AddVertex(const Vector &pos);
-		uint AddTriangle(const Vector &v0, const Vector &v1, const Vector &v2);
-		uint AddTriangle(uint v0, uint v1, uint v2);
-		uint AddQuad(const Vector &v0, const Vector &v1, const Vector &v2, const Vector &v3);
-		void SetPosition(uint num, const Vector &pos);
-		void SetColor(uint num, const Color &col);
-		void SetColor(const Color &col);
-		void SetNormal(uint num, const Vector &pos);
-		void SetUV(uint num, const Vector2 &uv);
 		Mesh *Generate(Scene *scene, InputLayout *ia, int type = 0);
 	};
 }
