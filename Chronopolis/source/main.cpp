@@ -11,7 +11,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPreviousInst, LPSTR lpCommandLine
 	game.GetEngine()->CreateConsole();
 
 	string code = "int i = 5, v = 6 + 2; i = 8;";
-
+	Mesh *m = FBX::Import("box.fbx");
 	game.Init2();
 	game.Update();
 	_CrtMemDumpAllObjectsSince(&_ms);
