@@ -268,8 +268,8 @@
     <ClCompile Include="Source\GUI\Widgets\WidgetGrid.cpp">
       <Filter>Source\GUI\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Mesh\Primitive.cpp">
-      <Filter>Source\Mesh</Filter>
+    <ClCompile Include="Source\Manager\FBX.cpp">
+      <Filter>Source\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -531,8 +531,8 @@
     <ClInclude Include="Source\GUI\Widgets\WidgetGrid.h">
       <Filter>Source\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Mesh\Primitive.h">
-      <Filter>Source\Mesh</Filter>
+    <ClInclude Include="Source\Manager\FBX.h">
+      <Filter>Source\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

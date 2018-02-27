@@ -30,7 +30,7 @@
 #ifdef _DEBUG
 #include <crtdbg.h>
 #define _CRTDBG_MAP_ALLOC
-#define new new( _NORMAL_BLOCK, __FILE__, __LINE__)
+//#define new new( _NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
 #include <d3d11.h>
 #include <d3d11shader.h>

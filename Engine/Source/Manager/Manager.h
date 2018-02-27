@@ -28,6 +28,7 @@ namespace DEN
 		set<InputLayout*> _inputs;
 		set<Texture*> _texture;
 		map<string, Texture*> _textureFile;
+		map<string, InputLayout*> _inputDefault;
 		static Manager *_this;
 	public:
 		static Manager *Get() { return _this; }
@@ -36,7 +37,8 @@ namespace DEN
 		~Manager();
 		Mesh *CreateMesh(InputLayout *ia);
 		Paramesh *CreateParamesh();
-		InputLayout *CreateInputLayout();
+		InputLayout *CreateInputLayout(const string &defaultName = "");
+		InputLayout *GetInputLayout(const string &defaultName);
 		Pass *CreatePass();
 		VertexShader *CreateVS();
 		PixelShader *CreatePS();

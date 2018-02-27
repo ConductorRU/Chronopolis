@@ -596,13 +596,8 @@ void Game::Init2()
 	Manager *man = _engine->GetManager();
 	Font *font = man->LoadFont("Verdana", 22);
 	Scene *sc = _engine->CreateScene();
-
 	sc->SetBackground(Color(64, 64, 64));
-	ia = man->CreateInputLayout();
-	ia->Add("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
-	ia->Add("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
-	ia->Add("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
-	ia->Add("UV", DXGI_FORMAT_R32G32_FLOAT);
+	ia = man->GetInputLayout("default");
 	Light *li = sc->CreateLight();
 	li->SetRange(1000.0f);
 	li->GetNode()->SetPosition(Vector(5.0f, 5.0f, -2.0f));
@@ -660,6 +655,14 @@ void Game::Init2()
 		//AddComponent("mesh", pm);
 		//AddComponent("node", pm->GetMesh()->GetNode());
 		pm->GetMesh()->GetNode()->SetPosition(Vector::ONE_X);
+
+
+		Mesh *m = FBX::Import("box.fbx");
+		if(m)
+		{
+			m->SetMaterial(pass);
+			Game::Get()->GetEngine()->GetScene()->AddMesh(m);
+		}
 
 		return act;
 	};
