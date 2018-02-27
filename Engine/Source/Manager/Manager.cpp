@@ -14,6 +14,11 @@ namespace DEN
 	Manager::Manager()
 	{
 		_this = this;
+		InputLayout *ia = CreateInputLayout("default");
+		ia->Add("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
+		ia->Add("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
+		ia->Add("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT);
+		ia->Add("UV", DXGI_FORMAT_R32G32_FLOAT);
 	}
 	Manager::~Manager()
 	{
@@ -63,11 +68,20 @@ namespace DEN
 		_paras.insert(mesh);
 		return mesh;
 	}
-	InputLayout *Manager::CreateInputLayout()
+	InputLayout *Manager::CreateInputLayout(const string &defaultName)
 	{
 		InputLayout *in = new InputLayout();
 		_inputs.insert(in);
+		if(defaultName != "")
+			_inputDefault[defaultName] = in;
 		return in;
+	}
+	InputLayout *Manager::GetInputLayout(const string &defaultName)
+	{
+		map<string, InputLayout*>::const_iterator iter = _inputDefault.find(defaultName);
+		if(iter != _inputDefault.end())
+			return iter->second;
+		return nullptr;
 	}
 	Pass *Manager::CreatePass()
 	{

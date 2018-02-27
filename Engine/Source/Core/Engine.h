@@ -8,6 +8,7 @@ namespace DEN
 	class Input;
 	class Manager;
 	class Atlas;
+	class Render;
 	enum CURSOR_TYPE
 	{
 		CURSOR_NONE = 0,
