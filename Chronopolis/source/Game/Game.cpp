@@ -34,9 +34,9 @@ void ActorRoad::Generate(Pass *pass)
 			Vector p1 = Vector(v0.point.x, v0.point.y, v0.point.z + v0.width);
 			Vector p2 = Vector(v1.point.x, v1.point.y, v1.point.z + v1.width);
 			Vector p3 = Vector(v1.point.x, v1.point.y, v1.point.z - v1.width);
-			pm->AddQuad(p0, p1, p2, p3);
+			pm->GetMesh()->AddQuad(p0, p1, p2, p3);
 		}
-	pm->SetColor(Color(1.0f, 1.0f, 1.0f));
+	pm->GetMesh()->SetColor(Color(1.0f, 1.0f, 1.0f));
 	pm->End();
 	pm->GetMesh()->SetMaterial(pass);
 	Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
@@ -66,16 +66,16 @@ void ActorBuild::Detalize(uint num, Pass *pass)
 	{
 		Paramesh *pm = new Paramesh();
 		pm->Begin(Game::Get()->GetInputLayout());
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
-		pm->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
 
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
-		pm->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
 
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
-		pm->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
 
-		pm->SetColor(Color(1.0f, 1.0f, 1.0f));
+		pm->GetMesh()->SetColor(Color(1.0f, 1.0f, 1.0f));
 		pm->End();
 		pm->GetMesh()->SetMaterial(pass);
 		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
@@ -95,62 +95,62 @@ void ActorBuild::Detalize(uint num, Pass *pass)
 		float iWall = 0.5f;//толщина несущей стены
 		float pad = (iWidth - iwWidth)*0.5f;
 		pe->Begin(Game::Get()->GetInputLayout());
-		pe->AddVertex(Vector(0.0f, 0.0f, 0.0f));
-		pe->AddVertex(Vector(0.0f, iHeight, 0.0f));
-		pe->AddVertex(Vector(0.0f, iHeight, iWidth));
-		pe->AddVertex(Vector(0.0f, 0.0f, iWidth));
+		pe->GetMesh()->AddVertex(Vector(0.0f, 0.0f, 0.0f));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iHeight, 0.0f));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iHeight, iWidth));
+		pe->GetMesh()->AddVertex(Vector(0.0f, 0.0f, iWidth));
 
-		pe->AddVertex(Vector(0.0f, iwFoot, pad));
-		pe->AddVertex(Vector(0.0f, iwFoot + iwHeight, pad));
-		pe->AddVertex(Vector(0.0f, iwFoot + iwHeight, iWidth - pad));
-		pe->AddVertex(Vector(0.0f, iwFoot, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot, pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot + iwHeight, pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot + iwHeight, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot, iWidth - pad));
 		pe->GetMesh()->AddQuad(0, 1, 5, 4);
 		pe->GetMesh()->AddQuad(1, 2, 6, 5);
 		pe->GetMesh()->AddQuad(2, 3, 7, 6);
 		pe->GetMesh()->AddQuad(3, 0, 4, 7);
 
-		pe->AddVertex(Vector(0.0f, iwFoot, pad));
-		pe->AddVertex(Vector(0.0f, iwFoot + iwHeight, pad));
-		pe->AddVertex(Vector(-iWall, iwFoot + iwHeight, pad));
-		pe->AddVertex(Vector(-iWall, iwFoot, pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot, pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot + iwHeight, pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot + iwHeight, pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot, pad));
 
-		pe->AddVertex(Vector(0.0f, iwFoot + iwHeight, pad));
-		pe->AddVertex(Vector(0.0f, iwFoot + iwHeight, iWidth - pad));
-		pe->AddVertex(Vector(-iWall, iwFoot + iwHeight, iWidth - pad));
-		pe->AddVertex(Vector(-iWall, iwFoot + iwHeight, pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot + iwHeight, pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot + iwHeight, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot + iwHeight, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot + iwHeight, pad));
 
-		pe->AddVertex(Vector(0.0f, iwFoot + iwHeight, iWidth - pad));
-		pe->AddVertex(Vector(0.0f, iwFoot, iWidth - pad));
-		pe->AddVertex(Vector(-iWall, iwFoot, iWidth - pad));
-		pe->AddVertex(Vector(-iWall, iwFoot + iwHeight, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot + iwHeight, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot + iwHeight, iWidth - pad));
 
-		pe->AddVertex(Vector(0.0f, iwFoot, iWidth - pad));
-		pe->AddVertex(Vector(0.0f, iwFoot, pad));
-		pe->AddVertex(Vector(-iWall, iwFoot, pad));
-		pe->AddVertex(Vector(-iWall, iwFoot, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(0.0f, iwFoot, pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot, pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot, iWidth - pad));
 
 		pe->GetMesh()->AddQuad(8, 9, 10, 11);
 		pe->GetMesh()->AddQuad(12, 13, 14, 15);
 		pe->GetMesh()->AddQuad(16, 17, 18, 19);
 		pe->GetMesh()->AddQuad(20, 21, 22, 23);
 
-		pe->AddVertex(Vector(-iWall, 0.0f, 0.0f));
-		pe->AddVertex(Vector(-iWall, 0.0f, iWidth));
-		pe->AddVertex(Vector(-iWall, iHeight, iWidth));
-		pe->AddVertex(Vector(-iWall, iHeight, 0.0f));
+		pe->GetMesh()->AddVertex(Vector(-iWall, 0.0f, 0.0f));
+		pe->GetMesh()->AddVertex(Vector(-iWall, 0.0f, iWidth));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iHeight, iWidth));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iHeight, 0.0f));
 
-		pe->AddVertex(Vector(-iWall, iwFoot, pad));
-		pe->AddVertex(Vector(-iWall, iwFoot, iWidth - pad));
-		pe->AddVertex(Vector(-iWall, iwFoot + iwHeight, iWidth - pad));
-		pe->AddVertex(Vector(-iWall, iwFoot + iwHeight, pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot, pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot + iwHeight, iWidth - pad));
+		pe->GetMesh()->AddVertex(Vector(-iWall, iwFoot + iwHeight, pad));
 		pe->GetMesh()->AddQuad(24, 25, 29, 28);
 		pe->GetMesh()->AddQuad(25, 26, 30, 29);
 		pe->GetMesh()->AddQuad(26, 27, 31, 30);
 		pe->GetMesh()->AddQuad(27, 24, 28, 31);
 
-		pe->SetColor(Color(1.0f, 1.0f, 1.0f));
-		pe->GenerateNormals();
-		pe->GenerateUV();
+		pe->GetMesh()->SetColor(Color(1.0f, 1.0f, 1.0f));
+		pe->GetMesh()->GenerateNormals();
+		pe->GetMesh()->GenerateUV();
 
 		Paramesh *pm = new Paramesh;
 		pm->Begin(Game::Get()->GetInputLayout());
@@ -177,7 +177,7 @@ void ActorBuild::Detalize(uint num, Pass *pass)
 				m.SetTranslation(Vector(-2.0f*(float)i, 2.5f*(float)h, 2.0f*24.0f));
 				pm->Connect(pe, m);
 			}
-		pm->GenerateNormals();
+		pm->GetMesh()->GenerateNormals();
 		pm->End();
 		pm->GetMesh()->SetMaterial(pass);
 		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
@@ -251,7 +251,7 @@ void ActorTerrain::Generate(Pass *pass)
 
 
 
-	pm->SetColor(Color(1.0f, 1.0f, 1.0f));
+	pm->GetMesh()->SetColor(Color(1.0f, 1.0f, 1.0f));
 	pm->End();
 	pm->GetMesh()->SetMaterial(pass);
 	Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
@@ -278,16 +278,16 @@ void ActorGlass::Generate(Pass *pass)
 	float height = *(float*)GetVariable("height");
 	Paramesh *pm = new Paramesh();
 	pm->Begin(Game::Get()->GetInputLayout());
-	pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, weight), Vector(0.0f, 0.0f, weight));
-	pm->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, weight), Vector(width, height, weight), Vector(width, height, 0.0f));
+	pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, weight), Vector(0.0f, 0.0f, weight));
+	pm->GetMesh()->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, weight), Vector(width, height, weight), Vector(width, height, 0.0f));
 
-	pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
-	pm->AddQuad(Vector(0.0f, 0.0f, weight), Vector(width, 0.0f, weight), Vector(width, height, weight), Vector(0.0f, height, weight));
+	pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
+	pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, weight), Vector(width, 0.0f, weight), Vector(width, height, weight), Vector(0.0f, height, weight));
 
-	pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, weight), Vector(0.0f, height, weight), Vector(0.0f, height, 0.0f));
-	pm->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, weight), Vector(width, 0.0f, weight));
+	pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, weight), Vector(0.0f, height, weight), Vector(0.0f, height, 0.0f));
+	pm->GetMesh()->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, weight), Vector(width, 0.0f, weight));
 
-	pm->SetColor(Color(0.5f, 0.75f, 1.0f));
+	pm->GetMesh()->SetColor(Color(0.5f, 0.75f, 1.0f));
 	pm->End();
 	pm->GetMesh()->SetMaterial(pass);
 	Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
@@ -506,16 +506,16 @@ void Game::Init()
 		float height = *(float*)act->GetVariable("height");
 		Paramesh *pm = new Paramesh();
 		pm->Begin(Game::Get()->GetInputLayout());
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
-		pm->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
 
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
-		pm->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
 
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
-		pm->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
 
-		pm->SetColor(ColorRGB(209, 119, 69).ToColor());
+		pm->GetMesh()->SetColor(ColorRGB(209, 119, 69).ToColor());
 		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
 		pm->End();
 		pm->GetMesh()->SetMaterial(pass);
@@ -637,16 +637,16 @@ void Game::Init2()
 		float height = *(float*)act->GetVariable("height");
 		Paramesh *pm = new Paramesh();
 		pm->Begin(Game::Get()->GetInputLayout());
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
-		pm->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
 
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
-		pm->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
 
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
-		pm->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
 
-		pm->SetColor(ColorRGB(241, 179, 142).ToColor());
+		pm->GetMesh()->SetVertexColor(ColorRGB(241, 179, 142).ToColor());
 		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
 		pm->End();
 		pm->GetMesh()->SetMaterial(pass);

@@ -76,16 +76,8 @@ namespace DEN
 	}
 	void Paramesh::End()
 	{
-		GenerateUV();
+		_mesh->GenerateUV();
 		_mesh->Bake();
-	}
-	void Paramesh::GenerateNormals()
-	{
-		_mesh->GenerateNormals(_oPos, _oNor);
-	}
-	void Paramesh::GenerateUV()
-	{
-		_mesh->GenerateUVBox(_oPos, _oNor, _oUV);
 	}
 	Mesh *Paramesh::Generate(Scene *scene, InputLayout *ia, int type)
 	{

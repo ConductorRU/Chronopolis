@@ -37,16 +37,16 @@ void Mineral::Initialize()
 		float height = *(float*)act->GetVariable("height");
 		Paramesh *pm = new Paramesh();
 		pm->Begin(Game::Get()->GetInputLayout());
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
-		pm->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
 
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
-		pm->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
 
-		pm->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
-		pm->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
+		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
+		pm->GetMesh()->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
 
-		pm->SetColor(ColorRGB(241, 179, 142).ToColor());
+		pm->GetMesh()->SetColor(ColorRGB(241, 179, 142).ToColor());
 		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
 		pm->End();
 		pm->GetMesh()->SetMaterial(pass);
@@ -156,19 +156,19 @@ void World::Initialize()
 			for (int y = 0; y <= num; ++y)
 			{
 				h = p2.Noise(x / 50.0f, y / 50.0f, 5)*1000.0f;
-				uint id = pm->AddVertex(Vector(x*width*100.0f, h, y*length*100.0f));
+				uint id = pm->GetMesh()->AddVertex(Vector(x*width*100.0f, h, y*length*100.0f));
 				Vector *nor = (Vector*)((&pm->GetMesh()->GetVertex(id - 1u)[28]));
 				nor->y = 1;
 			}
 		for (int x = 0; x < num; ++x)
 			for (int y = 0; y < num; ++y)
 			{
-				pm->AddTriangle(x*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y);
-				pm->AddTriangle((x + 1)*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y + 1);
+				pm->GetMesh()->AddTriangle(x*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y);
+				pm->GetMesh()->AddTriangle((x + 1)*(num + 1) + y + 1, (x + 1)*(num + 1) + y, x*(num + 1) + y + 1);
 			}
-		pm->SetColor(ColorRGB(255, 255, 255).ToColor());
+		pm->GetMesh()->SetColor(ColorRGB(255, 255, 255).ToColor());
 		pm->End();
-		pm->GenerateNormals();
+		pm->GetMesh()->GenerateNormals();
 		pm->GetMesh()->SetMaterial(pass);
 		pm->GetMesh()->SetPickable(true);
 		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());

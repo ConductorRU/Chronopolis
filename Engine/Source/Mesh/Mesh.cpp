@@ -155,7 +155,15 @@ namespace DEN
 	{
 		_pass = pass;
 		GetVertexBuffer()->Init(pass);
-	};
+	}
+	void Mesh::GenerateNormals()
+	{
+		GenerateNormals(_oPos, _oNor);
+	}
+	void Mesh::GenerateUV()
+	{
+		GenerateUVBox(_oPos, _oNor, _oUV);
+	}
 	void Mesh::SetColor(const Color &col)
 	{
 		z_color = col;

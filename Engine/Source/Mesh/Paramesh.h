@@ -45,8 +45,6 @@ namespace DEN
 		Mesh *GetMesh() {return _mesh;};
 		void Begin(InputLayout *ia);
 		void End();
-		void GenerateNormals();
-		void GenerateUV();
 		Mesh *Generate(Scene *scene, InputLayout *ia, int type = 0);
 	};
 }
