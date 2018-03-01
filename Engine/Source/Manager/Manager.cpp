@@ -8,6 +8,7 @@
 #include "../Format/Class.h"
 #include "../Material/Texture.h"
 #include "Manager.h"
+#include "FBX.h"
 namespace DEN
 {
 	Manager *Manager::_this = nullptr;
@@ -59,6 +60,14 @@ namespace DEN
 	Mesh *Manager::CreateMesh(InputLayout *ia)
 	{
 		Mesh *mesh = new Mesh(ia);
+		_meshes.insert(mesh);
+		return mesh;
+	}
+	Mesh *Manager::LoadMesh(const string &filename)
+	{
+		Mesh *mesh = FBX::Import(filename);
+		if(!mesh)
+			return nullptr;
 		_meshes.insert(mesh);
 		return mesh;
 	}

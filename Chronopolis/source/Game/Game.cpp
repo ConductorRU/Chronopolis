@@ -611,62 +611,45 @@ void Game::Init2()
 	_player = new Player();
 	_player->Initialize(ColorRGB(41, 128, 185).ToColor());
 
+	Pass *pass = man->CreatePass();
+	VertexShader *vs = man->CreateVS();
+	vs->CompileFile(L"vs.txt", "mainVS");
+	pass->SetVS(vs);
+	PixelShader *ps = man->CreatePS();
+	ps->CompileFile(L"vs.txt", "difPS");
+	pass->SetPS(ps);
 
-	ActorScript *script = new ActorScript;
-	script->func["onCreate"] = [this](char **)
+	Mesh *m = Manager::Get()->LoadMesh("box.fbx");
+	if(m)
 	{
-		Manager *man = Engine::Get()->GetManager();
-		Pass *pass = man->CreatePass();
-		VertexShader *vs = man->CreateVS();
-		vs->CompileFile(L"vs.txt", "mainVS");
-		pass->SetVS(vs);
-		PixelShader *ps = man->CreatePS();
-		ps->CompileFile(L"vs.txt", "difPS");
-		pass->SetPS(ps);
+		m->SetMaterial(pass);
+		Game::Get()->GetEngine()->GetScene()->AddMesh(m);
+	}
+
+	Widget *block = new WidgetBlock(sc->GetGUI());
+	block->SetParent(sc->GetGUI()->GetRoot());
+	block->SetAlign(WIDGET_TOP_STRETCH);
+	block->SetHeight(32.0f);
+	block->SetBackgroundColor(Color("#eee"));//#999
+
+	Widget *child = new WidgetBlock(sc->GetGUI());
+	child->SetParent(block);
+	child->SetAlign(WIDGET_TOP_RIGHT);
+	child->SetTop(0.0f);
+	child->SetRight(3.0f);
+	child->SetWidth(80.0f);
+	child->SetHeight(29.0f);
+	child->SetBackgroundColor(Color("#ddd"));
+
+	WidgetImage *iblock = new WidgetImage(sc->GetGUI());
+	iblock->SetParent(child);
+	iblock->SetBackgroundColor(Color::C_WHITE);
+	iblock->SetAtlas(Square(0, 0, 10, 10));
+
+	Texture *bTex = Manager::Get()->LoadTexture("..\\..\\menu.tga", true);
+	iblock->SetImage(bTex);
 
 
-
-		Actor *act = new Actor();
-		act->AddVariable("width", new float(1.0_m));
-		act->AddVariable("height", new float(1.0_m));
-		act->AddVariable("length", new float(1.0_m));
-		act->AddVariable("input", new InputListener);
-
-		float width = *(float*)act->GetVariable("width");
-		float length = *(float*)act->GetVariable("length");
-		float height = *(float*)act->GetVariable("height");
-		Paramesh *pm = new Paramesh();
-		pm->Begin(Game::Get()->GetInputLayout());
-		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
-		pm->GetMesh()->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
-
-		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
-		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
-
-		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
-		pm->GetMesh()->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
-
-		pm->GetMesh()->SetVertexColor(ColorRGB(241, 179, 142).ToColor());
-		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
-		pm->End();
-		pm->GetMesh()->SetMaterial(pass);
-		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
-		//Mesh *gm = pm->Generate(Game::Get()->GetEngine()->GetScene(), Game::Get()->GetInputLayout(), 0);
-		//AddComponent("mesh", pm);
-		//AddComponent("node", pm->GetMesh()->GetNode());
-		pm->GetMesh()->GetNode()->SetPosition(Vector::ONE_X);
-
-
-		Mesh *m = FBX::Import("box.fbx");
-		if(m)
-		{
-			m->SetMaterial(pass);
-			Game::Get()->GetEngine()->GetScene()->AddMesh(m);
-		}
-
-		return act;
-	};
-	script->Create();
 
 	InputListener *lis = new InputListener();
 	GetEngine()->GetInput()->AddListener(lis);

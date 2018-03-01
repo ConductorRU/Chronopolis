@@ -86,6 +86,7 @@
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)Engine\x64;C:\Program Files\Autodesk\FBX\FBX SDK\2019.1\lib\vs2017\$(PlatformTarget)\$(Configuration)</LibraryPath>
     <TargetName>$(ProjectName)_$(Configuration)_$(Platform)</TargetName>
     <GenerateManifest>false</GenerateManifest>
+    <ReferencePath>$(VC_ReferencesPath_x64);C:\Program Files\Autodesk\FBX\FBX SDK\2019.1\lib\vs2017\$(PlatformTarget)\$(Configuration)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -104,6 +105,7 @@
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)Engine\x64;C:\Program Files\Autodesk\FBX\FBX SDK\2019.1\lib\vs2017\$(PlatformTarget)\$(Configuration)</LibraryPath>
     <TargetName>$(ProjectName)_$(Configuration)_$(Platform)</TargetName>
     <GenerateManifest>false</GenerateManifest>
+    <ReferencePath>$(VC_ReferencesPath_x64);C:\Program Files\Autodesk\FBX\FBX SDK\2019.1\lib\vs2017\$(PlatformTarget)\$(Configuration)</ReferencePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

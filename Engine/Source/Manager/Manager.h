@@ -36,6 +36,7 @@ namespace DEN
 		Manager();
 		~Manager();
 		Mesh *CreateMesh(InputLayout *ia);
+		Mesh *LoadMesh(const string &filename);
 		Paramesh *CreateParamesh();
 		InputLayout *CreateInputLayout(const string &defaultName = "");
 		InputLayout *GetInputLayout(const string &defaultName);
