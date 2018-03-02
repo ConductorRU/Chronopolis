@@ -300,7 +300,7 @@ namespace DEN
 			caret->SetStyle("display:none; width:1px; height:100%; background-color:#000; word:0");
 
 			GUIListener *lis = z_root->CreateListener();
-			lis->onMouseHit = [this, text, caret](MouseEventClick m)
+			lis->onMouseHit = [this, text, caret](MouseEventClick m, InputListener *lis)
 			{
 				if(this->Pick(Point2(m.x, m.y)) && m.btn == 0)
 				{
@@ -338,11 +338,11 @@ namespace DEN
 					z_root->SetStyle("border:1px; padding:2px; border-color:#000");
 					z_gui->SetInputElement(nullptr);
 					if(z_listener && z_listener->onChange)
-						z_listener->onChange();
+						z_listener->onChange(z_listener);
 				}
 				return false;
 			};
-			lis->onKeyHit = [text, caret, this](KeyEvent k)
+			lis->onKeyHit = [text, caret, this](KeyEvent k, InputListener *lis)
 			{
 				if(caret->Get("display") != "block")
 					return false;
@@ -363,7 +363,7 @@ namespace DEN
 					z_root->SetStyle("border:1px; padding:2px; border-color:#000");
 					z_gui->SetInputElement(nullptr);
 					if(z_listener && z_listener->onChange)
-						z_listener->onChange();
+						z_listener->onChange(z_listener);
 				}
 				else
 					s += Engine::Get()->GetInput()->GetInputText(k.code);
@@ -393,7 +393,7 @@ namespace DEN
 				caret->SetStyle("x:" + to_string(pos) + "px; word: " + to_string(num));
 				return false;
 			};
-			lis->onRender = [text, caret, this]()
+			lis->onRender = [text, caret, this](InputListener *lis)
 			{
 				if(z_prop.GetInnerText() != text->GetProperty().GetInnerText())
 					text->GetProperty().SetInnerText(z_prop.GetInnerText());
@@ -856,7 +856,7 @@ namespace DEN
 			}
 		}
 		if (z_listener && z_listener->onUpdate)
-			z_listener->onUpdate();
+			z_listener->onUpdate(z_listener);
 	}
 	void WidgetX::Bake()
 	{
@@ -995,7 +995,7 @@ namespace DEN
 		if(z_prop.GetDisplay())
 		{
 			if(z_listener && z_listener->onRender)
-				z_listener->onRender();
+				z_listener->onRender(z_listener);
 			GetVertexBuffer()->Update();
 			GetVertexBuffer()->Unmap();
 			if(z_pass)
@@ -1290,25 +1290,26 @@ namespace DEN
 		Square par;
 		_offset.top = par.minX;
 		_offset.left = par.minY;
+		Vector2 screen = Vector2((float)Render::Get()->GetWidth(), (float)Render::Get()->GetHeight());
 		if(_parent)
 			par = _parent->GetOffset();
 		else
 		{
-			par.maxX =	(float)Render::Get()->GetWidth();
-			par.maxY =	(float)Render::Get()->GetHeight();
+			par.maxX = screen.x;
+			par.maxY = screen.y;
 		}
 		if(_align == WIDGET_TOP_LEFT || _align == WIDGET_MIDDLE_LEFT || _align == WIDGET_BOTTOM_LEFT)
-			_offset.minX = par.minX + _rect.minX;
+			_offset.minX = _rect.minX;
 		if(_align == WIDGET_TOP_CENTER || _align == WIDGET_CENTER || _align == WIDGET_BOTTOM_CENTER)
-			_offset.minX = par.minX + _rect.minX - _rect.maxX + (par.maxX - _size.x)*0.5f;
+			_offset.minX = _rect.minX - _rect.maxX + (par.maxX - _size.x)*0.5f;
 		if(_align == WIDGET_TOP_RIGHT || _align == WIDGET_MIDDLE_RIGHT || _align == WIDGET_BOTTOM_RIGHT)
-			_offset.minX = par.maxX - _rect.maxX - _size.x;
+			_offset.minX = (par.maxX - par.minX) - _rect.maxX - _size.x;
 		if(_align == WIDGET_TOP_LEFT || _align == WIDGET_TOP_CENTER || _align == WIDGET_TOP_RIGHT)
-			_offset.minY = par.minY + _rect.minY;
+			_offset.minY = _rect.minY;
 		if(_align == WIDGET_MIDDLE_LEFT || _align == WIDGET_CENTER || _align == WIDGET_MIDDLE_RIGHT)
-			_offset.minY = par.minY + _rect.minY - _rect.maxY + (par.maxY - _size.y)*0.5f;
+			_offset.minY = _rect.minY - _rect.maxY + (par.maxY - _size.y)*0.5f;
 		if(_align == WIDGET_BOTTOM_LEFT || _align == WIDGET_BOTTOM_CENTER || _align == WIDGET_BOTTOM_RIGHT)
-			_offset.minY = par.maxY - _rect.maxY - _size.y;
+			_offset.minY = (par.maxY - par.minY) - _rect.maxY - _size.y;
 		_offset.maxX = _offset.minX + _size.x - _rect.left - _rect.right;
 		_offset.maxY = _offset.minY + _size.y - _rect.top - _rect.bottom;
 		switch(_align)
@@ -1318,6 +1319,12 @@ namespace DEN
 			_offset.minY = _rect.minY;
 			_offset.maxX = _offset.minX + par.maxX - par.minX - _rect.maxX;
 			_offset.maxY = _offset.minY + _size.y;
+			break;
+		case WIDGET_BOTTOM_STRETCH:
+			_offset.minX = _rect.minX;
+			_offset.minY = screen.y - _size.y;
+			_offset.maxX = _offset.minX + par.maxX - par.minX - _rect.maxX;
+			_offset.maxY = screen.y;
 			break;
 		case WIDGET_STRETCH:
 			_offset.minX = _rect.minX;

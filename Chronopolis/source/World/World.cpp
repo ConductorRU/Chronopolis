@@ -186,7 +186,7 @@ void World::Initialize()
 		AddComponent("node", pm->GetMesh()->GetNode());
 		InputListener *input = (InputListener*)act->GetVariable("input");
 		Engine::Get()->GetInput()->AddListener(input);
-		input->onMouseHit = [act, this](MouseEventClick m)
+		input->onMouseHit = [act, this](MouseEventClick m, InputListener *lis)
 		{
 			Node *node = (Node*)act->GetComponent("node");
 			Vector pos;

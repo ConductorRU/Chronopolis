@@ -33,7 +33,7 @@ namespace DEN
 		GUIListener *lis = grid->CreateListener();
 		_isMove = false;
 		_posId = 6;
-		lis->onMouseHit = [this, grid](MouseEventClick eve)
+		lis->onMouseHit = [this, grid](MouseEventClick eve, InputListener *lis)
 		{
 			if(eve.btn == 1)
 			{
@@ -42,7 +42,7 @@ namespace DEN
 			}
 			return true;
 		};
-		lis->onMouseMove = [this, grid](MouseEvent eve)
+		lis->onMouseMove = [this, grid](MouseEvent eve, InputListener *lis)
 		{
 			if(_isMove)
 			{
@@ -52,13 +52,13 @@ namespace DEN
 			}
 			return true;
 		};
-		lis->onMouseReleased = [this, grid](MouseEventClick eve)
+		lis->onMouseReleased = [this, grid](MouseEventClick eve, InputListener *lis)
 		{
 			if(eve.btn == 1)
 				this->_isMove = false;
 			return true;
 		};
-		lis->onMouseWhell = [this, grid](MouseEventWheel eve)
+		lis->onMouseWhell = [this, grid](MouseEventWheel eve, InputListener *lis)
 		{
 			Vector2 scale = grid->GetRelative().GetScale();
 			float w[12] = {0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.75f, 1.0f, 1.5f, 2.0f, 4.0f, 7.0f, 10.0f};

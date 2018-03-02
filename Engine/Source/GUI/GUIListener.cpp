@@ -6,31 +6,33 @@ namespace DEN
 {
 	GUIListener::GUIListener(Widget *el)
 	{
-		_element = el;
+		_data = el;
 		z_isHover = false;
 	}
 	bool GUIListener::OnMouseHit(const MouseEventClick &arg)
 	{
-		if(!_element)
+		if(!_data)
 			return false;
-		if(_element->Pick(Point2(arg.x, arg.y), true) && _element->GetGUI()->IsPickChild(_element))
+		Widget *el = (Widget*)_data;
+		if(el->Pick(Point2(arg.x, arg.y), true) && el->GetGUI()->IsPickChild(el))
 		{
 			if(onClick)
-				onClick(arg);
+				onClick(arg, this);
 		}
 		return false;
 	}
 	bool GUIListener::OnMouseMove(const MouseEvent &arg)
 	{
-		if(!_element)
+		if(!_data)
 			return false;
-		if(_element->Pick(Point2(arg.x, arg.y), true) && _element->GetGUI()->IsPickChild(_element))
+		Widget *el = (Widget*)_data;
+		if(el->Pick(Point2(arg.x, arg.y), true) && el->GetGUI()->IsPickChild(el))
 		{
 			if(!z_isHover && onOver)
-					onOver(arg);
+					onOver(arg, this);
 			z_isHover = true;
 			if(onHover)
-				onHover(arg);
+				onHover(arg, this);
 			/*if(_element->IsEvent("hover"))
 			{
 				_element->AddEvent("hover");
@@ -45,7 +47,7 @@ namespace DEN
 			if(z_isHover)
 			{
 				if(onOut)
-					onOut(arg);
+					onOut(arg, this);
 				z_isHover = false;
 			}
 		}
@@ -53,10 +55,10 @@ namespace DEN
 	}
 	void GUIListener::SetElement(Widget *el)
 	{
-		_element = el;
+		_data = el;
 	}
 	Widget *GUIListener::GetElement()
 	{
-		return _element;
+		return (Widget*)_data;
 	}
 };

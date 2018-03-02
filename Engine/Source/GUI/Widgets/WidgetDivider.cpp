@@ -14,18 +14,19 @@ namespace DEN
 		_part[1]->SetStyle("x:50%;y:0;width:50%;height:100%;background-color:#aaf;");
 		_line = CreateChild("el3", true);
 		_line->SetStyle("x:50% - 3px;y:0;width:6px;height:100%;background-color:#0003;");
-		_line->GetListener()->onOver = [](MouseEvent &eve)
+		GUIListener *lis = _line->GetListener();
+		lis->onOver = [](MouseEvent &eve, InputListener *lis)
 		{
 			Engine::Get()->SetCursor(CURSOR_HORIZONTAL);
 			return false;
 		};
-		_line->GetListener()->onOut = [this](MouseEvent &eve)
+		_line->GetListener()->onOut = [this](MouseEvent &eve, InputListener *lis)
 		{
 			if(!_line->IsData("press"))
 				Engine::Get()->SetCursor(CURSOR_ARROW);
 			return false;
 		};
-		_line->GetListener()->onMousePressed = [this](MouseEvent &eve)
+		_line->GetListener()->onMousePressed = [this](MouseEvent &eve, InputListener *lis)
 		{
 			if(_line->Pick(Point2(eve.x, eve.y)))
 			{
@@ -35,14 +36,14 @@ namespace DEN
 			}
 			return false;
 		};
-		_line->GetListener()->onMouseReleased = [this](MouseEvent &eve)
+		_line->GetListener()->onMouseReleased = [this](MouseEvent &eve, InputListener *lis)
 		{
 			if(_line->IsData("press"))
 				Engine::Get()->SetCursor(CURSOR_ARROW);
 			_line->SetData("press", "");
 			return false;
 		};
-		_line->GetListener()->onMouseMove = [this](MouseEvent &eve)
+		_line->GetListener()->onMouseMove = [this](MouseEvent &eve, InputListener *lis)
 		{
 			_line->GetListener()->OnMouseMove(eve);
 			if(_line->IsData("press"))

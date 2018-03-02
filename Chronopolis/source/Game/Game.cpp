@@ -581,7 +581,7 @@ void Game::Init()
 
 	InputListener *lis = new InputListener();
 	GetEngine()->GetInput()->AddListener(lis);
-	lis->onKeyHit = [this](KeyEvent key)
+	lis->onKeyHit = [this](KeyEvent key, InputListener *lis)
 	{
 		GetEngine()->Exit();
 		return false;
@@ -623,37 +623,15 @@ void Game::Init2()
 	if(m)
 	{
 		m->SetMaterial(pass);
-		Game::Get()->GetEngine()->GetScene()->AddMesh(m);
+		sc->AddMesh(m);
 	}
 
-	Widget *block = new WidgetBlock(sc->GetGUI());
-	block->SetParent(sc->GetGUI()->GetRoot());
-	block->SetAlign(WIDGET_TOP_STRETCH);
-	block->SetHeight(32.0f);
-	block->SetBackgroundColor(Color("#eee"));//#999
-
-	Widget *child = new WidgetBlock(sc->GetGUI());
-	child->SetParent(block);
-	child->SetAlign(WIDGET_TOP_RIGHT);
-	child->SetTop(0.0f);
-	child->SetRight(3.0f);
-	child->SetWidth(80.0f);
-	child->SetHeight(29.0f);
-	child->SetBackgroundColor(Color("#ddd"));
-
-	WidgetImage *iblock = new WidgetImage(sc->GetGUI());
-	iblock->SetParent(child);
-	iblock->SetBackgroundColor(Color::C_WHITE);
-	iblock->SetAtlas(Square(0, 0, 10, 10));
-
-	Texture *bTex = Manager::Get()->LoadTexture("..\\..\\menu.tga", true);
-	iblock->SetImage(bTex);
-
-
+	_guiPlayer = new GUIPlayer(sc);
+	_guiPlayer->Initialize();
 
 	InputListener *lis = new InputListener();
 	GetEngine()->GetInput()->AddListener(lis);
-	lis->onKeyHit = [this](KeyEvent key)
+	lis->onKeyHit = [this](KeyEvent key, InputListener *lis)
 	{
 		GetEngine()->Exit();
 		return false;

@@ -616,7 +616,7 @@ namespace DEN
 		Engine::Get()->GetInput()->AddListener(z_listener);
 		static float setQY1 = 0.0f;
 		static float setQX1 = 0.0f;
-		z_listener->onMouseHit = [this](MouseEventClick m)
+		z_listener->onMouseHit = [this](MouseEventClick m, InputListener *lis)
 		{
 			if(m.btn == 0)
 			{
@@ -634,12 +634,12 @@ namespace DEN
 			}
 			return false;
 		};
-		z_listener->onMouseWhell = [this](MouseEventWheel m)
+		z_listener->onMouseWhell = [this](MouseEventWheel m, InputListener *lis)
 		{
 			MoveY((-m.wheel)*GetTargetDistance()*0.1f, true);
 			return false;
 		};
-		z_listener->onMousePressed = [this](MouseEventClick m)
+		z_listener->onMousePressed = [this](MouseEventClick m, InputListener *lis)
 		{
 			Engine *en = Engine::Get();
 			float f = GetTargetDistance()*0.01f*en->GetTime().spf;

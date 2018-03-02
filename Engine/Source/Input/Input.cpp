@@ -4,9 +4,10 @@
 
 namespace DEN
 {
-	InputListener::InputListener()
+	InputListener::InputListener(void *el)
 	{
 		z_enable = true;
+		_data = el;
 	}
 	void Input::Init()
 	{

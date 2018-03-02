@@ -56,7 +56,7 @@ void Player::Initialize(const Color &color)
 		pm->GetMesh()->GetNode()->SetPosition(Vector::ONE_X);
 		InputListener *input = (InputListener*)act->GetVariable("input");
 		Engine::Get()->GetInput()->AddListener(input);
-		input->onMouseHit = [act, this](MouseEventClick m)
+		input->onMouseHit = [act, this](MouseEventClick m, InputListener *lis)
 		{
 			if (m.btn != 0)
 				return false;

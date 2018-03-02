@@ -174,9 +174,9 @@ namespace DEN
 
 	struct MouseEvent
 	{
-		MouseEvent(int nx, int ny): x(nx), y(ny) {}
 		int x;
 		int y;
+		MouseEvent(int nx, int ny): x(nx), y(ny) {}
 	};
 	struct MouseEventClick: public MouseEvent
 	{
@@ -197,17 +197,19 @@ namespace DEN
 
 	class InputListener
 	{
+	protected:
 		bool z_enable;
+		void *_data;
 	public:
-		InputListener();
-		function<bool(MouseEventClick)> onMouseHit = nullptr;
-		function<bool(MouseEventClick)> onMousePressed = nullptr;
-		function<bool(MouseEventClick)> onMouseReleased = nullptr;
-		function<bool(MouseEventWheel)> onMouseWhell = nullptr;
-		function<bool(MouseEvent)> onMouseMove = nullptr;
-		function<bool(KeyEvent)> onKeyHit = nullptr;
-		function<bool(KeyEvent)> onKeyPressed = nullptr;
-		function<bool(KeyEvent)> onKeyReleased = nullptr;
+		InputListener(void *el = nullptr);
+		function<bool(MouseEventClick, InputListener*)> onMouseHit = nullptr;
+		function<bool(MouseEventClick, InputListener*)> onMousePressed = nullptr;
+		function<bool(MouseEventClick, InputListener*)> onMouseReleased = nullptr;
+		function<bool(MouseEventWheel, InputListener*)> onMouseWhell = nullptr;
+		function<bool(MouseEvent, InputListener*)> onMouseMove = nullptr;
+		function<bool(KeyEvent, InputListener*)> onKeyHit = nullptr;
+		function<bool(KeyEvent, InputListener*)> onKeyPressed = nullptr;
+		function<bool(KeyEvent, InputListener*)> onKeyReleased = nullptr;
 		function<void()> onUpdate = nullptr;
 		virtual bool OnMouseHit(const MouseEventClick &arg) { return false; };
 		virtual bool OnMousePressed(const MouseEventClick &arg) { return false; };
@@ -218,17 +220,19 @@ namespace DEN
 		virtual bool OnKeyPressed(const KeyEvent &arg) { return false; };
 		virtual bool OnKeyReleased(const KeyEvent &arg) { return false; };
 		virtual void OnUpdate() {};
-		bool MouseHit(const MouseEventClick &arg) { if(onMouseHit != nullptr) return onMouseHit(arg); return false; }
-		bool MousePressed(const MouseEventClick &arg) { if(onMousePressed != nullptr) return onMousePressed(arg); return false; }
-		bool MouseReleased(const MouseEventClick &arg) { if(onMouseReleased != nullptr) return onMouseReleased(arg); return false; }
-		bool MouseWheel(const MouseEventWheel &arg) { if(onMouseWhell != nullptr) return onMouseWhell(arg); return false; }
-		bool MouseMove(const MouseEvent &arg) { if(onMouseMove != nullptr) return onMouseMove(arg); return false; }
-		bool KeyHit(const KeyEvent &arg) { if(onKeyHit != nullptr) return onKeyHit(arg); return false; }
-		bool KeyPressed(const KeyEvent &arg) { if(onKeyPressed != nullptr) return onKeyPressed(arg); return false; }
-		bool KeyReleased(const KeyEvent &arg) { if(onKeyReleased != nullptr) return onKeyReleased(arg); return false; }
+		bool MouseHit(const MouseEventClick &arg) { if(onMouseHit != nullptr) return onMouseHit(arg, this); return false; }
+		bool MousePressed(const MouseEventClick &arg) { if(onMousePressed != nullptr) return onMousePressed(arg, this); return false; }
+		bool MouseReleased(const MouseEventClick &arg) { if(onMouseReleased != nullptr) return onMouseReleased(arg, this); return false; }
+		bool MouseWheel(const MouseEventWheel &arg) { if(onMouseWhell != nullptr) return onMouseWhell(arg, this); return false; }
+		bool MouseMove(const MouseEvent &arg) { if(onMouseMove != nullptr) return onMouseMove(arg, this); return false; }
+		bool KeyHit(const KeyEvent &arg) { if(onKeyHit != nullptr) return onKeyHit(arg, this); return false; }
+		bool KeyPressed(const KeyEvent &arg) { if(onKeyPressed != nullptr) return onKeyPressed(arg, this); return false; }
+		bool KeyReleased(const KeyEvent &arg) { if(onKeyReleased != nullptr) return onKeyReleased(arg, this); return false; }
 		void Update() { if(onUpdate != nullptr) onUpdate(); }
 		bool IsEnable() { return z_enable; }
 		void SetEnable(bool enable) { z_enable = enable; }
+		void SetData(void *el) { _data = el; }
+		void *GetData() { return _data; }
 	};
 	class Input
 	{
