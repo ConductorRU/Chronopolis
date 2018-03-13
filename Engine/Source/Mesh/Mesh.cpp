@@ -14,10 +14,15 @@ namespace DEN
 		_oCol = layout->GetOffset("COLOR");
 		_oNor = layout->GetOffset("NORMAL");
 		_oUV = layout->GetOffset("UV");
+		_isBaked = false;
 	}
 	Mesh::~Mesh()
 	{
 		delete z_buffer;
+	}
+	void Mesh::Clear()
+	{
+		z_buffer->Clear();
 	}
 	void Mesh::GenerateUVSphere(uint pOffset, uint uvOffset)
 	{
@@ -377,6 +382,7 @@ namespace DEN
 	}
 	void Mesh::Bake()
 	{
+		_isBaked = true;
 		InputLayout *layout = z_buffer->GetInputLayout();
 		if(!z_vertex.size() || !layout || !layout->GetSize())
 			return;

@@ -6,6 +6,7 @@
 #include "Material/Class.h"
 #include "Mesh/Mesh.h"
 #include "Mesh/Paramesh.h"
+#include "Mesh/Primitive.h"
 #include "GUI/Class.h"
 #include "Scene/Class.h"
 #include "Render/Render.h"

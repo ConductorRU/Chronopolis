@@ -271,6 +271,9 @@
     <ClCompile Include="Source\Manager\FBX.cpp">
       <Filter>Source\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Mesh\Primitive.cpp">
+      <Filter>Source\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h">
@@ -533,6 +536,9 @@
     </ClInclude>
     <ClInclude Include="Source\Manager\FBX.h">
       <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh\Primitive.h">
+      <Filter>Source\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

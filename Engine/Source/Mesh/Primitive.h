@@ -7,11 +7,13 @@ namespace DEN
 	private:
 		Vector _size;
 		bool _updatePrimitive;
+		void Create();
+		void Change();
 	public:
 		Vector GetSize() const {return _size; };
 		void SetSize(const Vector &size) { _size = size;};
 		Box(InputLayout *layout);
 		~Box();
-		void UpdatePrimitive();
+		void BeforeRender();
 	};
 };

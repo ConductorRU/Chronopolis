@@ -98,6 +98,9 @@ namespace DEN
 		memset(&stats, 0, sizeof(Scene::Stats));
 		for(Mesh *m : _meshes)
 		{
+			m->BeforeRender();
+			if(!m->IsBaked())
+				m->Bake();
 			if(m->GetPass())
 				for(Light *li : _lights)
 				{

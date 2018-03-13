@@ -504,25 +504,13 @@ void Game::Init()
 		float width = *(float*)act->GetVariable("width");
 		float length = *(float*)act->GetVariable("length");
 		float height = *(float*)act->GetVariable("height");
-		Paramesh *pm = new Paramesh();
-		pm->Begin(Game::Get()->GetInputLayout());
-		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(width, 0.0f, 0.0f), Vector(width, 0.0f, length), Vector(0.0f, 0.0f, length));
-		pm->GetMesh()->AddQuad(Vector(0.0f, height, 0.0f), Vector(0.0f, height, length), Vector(width, height, length), Vector(width, height, 0.0f));
-
-		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, height, 0.0f), Vector(width, height, 0.0f), Vector(width, 0.0f, 0.0f));
-		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, length), Vector(width, 0.0f, length), Vector(width, height, length), Vector(0.0f, height, length));
-
-		pm->GetMesh()->AddQuad(Vector(0.0f, 0.0f, 0.0f), Vector(0.0f, 0.0f, length), Vector(0.0f, height, length), Vector(0.0f, height, 0.0f));
-		pm->GetMesh()->AddQuad(Vector(width, 0.0f, 0.0f), Vector(width, height, 0.0f), Vector(width, height, length), Vector(width, 0.0f, length));
-
-		pm->GetMesh()->SetColor(ColorRGB(209, 119, 69).ToColor());
-		//pm->SetColor(ColorRGB(255_r, 255_r, 255_r).ToColor());
-		pm->End();
-		pm->GetMesh()->SetMaterial(pass);
-		Game::Get()->GetEngine()->GetScene()->AddMesh(pm->GetMesh());
+		Box *box = new Box(Game::Get()->GetInputLayout());
+		box->SetColor(ColorRGB(209, 119, 69).ToColor());
+		box->SetMaterial(pass);
+		Game::Get()->GetEngine()->GetScene()->AddMesh(box);
 		//Mesh *gm = pm->Generate(Game::Get()->GetEngine()->GetScene(), Game::Get()->GetInputLayout(), 0);
-		act->AddComponent("mesh", pm);
-		act->AddComponent("node", pm->GetMesh()->GetNode());
+		act->AddComponent("mesh", box);
+		act->AddComponent("node", box->GetNode());
 
 		return act;
 	};

@@ -23,8 +23,10 @@ namespace DEN
 		uint _oNor;
 		uint _oUV;
 		bool _isPickable;
+		bool _isBaked;
 		char *GenerateVertex(Vector **pos, Vector **nor, Vector **uv, Color **col, int pOffset, int nOffset, int uvOffset, int colOffset);
 	public:
+		bool IsBaked() { return _isBaked; };
 		uint GetVertexCount() { return (uint)z_vertex.size(); };
 		uint GetIndexCount() { return (uint)z_index.size(); };
 		UINT GetIndex(size_t num) { return z_index[num]; };
@@ -35,6 +37,7 @@ namespace DEN
 		void SetPickable(bool pickable) { _isPickable = pickable; };
 		Mesh(InputLayout *layout);
 		~Mesh();
+		void Clear();
 		BBox CalculateBBox(uint pOffset);
 		void GenerateNormals(uint pOffset, uint nOffset);
 		void GenerateUVSphere(uint pOffset, uint uvOffset);
@@ -59,5 +62,6 @@ namespace DEN
 		void SetUV(uint num, const Vector2 &uv);
 		void Bake();
 		bool Pick(const Vector &pos, const Vector &dir, Vector &point);
+		virtual void BeforeRender() {};
 	};
 };
