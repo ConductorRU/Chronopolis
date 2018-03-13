@@ -18,4 +18,5 @@
 #include "Format/Class.h"
 #include "Compiler/Class.h"
 #include "Blueprint/Class.h"
+#include "Core/File.h"
 using namespace DEN;

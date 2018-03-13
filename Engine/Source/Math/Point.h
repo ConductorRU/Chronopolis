@@ -1,8 +1,9 @@
 #pragma once
 namespace DEN
 {
-	struct Point
+	class Point
 	{
+	public:
 		int x;
 		int y;
 		int z;

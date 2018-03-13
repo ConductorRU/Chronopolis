@@ -320,15 +320,15 @@ void ActorWindow::Generate(Pass *pass)
 
 	Node *node = new Node();
 	ActorGlass *glass = new ActorGlass;
-	glass->SetVariable("width", new float(width*0.5 - pad*4.0f));
+	glass->SetVariable("width", new float(width*0.5f - pad*4.0f));
 	glass->SetVariable("height", new float(height - pad*2.0f));
 	glass->Generate(pass);
-	((Node*)glass->GetComponent("node"))->SetPosition(Vector(width*0.5 + pad, 0.0f, 0.0f));
+	((Node*)glass->GetComponent("node"))->SetPosition(Vector(width*0.5f + pad, 0.0f, 0.0f));
 	((Node*)glass->GetComponent("node"))->SetParent(node, true);
 	AddComponent("glass", glass);
 
 	ActorGlass *glassTop = new ActorGlass;
-	glassTop->SetVariable("width", new float(width*0.5 - pad*2.0f));
+	glassTop->SetVariable("width", new float(width*0.5f - pad*2.0f));
 	glassTop->SetVariable("height", new float(hTop - pad*2.0f));
 	glassTop->Generate(pass);
 	((Node*)glassTop->GetComponent("node"))->SetPosition(Vector(0.0f, height - pad*2.0f - hTop - pad*2.0f, 0.0f));
@@ -617,6 +617,12 @@ void Game::Init2()
 	_guiPlayer = new GUIPlayer(sc);
 	_guiPlayer->Initialize();
 
+	Mesh *plane = new Mesh(Game::Get()->GetInputLayout());
+	plane->AddQuad(Vector(-1000.0f, 0.0f, -1000.0f), Vector(-1000.0f, 0.0f, 1000.0f), Vector(1000.0f, 0.0f, 1000.0f), Vector(1000.0f, 0.0f, -1000.0f));
+	plane->SetVertexColor(Color::C_GREEN);
+	plane->SetMaterial(pass);
+	Game::Get()->GetEngine()->GetScene()->AddMesh(plane);
+
 	InputListener *lis = new InputListener();
 	GetEngine()->GetInput()->AddListener(lis);
 	lis->onKeyHit = [this](KeyEvent key, InputListener *lis)
@@ -624,6 +630,15 @@ void Game::Init2()
 		GetEngine()->Exit();
 		return false;
 	};
+}
+
+void Game::Load()
+{
+	File file;
+}
+void Game::Save()
+{
+
 }
 
 void Game::Update()
