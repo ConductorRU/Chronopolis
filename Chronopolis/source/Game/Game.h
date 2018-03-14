@@ -71,6 +71,7 @@ private:
 	static Game *_this;
 	vector<Actor*> _actors;
 	vector<ActorScript*> _scripts;
+	map<uint, class Skill*> _skills;
 	Clock *_clock;
 public:
 	InputLayout *GetInputLayout() { return ia; }
@@ -79,6 +80,8 @@ public:
 	static Game *Get() { return _this; }
 	Game();
 	~Game();
+	Skill *CreateSkill(uint id, const string &name);
+	void InitSkills();
 	void Init();
 	void Init2();
 	void Load();

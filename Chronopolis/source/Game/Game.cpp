@@ -355,6 +355,20 @@ Game::~Game()
 	delete _engine;
 }
 
+Skill *Game::CreateSkill(uint id, const string &name)
+{
+	Skill *skill = new Skill();
+	skill->SetId(id);
+	skill->SetName(name);
+	_skills[id] = skill;
+	return skill;
+}
+
+void Game::InitSkills()
+{
+	Skill *skill = CreateSkill(1, "Walk");
+}
+
 void Game::Init()
 {
 	/*Compiler comp;
@@ -621,10 +635,12 @@ void Game::Init2()
 	plane->AddQuad(Vector(-1000.0f, 0.0f, -1000.0f), Vector(-1000.0f, 0.0f, 1000.0f), Vector(1000.0f, 0.0f, 1000.0f), Vector(1000.0f, 0.0f, -1000.0f));
 	plane->SetVertexColor(Color::C_GREEN);
 	plane->SetMaterial(pass);
+	plane->SetPickable(true);
 	Game::Get()->GetEngine()->GetScene()->AddMesh(plane);
 
 	InputListener *lis = new InputListener();
 	GetEngine()->GetInput()->AddListener(lis);
+	Load();
 	lis->onKeyHit = [this](KeyEvent key, InputListener *lis)
 	{
 		GetEngine()->Exit();
@@ -635,10 +651,30 @@ void Game::Init2()
 void Game::Load()
 {
 	File file;
+	file.Open("Save.sav", FILE_READ);
+	if(!file.IsOpen())
+		return;
+	int version = 0;
+	Vector v;
+	Quaternion q;
+	file.Read(version);
+	if(version >= 1)
+	{
+		file.Read(v);
+		file.Read(q);
+		_player->SetPosition(v);
+		_player->SetRotation(q);
+	}
+	file.Close();
 }
 void Game::Save()
 {
-
+	File file;
+	file.Open("Save.sav", FILE_WRITE);
+	file.Write(1);
+	file.Write(_player->GetPosition());
+	file.Write(_player->GetRotation());
+	file.Close();
 }
 
 void Game::Update()
@@ -649,8 +685,10 @@ void Game::Update()
 		float s = _engine->GetTime().spf;
 		_clock->Update(s);
 		_player->Update();
+		_guiPlayer->Update(_player);
 		//Scene::Stats stats = _engine->GetScene()->stats;
 		//v1->GetProperty().SetInnerText("FPS: " + to_string((int)_engine->GetTime().fps) + " " + to_string(stats.vertexCount) + " " + _clock->GetText(false));
 		_engine->Draw();
 	}
+	Save();
 }

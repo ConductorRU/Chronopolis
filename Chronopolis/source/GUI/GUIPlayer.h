@@ -9,4 +9,5 @@ public:
 	GUIPlayer(Scene *scene);
 	~GUIPlayer();
 	void Initialize();
+	void Update(class Player *player);
 };

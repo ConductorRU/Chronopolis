@@ -49,3 +49,8 @@ void GUIPlayer::Initialize()
 	Texture *bTex = Manager::Get()->LoadTexture("..\\..\\menu.tga", true);
 	iblock->SetImage(bTex);
 }
+
+void GUIPlayer::Update(Player *player)
+{
+
+}
