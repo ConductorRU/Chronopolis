@@ -82,7 +82,6 @@ public:
 	~Game();
 	Skill *CreateSkill(uint id, const string &name);
 	void InitSkills();
-	void Init();
 	void Init2();
 	void Load();
 	void Save();

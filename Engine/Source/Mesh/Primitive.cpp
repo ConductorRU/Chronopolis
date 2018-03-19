@@ -44,4 +44,43 @@ namespace DEN
 		_isBaked = false;
 		_updatePrimitive = false;
 	}
+	Sphere::Sphere(InputLayout *layout): Mesh(layout)
+	{
+		_radius = 1.0f;
+		_segments = 4;
+		_updatePrimitive = true;
+		Create();
+	}
+	Sphere::~Sphere()
+	{
+	
+	}
+	void Sphere::Create()
+	{
+		Vector v;
+		for (int m = 0; m < _radius; m++)
+    {
+			for (int n = 0; n < _radius - 1; n++)
+			{
+				v.x = sin(PI*m/_radius) * cos(2*PI * n/_radius);
+				v.y = sin(PI*m/_radius) * sin(2*PI * n/_radius);
+				v.z = cos(PI*m/_radius);
+				AddVertex(v*_radius);
+			}
+    }
+	}
+	void Sphere::Change()
+	{
+		Clear();
+		Create();
+	}
+	void Sphere::BeforeRender()
+	{
+		if(!_updatePrimitive)
+			return;
+		Change();
+		
+		_isBaked = false;
+		_updatePrimitive = false;
+	}
 };
