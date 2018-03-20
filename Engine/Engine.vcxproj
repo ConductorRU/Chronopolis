@@ -276,6 +276,7 @@
     <ClCompile Include="Source\Math\Vector2.cpp" />
     <ClCompile Include="Source\Mesh\Mesh.cpp" />
     <ClCompile Include="Source\Mesh\Paramesh.cpp" />
+    <ClCompile Include="Source\Mesh\Planet.cpp" />
     <ClCompile Include="Source\Mesh\Primitive.cpp" />
     <ClCompile Include="Source\Modifier2D\Mod2Noise.cpp" />
     <ClCompile Include="Source\Modifier2D\Modifier2d.cpp" />
@@ -366,6 +367,7 @@
     <ClInclude Include="Source\Math\Vector2.h" />
     <ClInclude Include="Source\Mesh\Mesh.h" />
     <ClInclude Include="Source\Mesh\Paramesh.h" />
+    <ClInclude Include="Source\Mesh\Planet.h" />
     <ClInclude Include="Source\Mesh\Primitive.h" />
     <ClInclude Include="Source\Modifier2D\Class.h" />
     <ClInclude Include="Source\Modifier2D\Mod2Noise.h" />

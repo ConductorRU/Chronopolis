@@ -274,6 +274,9 @@
     <ClCompile Include="Source\Mesh\Primitive.cpp">
       <Filter>Source\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Mesh\Planet.cpp">
+      <Filter>Source\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h">
@@ -538,6 +541,9 @@
       <Filter>Source\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Source\Mesh\Primitive.h">
+      <Filter>Source\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh\Planet.h">
       <Filter>Source\Mesh</Filter>
     </ClInclude>
   </ItemGroup>

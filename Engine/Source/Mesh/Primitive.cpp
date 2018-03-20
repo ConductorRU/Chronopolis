@@ -24,7 +24,6 @@ namespace DEN
 		Vector p = _size*0.5f;
 		Vector pMin = c - p;
 		Vector pMax = c + p;
-		
 		*((Vector*)GetVertex(0)) = *((Vector*)GetVertex(8)) = *((Vector*)GetVertex(16)) = Vector(pMin.x, pMin.y, pMin.z);
 		*((Vector*)GetVertex(1)) = *((Vector*)GetVertex(11)) = *((Vector*)GetVertex(20)) = Vector(pMax.x, pMin.y, pMin.z);
 		*((Vector*)GetVertex(2)) = *((Vector*)GetVertex(13)) = *((Vector*)GetVertex(23)) = Vector(pMax.x, pMin.y, pMax.z);
