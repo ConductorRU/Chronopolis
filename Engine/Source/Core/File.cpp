@@ -72,7 +72,14 @@ namespace DEN
 	{
 		_file.close();
 	}
-
+	void File::Write(void *value, uint size)
+	{
+		_file.write((char*)value, size);
+	}
+	void File::Read(void *value, uint size)
+	{
+		_file.read((char*)value, size);
+	}
 	void File::Write(int value)
 	{
 		_file.write(reinterpret_cast<char*>(&value), sizeof(int));

@@ -14,6 +14,7 @@ ActorRoad::ActorRoad()
 	v->push_back({Vector(0.0f, 0.0f, 0.0f), 7.5f});
 	v->push_back({Vector(1000.0f, 0.0f, 0.0f), 7.5f});
 	AddVariable("points", v);
+
 }
 ActorRoad::~ActorRoad()
 {
@@ -417,6 +418,7 @@ void Game::Init2()
 
 	InputListener *lis = new InputListener();
 	GetEngine()->GetInput()->AddListener(lis);
+	_clock->SetSpeed(30.0f);
 	Load();
 	lis->onKeyHit = [this](KeyEvent key, InputListener *lis)
 	{
@@ -434,6 +436,7 @@ void Game::Load()
 	int version = 0;
 	Vector v;
 	Quaternion q;
+	int i[32];
 	file.Read(version);
 	if(version >= 1)
 	{
@@ -441,6 +444,9 @@ void Game::Load()
 		file.Read(q);
 		_player->SetPosition(v);
 		_player->SetRotation(q);
+		file.Read(i, 6*sizeof(int));
+		_clock->SetData(i[0], (MONTH_TYPE)i[1], i[2]);
+		_clock->SetTime(i[3], i[4], i[5]);
 	}
 	file.Close();
 }
@@ -451,6 +457,12 @@ void Game::Save()
 	file.Write(1);
 	file.Write(_player->GetPosition());
 	file.Write(_player->GetRotation());
+	file.Write(_clock->GetYear());
+	file.Write((int)_clock->GetMonth());
+	file.Write(_clock->GetDay());
+	file.Write(_clock->GetHour());
+	file.Write(_clock->GetMinute());
+	file.Write(_clock->GetSecond());
 	file.Close();
 }
 
@@ -458,7 +470,6 @@ void Game::Update()
 {
 	while(_engine->Update())
 	{
-		WidgetX *v1 = _engine->GetScene()->GetGUI()->GetElementById("v1");
 		float s = _engine->GetTime().spf;
 		_clock->Update(s);
 		_player->Update();

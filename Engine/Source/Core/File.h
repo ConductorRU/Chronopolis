@@ -29,6 +29,8 @@ namespace DEN
 		bool Open(const string &name, FILE_TYPE mode);
 		bool IsOpen();
 		void Close();
+		void Write(void *value, uint size);
+		void Read(void *value, uint size);
 		void Write(int value);
 		void Read(int &value);
 		void Write(char value);

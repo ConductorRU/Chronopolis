@@ -14,6 +14,7 @@ namespace DEN
 		_buffer->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		_isBold = false;
 		_isItalic = false;
+		_fontSize = 12;
 	}
 	void WidgetText::_UpdateText()
 	{

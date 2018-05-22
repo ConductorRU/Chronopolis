@@ -76,8 +76,10 @@ public:
 	inline MONTH_TYPE GetMonth() { return z_month; };
 	inline ZODIAC_TYPE GetZodiac() { return z_zodiac; };
 	inline YEAR_TYPE GetChZodiac() { return z_cZodiac; };
-	inline int GetDay() { return z_day; };
 	inline int GetYear() { return z_year; };
+	inline int GetDay() { return z_day; };
+	inline int GetHour() { return z_hour; };
+	inline int GetMinute() { return z_minute; };
 	inline int GetSecond() { return z_second; };
 	bool operator < (const Date& date) const;
 	void SetYear(int year);
@@ -85,7 +87,7 @@ public:
 	void SetDay(int day);
 	void SetData(int year, MONTH_TYPE month, int day);
 	void GetData(int &year, MONTH_TYPE &month, int &day);
-	void SetTime(int hour, int minute);
+	void SetTime(int hour, int minute, int second);
 	void GetTime(int &hour, int &minute);
 	bool CompareHour(const Date &date);//сравнить время до часа (true - если совпадает)
 	int DifHour(const Date &date);//количество пройденных часов
@@ -106,5 +108,6 @@ public:
 	inline float GetLast() { return z_last; };//сколько прошло времени с предыдущего кадра (1.0f = 1 мин)
 	inline void SetEnable(bool enable) { z_enable = enable; };
 	void SetSpeed(float speed);
+	float GetSPC(float sync);//сколько прошло игрового времени за кадр
 	void Update(float sync);
 };

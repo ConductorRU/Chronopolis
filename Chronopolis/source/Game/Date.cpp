@@ -104,15 +104,17 @@ void Date::GetData(int &year, MONTH_TYPE &month, int &day)
 	day = z_day;
 }
 
-void Date::SetTime(int hour, int minute)
+void Date::SetTime(int hour, int minute, int second)
 {
 	if (hour < 0 || hour >= 24)
 		hour = 0;
 	if (minute < 0 || minute >= 60)
 		minute = 0;
+	if (second < 0 || second >= 60)
+		second = 0;
 	z_hour = hour;
 	z_minute = minute;
-	z_second = 0;
+	z_second = second;
 }
 
 void Date::GetTime(int &hour, int &minute)
@@ -250,7 +252,10 @@ void Clock::SetSpeed(float speed)
 {
 	z_speed = speed;
 }
-
+float Clock::GetSPC(float sync)
+{
+	return z_speed*sync;
+}
 void Clock::Update(float sync)
 {
 	z_last = 0.0f;

@@ -172,26 +172,15 @@ namespace DEN
 		}
 		_css.push_back(s);
 	}
-	WidgetX *GUI::GetElementById(const string &name)
+	Widget *GUI::GetElementById(const string &name)
 	{
-		auto &it = z_ids.find(name);
-		if(it != z_ids.end())
+		auto &it = _ids.find(name);
+		if(it != _ids.end())
 			return it->second;
 		return nullptr;
 	}
-	void GUI::AddId(WidgetX *el)
-	{
-		if(el->GetId().size())
-			z_ids[el->GetId()] = el;
-	}
-	void GUI::RemoveId(WidgetX *el)
-	{
-		if(el->GetId().size())
-			z_ids.erase(el->GetId());
-	}
 	void GUI::FreeElement(WidgetX *el)
 	{
-		RemoveId(el);
 		el = nullptr;
 	}
 	void GUI::SetInputElement(WidgetX *el)

@@ -119,8 +119,8 @@ namespace DEN
 		Pass *_pass;
 		GUIListener *_listener;
 		vector<Widget*> z_childs;
-		vector<Vertex2D> v;
 		vector<uint> *_indexes;
+		vector<Vertex2D> v;
 		Matrix2D _aTransform;
 		Matrix2D _rTransform;
 		Matrix2D _wTransform;
@@ -130,6 +130,7 @@ namespace DEN
 		Square _offset;
 		Square _uv;
 		Color _background;
+		string _id;
 		bool _update;
 		bool _visible;
 		void _UpdatePosition();
@@ -150,6 +151,7 @@ namespace DEN
 		uint GetChildCount() { return (uint)z_childs.size(); };
 		Square &GetSquare() { return _rect;}
 		Vector2 &GetSize() { return _size;}
+		string GetId() {return _id;};
 		Vector2 GetRealSize();
 
 		float PercentWidth(const string &val);
@@ -158,6 +160,7 @@ namespace DEN
 		static Color GetColor(const string &val);
 		Widget(GUI *gui);
 		~Widget();
+		void SetId(const string &name);
 		GUIListener *CreateListener();
 		void AddTriangle(uint i0, uint i1, uint i2);
 		void AddLine(uint i0, uint i1);

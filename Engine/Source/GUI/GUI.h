@@ -45,6 +45,7 @@ namespace DEN
 	};
 	class GUI
 	{
+	friend Widget;
 	private:
 		VertexShader *_vs;
 		PixelShader *_ps;
@@ -58,7 +59,7 @@ namespace DEN
 		map<string, Font*> z_fonts;
 		map<string, Font*> z_autofonts;
 		map<string, StyleX*> z_class;
-		map<string, WidgetX*> z_ids;
+		map<string, Widget*> _ids;
 		vector<Selector*> _css;
 		map<int, vector<WidgetX *>> z_order;
 		WidgetX *z_root;
@@ -88,9 +89,7 @@ namespace DEN
 		~GUI();
 		static map<string, string> ParseStyles(const string &styles);
 		void AddSelector(const string& name, const string& value);
-		WidgetX *GetElementById(const string &name);
-		void AddId(WidgetX *el);
-		void RemoveId(WidgetX *el);
+		Widget *GetElementById(const string &name);
 		void FreeElement(WidgetX *el);
 		void SetInputElement(WidgetX *el);
 		bool IsPickChild(Widget *el, bool andEl = true);

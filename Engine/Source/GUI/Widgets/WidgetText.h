@@ -19,17 +19,17 @@ namespace DEN
 		void _Render(Pass *pass);
 	public:
 		WidgetText(GUI *gui);
-		void SetText(const string& text) {_text = text;}
+		void SetText(const string& text) {_text = text; _update = true;}
 		string GetText() { return _text; };
-		void SetFamily(const string& value) {_family = value;}
+		void SetFamily(const string& value) {_family = value; _update = true;}
 		string GetFamily() { return _family; };
-		void SetFontSize(uint size) {_fontSize = size;}
+		void SetFontSize(uint size) {_fontSize = size; _update = true;}
 		uint GetFontSize() { return _fontSize; };
-		void SetTextColor(const Color &color) {_textColor = color;}
+		void SetTextColor(const Color &color) {_textColor = color; _update = true;}
 		Color GetTextColor() { return _textColor; };
-		void SetBold(bool value) {_isBold = value;}
+		void SetBold(bool value) {_isBold = value; _update = true;}
 		bool IsBold() { return _isBold; };
-		void SetItalic(bool value) {_isItalic = value;}
+		void SetItalic(bool value) {_isItalic = value; _update = true;}
 		bool IsItalic() { return _isItalic; };
 	};
 };

@@ -172,9 +172,9 @@ namespace DEN
 	}
 	void WidgetX::SetId(const string &id)
 	{
-		z_gui->RemoveId(this);
+		//z_gui->RemoveId(this);
 		z_id = id;
-		z_gui->AddId(this);
+		//z_gui->AddId(this);
 	}
 	bool WidgetX::Pick(const Point2 &p, bool andChilds)
 	{
@@ -1068,6 +1068,21 @@ namespace DEN
 	{
 		if(_indexes)
 			delete _indexes;
+	}
+	void Widget::SetId(const string &name)
+	{
+		Widget *w = _gui->GetElementById(name);
+		if(w == this)
+			return;
+		_id = name;
+		if(name != "")
+			_gui->_ids[name] = this;
+		else
+		{
+			auto f = _gui->_ids.find(name);
+			if(f != _gui->_ids.end())
+				_gui->_ids.erase(f);
+		}
 	}
 	GUIListener *Widget::CreateListener()
 	{

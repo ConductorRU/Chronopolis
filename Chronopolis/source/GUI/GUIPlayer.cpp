@@ -1,4 +1,6 @@
 #include "DC.h"
+#include "../Game/Date.h"
+#include "../Game/Game.h"
 #include "GUIPlayer.h"
 bool GUIPlayer::OpenStats(MouseEventClick eve, InputListener *lis)
 {
@@ -26,7 +28,7 @@ void GUIPlayer::Initialize()
 	Widget *block = new WidgetBlock(gui);
 	block->SetParent(gui->GetRoot());
 	block->SetAlign(WIDGET_BOTTOM_STRETCH);
-	block->SetHeight(32.0f);
+	block->SetHeight(52.0f);
 	block->SetBackgroundColor(Color("#eee"));//#999
 
 	Widget *child = new WidgetBlock(gui);
@@ -43,6 +45,14 @@ void GUIPlayer::Initialize()
 	iblock->SetBackgroundColor(Color::C_WHITE);
 	iblock->SetAtlas(Square(0, 0, 10, 10));
 
+	WidgetText *tblock = new WidgetText(gui);
+	tblock->SetId("Text");
+	tblock->SetParent(block);
+	tblock->SetText("aaay");
+	tblock->SetFamily("Arial");
+	tblock->SetFontSize(18);
+	tblock->SetTextColor(Color("#000"));
+
 	GUIListener *lis = iblock->CreateListener();
 	lis->onMouseHit = GUIPlayer::OpenStats;
 	lis->onHover = GUIPlayer::Hover;
@@ -52,5 +62,9 @@ void GUIPlayer::Initialize()
 
 void GUIPlayer::Update(Player *player)
 {
-
+	GUI *gui = _scene->GetGUI();
+	Engine *eng = Engine::Get();
+	Game *game = Game::Get();
+	WidgetText *tblock = (WidgetText*)gui->GetElementById("Text");
+	tblock->SetText("FPS: " + to_string((int)eng->GetTime().fps) + " " + game->GetClock()->GetText(true));
 }
