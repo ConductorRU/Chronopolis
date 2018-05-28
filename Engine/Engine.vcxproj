@@ -282,6 +282,7 @@
     <ClCompile Include="Source\Modifier2D\Modifier2d.cpp" />
     <ClCompile Include="Source\Procedure\Perlin2.cpp" />
     <ClCompile Include="Source\Render\ConstantBuffer.cpp" />
+    <ClCompile Include="Source\Render\Direct2d.cpp" />
     <ClCompile Include="Source\Render\Direct3d11.cpp" />
     <ClCompile Include="Source\Render\InputLayout.cpp" />
     <ClCompile Include="Source\Render\RenderMesh.cpp" />
@@ -375,6 +376,7 @@
     <ClInclude Include="Source\Procedure\Class.h" />
     <ClInclude Include="Source\Procedure\Perlin2.h" />
     <ClInclude Include="Source\Render\ConstantBuffer.h" />
+    <ClInclude Include="Source\Render\Direct2d.h" />
     <ClInclude Include="Source\Render\Direct3d11.h" />
     <ClInclude Include="Source\Render\Draw.h" />
     <ClInclude Include="Source\Render\InputLayout.h" />

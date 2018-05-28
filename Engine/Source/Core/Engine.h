@@ -9,6 +9,7 @@ namespace DEN
 	class Manager;
 	class Atlas;
 	class Render;
+	class Render2D;
 	enum CURSOR_TYPE
 	{
 		CURSOR_NONE = 0,
@@ -60,6 +61,7 @@ namespace DEN
 		static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		void UpdateWindowState();
 		Render *_render;
+		Render2D *_render2d;
 		Input *_input;
 		Atlas *_atlas;
 		Time _time;
@@ -69,6 +71,7 @@ namespace DEN
 		Input *GetInput() { return _input; };
 		static Engine *Get() { return _this; };
 		Render *GetRender() { return _render; };
+		Render2D *GetRender2D() { return _render2d; };
 		Scene *GetScene() { return _scene; };
 		Atlas *GetAtlas() { return _atlas; };
 		Manager *GetManager() { return _manager; };

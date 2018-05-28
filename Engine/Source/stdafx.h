@@ -25,7 +25,6 @@
 #include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
-
 //#define D3D10_IGNORE_SDK_LAYERS
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -35,6 +34,10 @@
 #include <d3d11.h>
 #include <d3d11shader.h>
 #include <d3dcompiler.h>
+#include <d2d1_2.h>
+#include <d2d1helper.h>
+#include <dwrite_2.h>
+#include <wincodec.h>
 #include <windows.h>
 
 #pragma comment(lib, "d3d11.lib")

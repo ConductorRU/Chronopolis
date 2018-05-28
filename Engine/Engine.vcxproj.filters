@@ -277,6 +277,9 @@
     <ClCompile Include="Source\Mesh\Planet.cpp">
       <Filter>Source\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Render\Direct2d.cpp">
+      <Filter>Source\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h">
@@ -545,6 +548,9 @@
     </ClInclude>
     <ClInclude Include="Source\Mesh\Planet.h">
       <Filter>Source\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Render\Direct2d.h">
+      <Filter>Source\Render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
